@@ -3,6 +3,7 @@ import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/ma
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
+import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "../hooks/useQuery";
 import { useForm } from "../hooks/useForm";
 
@@ -14,17 +15,19 @@ import { CLASS_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
 import { SET_CLASSES } from "../config/dataReducerActionTypes";
 import { getNumberInputAbsValue } from "../helpers/math";
+import { ERROR, SUCCESS } from "../config/messageProviderTypes";
 
 export function ClassesPage() {
 
     const { auth } = useContext(AuthContext);
     const { state, dispatch } = useContext(DataContext);
+    const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
-    const [open, setOpen] = useState(null);
-    const { formData, handleChange, validate, errors, disabled } = useForm({
+    const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', name: '', duration: '', gym_hash: '' },
         rules: { name: { required: true, maxLength: 55 } }
     })
+    const [open, setOpen] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -61,9 +64,37 @@ export function ClassesPage() {
         }
     ]
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        validate();
+        if (validate()) {
+            const { status, data } = await handleQuery({
+                url: CLASS_URL,
+                method: 'POST',
+                body: JSON.stringify({
+                    ...formData,
+                    gym_hash: auth?.me.gym.hash
+                })
+            });
+            if (status === STATUS_CODES.CREATED) {
+                dispatch({
+                    type: SET_CLASSES,
+                    payload: [data, ...state.classes]
+                });
+                handleClose()
+                setMessage('Clase registrada correctamente.');
+                setSeverity(SUCCESS);
+            } else {
+                setMessage('Hubo un problema al procesar la solicitud.');
+                setSeverity(ERROR);
+                setDisabled(false);
+            }
+            setOpenMessage(true);
+        }
+    }
+
+    const handleClose = () => {
+        setOpen(null);
+        reset();
     }
 
     return (
@@ -74,13 +105,15 @@ export function ClassesPage() {
                     headCells={headCells}
                     rows={state.classes}
                     setOpen={setOpen}
+                    setFormData={setFormData}
                 >
                     <ModalComponent
-                        open={open === 'NEW'}
-                        onClose={() => setOpen(null)}
+                        open={open === 'NEW' || open === 'EDIT'}
+                        onClose={handleClose}
                     >
                         <Typography variant="h6">
-                            Registrar nueva clase
+                            {open === 'NEW' && 'Registrar nueva clase'}
+                            {open === 'EDIT' && `Editar clase ${formData.name}`}
                         </Typography>
                         <form onChange={handleChange} onSubmit={handleSubmit}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -107,7 +140,19 @@ export function ClassesPage() {
                                         value={getNumberInputAbsValue(+formData.duration, 1, 3600)}
                                     />
                                 </FormControl>
-                                <FormControl>
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                    <Button
+                                        type="button"
+                                        variant="outlined"
+                                        sx={{
+                                            width: '50%',
+                                            margin: '0 auto',
+                                            marginTop: 1
+                                        }}
+                                        onClick={handleClose}
+                                    >
+                                        Cancelar
+                                    </Button>
                                     <Button
                                         type="submit"
                                         variant="contained"
@@ -118,9 +163,9 @@ export function ClassesPage() {
                                         }}
                                         disabled={disabled}
                                     >
-                                        Ingresar
+                                        Guardar
                                     </Button>
-                                </FormControl>
+                                </Box>
                             </Box>
                         </form>
                     </ModalComponent>

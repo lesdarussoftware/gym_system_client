@@ -19,10 +19,11 @@ interface DataGridProps {
     children?: React.ReactNode;
     headCells: HeadCell[];
     rows: any[];
+    setOpen: any;
+    setFormData: any;
     defaultOrder?: 'asc' | 'desc';
     defaultOrderBy?: string;
     stopPointerEvents?: boolean;
-    setOpen: any;
 }
 
 function descendingComparator(a: any, b: any, orderBy: string) {
@@ -58,6 +59,7 @@ export function DataGrid({
     headCells,
     rows,
     setOpen,
+    setFormData,
     defaultOrder = 'desc',
     defaultOrderBy = 'id'
 }: DataGridProps) {
@@ -127,6 +129,9 @@ export function DataGrid({
                     <EnhancedTableToolbar
                         numSelected={selected.length}
                         setOpen={setOpen}
+                        setFormData={setFormData}
+                        selected={selected}
+                        rows={rows}
                     />
                     <TableContainer>
                         <Table

@@ -8,11 +8,17 @@ import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
 interface EnhancedTableToolbarProps {
     numSelected: number;
     setOpen: any;
+    setFormData: any;
+    selected: any;
+    rows: any;
 }
 
 export function EnhancedTableToolbar({
     numSelected,
-    setOpen
+    setOpen,
+    setFormData,
+    selected,
+    rows
 }: EnhancedTableToolbarProps) {
     return (
         <Toolbar
@@ -30,16 +36,23 @@ export function EnhancedTableToolbar({
                     <AddCircleSharpIcon />
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Eliminar">
-                <IconButton>
-                    <DeleteIcon />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title={"Editar"}>
-                <IconButton>
-                    <EditIcon />
-                </IconButton>
-            </Tooltip>
+            {selected.length > 0 &&
+                <>
+                    <Tooltip title="Eliminar">
+                        <IconButton>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Editar"} onClick={() => {
+                        setOpen('EDIT');
+                        setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                    }}>
+                        <IconButton>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                </>
+            }
         </Toolbar>
     );
 }

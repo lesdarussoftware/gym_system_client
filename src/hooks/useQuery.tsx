@@ -27,7 +27,7 @@ export function useQuery() {
         });
         const status = res.status;
         const data = await res.json();
-        if (status === STATUS_CODES.OK) {
+        if (status === STATUS_CODES.OK || status === STATUS_CODES.CREATED) {
             return { status, data }
         }
         if (status === STATUS_CODES.UNAUTHORIZED && data.message === STATUS_MESSAGES.INVALID_TOKEN) {
