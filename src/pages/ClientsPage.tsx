@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { Box } from "@mui/material";
 
 import { DataContext } from "../providers/DataProvider";
+import { AuthContext } from "../providers/AuthProvider";
 import { useQuery } from "../hooks/useQuery";
 
 import { Header } from "../components/Header";
@@ -9,7 +10,6 @@ import { Header } from "../components/Header";
 import { CLIENT_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
 import { SET_CLIENTS } from "../config/dataReducerActionTypes";
-import { AuthContext } from "../providers/AuthProvider";
 
 export function ClientsPage() {
 
