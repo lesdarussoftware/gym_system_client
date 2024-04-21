@@ -59,11 +59,14 @@ export function useQuery() {
                 setAuth(null);
                 localStorage.removeItem('auth');
                 console.log('ABRIR MODAL DE LOGIN');
+                return { status: refreshStatus, data: refreshData };
             } else {
                 console.log({ refreshStatus, refreshData })
+                return { status: refreshStatus, data: refreshData };
             }
         } else {
             console.log({ status, data })
+            return { status, data };
         }
     }
 

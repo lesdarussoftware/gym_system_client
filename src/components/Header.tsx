@@ -10,12 +10,17 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '../hooks/useQuery';
+import { LOGOUT_URL } from '../config/urls';
+import { AuthContext } from '../providers/AuthProvider';
 
 export function Header({ showOptions = false }: { showOptions?: boolean }) {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
+    const { handleQuery } = useQuery();
+    const { auth, setAuth } = React.useContext(AuthContext);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -23,6 +28,18 @@ export function Header({ showOptions = false }: { showOptions?: boolean }) {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        handleQuery({
+            url: LOGOUT_URL,
+            method: 'POST',
+            token: auth?.refresh_token
+        });
+        setAnchorEl(null);
+        setAuth(null);
+        localStorage.removeItem('auth');
+        navigate('/')
     };
 
     const menuItemStyles = {
@@ -127,7 +144,7 @@ export function Header({ showOptions = false }: { showOptions?: boolean }) {
                     <Avatar /> Licencia
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>
