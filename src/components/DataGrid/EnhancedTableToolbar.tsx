@@ -36,7 +36,7 @@ export function EnhancedTableToolbar({
                     <AddCircleSharpIcon />
                 </IconButton>
             </Tooltip>
-            {selected.length > 0 &&
+            {selected.length === 1 &&
                 <>
                     <Tooltip title="Eliminar">
                         <IconButton>

@@ -175,7 +175,7 @@ export function DataGrid({
                                                 />
                                             </TableCell>
                                             {headCells.map(cell => cell.accessor).map(accessor => (
-                                                <TableCell key={accessor} align="center">
+                                                <TableCell key={accessor} align="center" sx={{ cursor: 'pointer' }}>
                                                     {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
                                                 </TableCell>
                                             ))}

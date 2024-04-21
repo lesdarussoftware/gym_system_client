@@ -40,6 +40,49 @@ export function ClassesPage() {
         })()
     }, [])
 
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        if (validate()) {
+            const methods = { 'NEW': 'POST', 'EDIT': 'PUT' };
+            const urls = { 'NEW': CLASS_URL, 'EDIT': `${CLASS_URL}/${auth?.me.gym.hash}/${formData.id}` };
+            const { status, data } = await handleQuery({
+                url: urls[open!],
+                method: methods[open!],
+                body: JSON.stringify({
+                    ...formData,
+                    gym_hash: auth?.me.gym.hash
+                })
+            });
+            if (status === STATUS_CODES.CREATED) {
+                dispatch({
+                    type: SET_CLASSES,
+                    payload: [data, ...state.classes]
+                });
+                setMessage('Clase registrada correctamente.');
+            } else if (status === STATUS_CODES.OK) {
+                dispatch({
+                    type: SET_CLASSES,
+                    payload: [data, ...state.classes.filter(item => item.id !== data.id)]
+                });
+                setMessage('Clase editada correctamente.');
+            } else {
+                setMessage('Hubo un problema al procesar la solicitud.');
+                setSeverity(ERROR);
+                setDisabled(false);
+            }
+            if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
+                handleClose();
+                setSeverity(SUCCESS);
+            }
+            setOpenMessage(true);
+        }
+    }
+
+    const handleClose = () => {
+        setOpen(null);
+        reset();
+    }
+
     const headCells = [
         {
             id: 'id',
@@ -64,39 +107,6 @@ export function ClassesPage() {
         }
     ]
 
-    const handleSubmit = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        if (validate()) {
-            const { status, data } = await handleQuery({
-                url: CLASS_URL,
-                method: 'POST',
-                body: JSON.stringify({
-                    ...formData,
-                    gym_hash: auth?.me.gym.hash
-                })
-            });
-            if (status === STATUS_CODES.CREATED) {
-                dispatch({
-                    type: SET_CLASSES,
-                    payload: [data, ...state.classes]
-                });
-                handleClose()
-                setMessage('Clase registrada correctamente.');
-                setSeverity(SUCCESS);
-            } else {
-                setMessage('Hubo un problema al procesar la solicitud.');
-                setSeverity(ERROR);
-                setDisabled(false);
-            }
-            setOpenMessage(true);
-        }
-    }
-
-    const handleClose = () => {
-        setOpen(null);
-        reset();
-    }
-
     return (
         <>
             <Header showOptions />
@@ -111,9 +121,9 @@ export function ClassesPage() {
                         open={open === 'NEW' || open === 'EDIT'}
                         onClose={handleClose}
                     >
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{ marginBottom: 1 }}>
                             {open === 'NEW' && 'Registrar nueva clase'}
-                            {open === 'EDIT' && `Editar clase ${formData.name}`}
+                            {open === 'EDIT' && `Editar clase #${formData.id}`}
                         </Typography>
                         <form onChange={handleChange} onSubmit={handleSubmit}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
