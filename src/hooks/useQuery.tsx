@@ -43,11 +43,13 @@ export function useQuery() {
             if (refreshStatus === STATUS_CODES.OK) {
                 setAuth({
                     access_token: refreshData.access_token,
-                    refresh_token: auth!.refresh_token
+                    refresh_token: auth!.refresh_token,
+                    me: auth!.me
                 });
                 localStorage.setItem('auth', JSON.stringify({
                     access_token: refreshData.access_token,
-                    refresh_token: auth!.refresh_token
+                    refresh_token: auth!.refresh_token,
+                    me: auth!.me
                 }));
                 return handleQuery({ url, method, body, token: refreshData.access_token });
             }
