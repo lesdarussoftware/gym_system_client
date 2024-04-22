@@ -67,7 +67,7 @@ export function DataGrid({
     const [order, setOrder] = React.useState<'asc' | 'desc'>(defaultOrder);
     const [orderBy, setOrderBy] = React.useState<string>(defaultOrderBy);
     const [selected, setSelected] = React.useState<any[]>([]);
-    const [dense, setDense] = React.useState<boolean>(false);
+    const [dense, setDense] = React.useState<boolean>(true);
     const [page, setPage] = React.useState<number>(0);
     const [offset, setOffset] = React.useState<number>(10);
 
@@ -123,93 +123,90 @@ export function DataGrid({
     );
 
     return (
-        <div className='gridContainer'>
-            <Box sx={{ width: '100%' }}>
-                <Paper sx={{ width: '100%', mb: 2 }}>
-                    <EnhancedTableToolbar
-                        numSelected={selected.length}
-                        setOpen={setOpen}
-                        setFormData={setFormData}
-                        selected={selected}
-                        rows={rows}
-                    />
-                    <TableContainer>
-                        <Table
-                            sx={{ minWidth: 750 }}
-                            aria-labelledby="tableTitle"
-                            size={dense ? 'small' : 'medium'}
-                        >
-                            <EnhancedTableHead
-                                headCells={headCells}
-                                numSelected={selected.length}
-                                order={order}
-                                orderBy={orderBy}
-                                onSelectAllClick={handleSelectAllClick}
-                                onRequestSort={handleRequestSort}
-                                rowCount={rows.length}
-                            />
-                            <TableBody>
-                                {visibleRows.map((row, index) => {
-                                    const isItemSelected = isSelected(row.id);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => {
-                                                handleClick(event, row.id)
-                                            }}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.id ?? index}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
-                                            {headCells.map(cell => cell.accessor).map(accessor => (
-                                                <TableCell key={accessor} align="center" sx={{ cursor: 'pointer' }}>
-                                                    {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={-1}
-                        rowsPerPage={offset}
-                        labelRowsPerPage="Registros por página"
-                        labelDisplayedRows={({ from, to }) => `${from}–${to} de ${rows.length}`}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        slotProps={{
-                            actions: {
-                                nextButton: {
-                                    disabled: ((page + 1) * offset) >= rows.length
-                                }
-                            }
-                        }}
-                    />
-                </Paper>
-                {children}
-                <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense} />}
-                    label="Condensar tabla"
+        <Box sx={{ width: '100%' }}>
+            <Paper sx={{ width: '100%', mb: 2 }}>
+                <EnhancedTableToolbar
+                    numSelected={selected.length}
+                    setOpen={setOpen}
+                    setFormData={setFormData}
+                    selected={selected}
+                    rows={rows}
                 />
-            </Box>
-        </div>
+                <TableContainer>
+                    <Table
+                        aria-labelledby="tableTitle"
+                        size={dense ? 'small' : 'medium'}
+                    >
+                        <EnhancedTableHead
+                            headCells={headCells}
+                            numSelected={selected.length}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={rows.length}
+                        />
+                        <TableBody>
+                            {visibleRows.map((row, index) => {
+                                const isItemSelected = isSelected(row.id);
+                                const labelId = `enhanced-table-checkbox-${index}`;
+
+                                return (
+                                    <TableRow
+                                        hover
+                                        onClick={(event) => {
+                                            handleClick(event, row.id)
+                                        }}
+                                        role="checkbox"
+                                        aria-checked={isItemSelected}
+                                        tabIndex={-1}
+                                        key={row.id ?? index}
+                                        selected={isItemSelected}
+                                    >
+                                        <TableCell padding="checkbox">
+                                            <Checkbox
+                                                color="primary"
+                                                checked={isItemSelected}
+                                                inputProps={{
+                                                    'aria-labelledby': labelId,
+                                                }}
+                                            />
+                                        </TableCell>
+                                        {headCells.map(cell => cell.accessor).map(accessor => (
+                                            <TableCell key={accessor} align="center" sx={{ cursor: 'pointer' }}>
+                                                {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={-1}
+                    rowsPerPage={offset}
+                    labelRowsPerPage="Registros por página"
+                    labelDisplayedRows={({ from, to }) => `${from}–${to} de ${rows.length}`}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    slotProps={{
+                        actions: {
+                            nextButton: {
+                                disabled: ((page + 1) * offset) >= rows.length
+                            }
+                        }
+                    }}
+                />
+            </Paper>
+            {children}
+            <FormControlLabel
+                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                label="Condensar tabla"
+            />
+        </Box>
     );
 }

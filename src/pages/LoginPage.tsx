@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { LoginForm } from "../components/LoginForm";
+import { LoginForm } from "../components/common/LoginForm";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 

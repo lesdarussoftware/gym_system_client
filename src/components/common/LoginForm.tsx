@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { AuthContext } from "../providers/AuthProvider";
-import { useForm } from "../hooks/useForm";
-import { useAuth } from "../hooks/useAuth";
+import { AuthContext } from "../../providers/AuthProvider";
+import { useForm } from "../../hooks/useForm";
+import { useAuth } from "../../hooks/useAuth";
 
-import { STATUS_CODES } from "../config/statusCodes";
+import { STATUS_CODES } from "../../config/statusCodes";
 
 type LoginFormProps = {
     submitAction?: () => void;

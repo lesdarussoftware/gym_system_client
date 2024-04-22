@@ -3,9 +3,9 @@ import { Box } from "@mui/material";
 
 import { AuthContext } from "../providers/AuthProvider";
 
-import { LoginForm } from "../components/LoginForm";
-import { ActionAreaCard } from "../components/ActionAreaCard";
-import { Header } from "../components/Header";
+import { LoginForm } from "../components/common/LoginForm";
+import { ActionAreaCard } from "../components/common/ActionAreaCard";
+import { Header } from "../components/common/Header";
 
 export function DashboardPage() {
 
@@ -19,26 +19,21 @@ export function DashboardPage() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, alignItems: 'center' }}>
                             <ActionAreaCard
-                                title="Clientes"
-                                text="Administre los clientes de su gimnasio."
+                                title="Visitas"
+                                text="Registre cuando un cliente llega al gimnasio."
                                 onClick="clientes"
                                 />
                             <ActionAreaCard
-                                title="Usuarios"
-                                text="Administre el personal administrativo."
+                                title="Horarios"
+                                text="Consulte todas las actividades."
                                 onClick="usuarios"
                                 />
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, alignItems: 'center' }}>
                             <ActionAreaCard
-                                title="Profesores"
-                                text="Registre el personal docente."
-                                onClick="profesores"
-                                />
-                            <ActionAreaCard
-                                title="Clases"
-                                text="Administre los servicios que brinda."
-                                onClick="clases"
+                                title="ABMs"
+                                text="Altas, bajas y modificaciones."
+                                onClick="abm"
                             />
                         </Box>
                     </Box>

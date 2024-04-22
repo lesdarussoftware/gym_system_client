@@ -8,10 +8,7 @@ import { MessageProvider } from "./providers/MessageProvider";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
-import { ClientsPage } from "./pages/ClientsPage";
-import { UsersPage } from "./pages/UsersPage";
-import { TeachersPage } from "./pages/TeachersPage";
-import { ClassesPage } from "./pages/ClassesPage";
+import { ABMPage } from "./pages/ABMPage";
 import { ErrorPage } from "./pages/ErrorPage";
 
 function App() {
@@ -25,10 +22,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/clientes" element={<ClientsPage />} />
-              <Route path="/usuarios" element={<UsersPage />} />
-              <Route path="/profesores" element={<TeachersPage />} />
-              <Route path="/clases" element={<ClassesPage />} />
+              <Route path="/abm" element={<ABMPage />} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>

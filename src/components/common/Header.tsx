@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '../hooks/useQuery';
-import { LOGOUT_URL } from '../config/urls';
-import { AuthContext } from '../providers/AuthProvider';
+import { useQuery } from '../../hooks/useQuery';
+import { LOGOUT_URL } from '../../config/urls';
+import { AuthContext } from '../../providers/AuthProvider';
 
 export function Header({ showOptions = false }: { showOptions?: boolean }) {
 
@@ -53,7 +53,15 @@ export function Header({ showOptions = false }: { showOptions?: boolean }) {
     }
 
     return (
-        <Box sx={{ height: 80, marginBottom: 2, paddingRight: 3, paddingLeft: 3 }}>
+        <Box sx={{
+            height: 60,
+            marginBottom: 1,
+            paddingRight: 3,
+            paddingLeft: 3,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'end'
+        }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
                 {showOptions &&
                     <>
@@ -65,27 +73,21 @@ export function Header({ showOptions = false }: { showOptions?: boolean }) {
                         </Typography>
                         <Typography
                             sx={menuItemStyles}
-                            onClick={() => navigate('/clientes')}
+                            onClick={() => navigate('/visitas')}
                         >
-                            Clientes
+                            Visitas
                         </Typography>
                         <Typography
                             sx={menuItemStyles}
-                            onClick={() => navigate('/usuarios')}
+                            onClick={() => navigate('/horarios')}
                         >
-                            Usuarios
+                            Horarios
                         </Typography>
                         <Typography
                             sx={menuItemStyles}
-                            onClick={() => navigate('/profesores')}
+                            onClick={() => navigate('/abm')}
                         >
-                            Profesores
-                        </Typography>
-                        <Typography
-                            sx={menuItemStyles}
-                            onClick={() => navigate('/clases')}
-                        >
-                            Clases
+                            ABMs
                         </Typography>
                     </>
                 }
