@@ -19,8 +19,8 @@ export function DashboardPage() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, alignItems: 'center' }}>
                             <ActionAreaCard
-                                title="Visitas"
-                                text="Registre cuando un cliente llega al gimnasio."
+                                title="Clientes"
+                                text="Registre clientes y sus visitas al gimnasio."
                                 onClick="clientes"
                                 />
                             <ActionAreaCard

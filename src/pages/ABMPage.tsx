@@ -12,7 +12,7 @@ import { Box } from '@mui/material';
 import { Header } from "../components/common/Header";
 import { ClassesABM } from "../components/ABM/ClassesABM";
 import { TeachersABM } from '../components/ABM/TeachersABM';
-import { ClientsABM } from '../components/ABM/ClientsABM';
+import { UsersABM } from '../components/ABM/UsersABM';
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -64,41 +64,26 @@ export function ABMPage() {
             <Box sx={{ padding: 2 }}>
                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                     <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Typography>Clientes</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <ClientsABM />
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                    <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                         <Typography>Clases</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <ClassesABM />
                     </AccordionDetails>
                 </Accordion>
-                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-                    <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                    <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                         <Typography>Profesores</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            <TeachersABM />
-                        </Typography>
+                        <TeachersABM />
                     </AccordionDetails>
                 </Accordion>
-                <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-                    <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                    <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                         <Typography>Usuarios</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                            sit amet blandit leo lobortis eget.
-                        </Typography>
+                        <UsersABM />
                     </AccordionDetails>
                 </Accordion>
             </Box>

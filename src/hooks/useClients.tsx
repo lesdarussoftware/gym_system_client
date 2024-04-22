@@ -10,6 +10,7 @@ import { CLIENT_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
 import { SET_CLIENTS } from "../config/dataReducerActionTypes";
 import { ERROR, SUCCESS } from "../config/messageProviderTypes";
+import { EDIT, NEW } from "../config/openTypes";
 
 export function useClients() {
 
@@ -39,8 +40,8 @@ export function useClients() {
     ) => {
         e.preventDefault();
         if (validate()) {
-            const methods = { 'NEW': 'POST', 'EDIT': 'PUT' };
-            const urls = { 'NEW': CLIENT_URL, 'EDIT': `${CLIENT_URL}/${auth?.me.gym.hash}/${formData.id}` };
+            const methods = { [NEW]: 'POST', [EDIT]: 'PUT' };
+            const urls = { [NEW]: CLIENT_URL, [EDIT]: `${CLIENT_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
                 url: urls[open!],
                 method: methods[open!],

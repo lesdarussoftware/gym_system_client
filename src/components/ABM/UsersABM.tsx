@@ -1,28 +1,59 @@
 import { useContext } from "react";
-import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
+import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 
+import { AuthContext } from "../../providers/AuthProvider";
 import { DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
-import { useClients } from "../../hooks/useClients";
+import { useUsers } from "../../hooks/useUsers";
 
 import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from '../common/ModalComponent'
-import { getNumberInputAbsValue } from "../../helpers/math";
 
-export function ClientsABM() {
+import { ADMIN, SUPERUSER, USER } from "../../config/roles";
+import { NEW, EDIT, DELETE } from '../../config/openTypes';
 
+export function UsersABM() {
+
+    const { auth } = useContext(AuthContext);
     const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
-        defaultData: { id: '', first_name: '', last_name: '', dni: '', email: '', phone: '', gym_hash: '' },
+        defaultData: {
+            id: '',
+            first_name: '',
+            last_name: '',
+            username: '',
+            email: '',
+            password: '',
+            role: '',
+            gym_hash: ''
+        },
         rules: {
-            first_name: { required: true, maxLength: 55 },
-            last_name: { required: true, maxLength: 55 },
-            dni: { required: true, },
-            email: { required: true, maxLength: 55 },
-            phone: { required: true, maxLength: 55 }
+            first_name: {
+                required: true,
+                maxLength: 55
+            },
+            last_name: {
+                required: true,
+                maxLength: 55
+            },
+            username: {
+                required: true,
+                maxLength: 55
+            },
+            email: {
+                maxLength: 55
+            },
+            password: {
+                required: true,
+                minLength: 8,
+                maxLength: 255
+            },
+            role: {
+                required: true
+            }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen } = useClients();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen } = useUsers();
 
     const headCells = [
         {
@@ -47,11 +78,11 @@ export function ClientsABM() {
             accessor: 'last_name'
         },
         {
-            id: 'dni',
+            id: 'username',
             numeric: false,
             disablePadding: true,
-            label: 'DNI',
-            accessor: 'dni'
+            label: 'Nombre de usuario',
+            accessor: 'username'
         },
         {
             id: 'email',
@@ -61,28 +92,28 @@ export function ClientsABM() {
             accessor: 'email'
         },
         {
-            id: 'phone',
+            id: 'role',
             numeric: false,
             disablePadding: true,
-            label: 'Teléfono',
-            accessor: 'phone'
+            label: 'Rol',
+            accessor: 'role'
         }
     ]
 
     return (
         <DataGrid
             headCells={headCells}
-            rows={state.clients}
+            rows={state.users}
             setOpen={setOpen}
             setFormData={setFormData}
         >
             <ModalComponent
-                open={open === 'NEW' || open === 'EDIT'}
+                open={open === NEW || open === EDIT}
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {open === 'NEW' && 'Registrar nuevo cliente'}
-                    {open === 'EDIT' && `Editar cliente #${formData.id}`}
+                    {open === NEW && 'Registrar nuevo usuario'}
+                    {open === EDIT && `Editar usuario #${formData.id}`}
                 </Typography>
                 <form onChange={handleChange} onSubmit={(e) => handleSubmit(
                     e,
@@ -121,44 +152,65 @@ export function ClientsABM() {
                             }
                         </FormControl>
                         <FormControl>
-                            <InputLabel htmlFor="dni">DNI</InputLabel>
-                            <Input
-                                id="dni"
-                                type="number"
-                                name="dni"
-                                value={getNumberInputAbsValue(+formData.dni, 1000000, 99999999)}
-                            />
-                            {errors.dni?.type === 'required' &&
+                            <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
+                            <Input id="username" type="text" name="username" value={formData.username} />
+                            {errors.username?.type === 'required' &&
                                 <Typography variant="caption" color="red" marginTop={1}>
-                                    * El dni es requerido.
+                                    * El nombre de usuario es requerido.
+                                </Typography>
+                            }
+                            {errors.username?.type === 'maxLength' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * El nombre de usuario es demasiado largo.
                                 </Typography>
                             }
                         </FormControl>
                         <FormControl>
                             <InputLabel htmlFor="email">Email</InputLabel>
                             <Input id="email" type="email" name="email" value={formData.email} />
-                        </FormControl>
-                        {errors.email?.type === 'required' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * El email es requerido.
-                            </Typography>
-                        }
-                        {errors.email?.type === 'maxLength' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * El email es demasiado largo.
-                            </Typography>
-                        }
-                        <FormControl>
-                            <InputLabel htmlFor="phone">Teléfono</InputLabel>
-                            <Input id="phone" type="text" name="phone" value={formData.phone} />
-                            {errors.phone?.type === 'required' &&
+                            {errors.email?.type === 'maxLength' &&
                                 <Typography variant="caption" color="red" marginTop={1}>
-                                    * El teléfono es requerido.
+                                    * El email es demasiado largo.
                                 </Typography>
                             }
-                            {errors.phone?.type === 'maxLength' &&
+                        </FormControl>
+                        {open === NEW && auth!.me.role === SUPERUSER &&
+                            <FormControl>
+                                <InputLabel htmlFor="password">Contraseña</InputLabel>
+                                <Input id="password" type="password" name="password" value={formData.password} />
+                                {errors.password?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * La contraseña es requerida.
+                                    </Typography>
+                                }
+                                {errors.password?.type === 'minLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * La contraseña es demasiado corta.
+                                    </Typography>
+                                }
+                                {errors.password?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * La contraseña es demasiado larga.
+                                    </Typography>
+                                }
+                            </FormControl>
+                        }
+                        <FormControl>
+                            <InputLabel id="role-select">Rol</InputLabel>
+                            <Select
+                                labelId="role-select"
+                                id="role"
+                                value={formData.role}
+                                label="Rol"
+                                name="role"
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={ADMIN}>{ADMIN}</MenuItem>
+                                <MenuItem value={USER}>{USER}</MenuItem>
+                            </Select>
+                            {errors.role?.type === 'required' &&
                                 <Typography variant="caption" color="red" marginTop={1}>
-                                    * El teléfono es demasiado largo.
+                                    * El rol es requerido.
                                 </Typography>
                             }
                         </FormControl>
@@ -192,11 +244,11 @@ export function ClientsABM() {
                 </form>
             </ModalComponent>
             <ModalComponent
-                open={open === 'DELETE'}
+                open={open === DELETE}
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {`¿Desea borrar el registro del cliente ${formData.first_name + ' ' + formData.last_name} (#${formData.id})?`}
+                    {`¿Desea borrar el registro del usuario ${formData.username} (#${formData.id})?`}
                 </Typography>
                 <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
                 <Box sx={{ display: 'flex', gap: 1 }}>

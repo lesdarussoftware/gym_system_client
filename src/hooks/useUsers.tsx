@@ -6,13 +6,13 @@ import { DataContext } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "./useQuery";
 
-import { CLASS_URL } from "../config/urls";
+import { USER_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
-import { SET_CLASSES } from "../config/dataReducerActionTypes";
+import { SET_USERS } from "../config/dataReducerActionTypes";
 import { ERROR, SUCCESS } from "../config/messageProviderTypes";
-import { NEW, EDIT } from '../config/openTypes';
+import { EDIT, NEW } from "../config/openTypes";
 
-export function useClasses() {
+export function useUsers() {
 
     const { auth } = useContext(AuthContext);
     const { state, dispatch } = useContext(DataContext);
@@ -22,10 +22,10 @@ export function useClasses() {
 
     useEffect(() => {
         (async () => {
-            if (state.classes.length === 0) {
-                const { status, data } = await handleQuery({ url: `${CLASS_URL}/${auth?.me.gym.hash}` })
+            if (state.users.length === 0) {
+                const { status, data } = await handleQuery({ url: `${USER_URL}/${auth?.me.gym.hash}` })
                 if (status === STATUS_CODES.OK) {
-                    dispatch({ type: SET_CLASSES, payload: data })
+                    dispatch({ type: SET_USERS, payload: data })
                 }
             }
         })()
@@ -41,7 +41,7 @@ export function useClasses() {
         e.preventDefault();
         if (validate()) {
             const methods = { [NEW]: 'POST', [EDIT]: 'PUT' };
-            const urls = { [NEW]: CLASS_URL, [EDIT]: `${CLASS_URL}/${auth?.me.gym.hash}/${formData.id}` };
+            const urls = { [NEW]: USER_URL, [EDIT]: `${USER_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
                 url: urls[open!],
                 method: methods[open!],
@@ -52,16 +52,16 @@ export function useClasses() {
             });
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
-                    type: SET_CLASSES,
-                    payload: [data, ...state.classes]
+                    type: SET_USERS,
+                    payload: [data, ...state.users]
                 });
-                setMessage('Clase registrada correctamente.');
+                setMessage('Usuario registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
-                    type: SET_CLASSES,
-                    payload: [data, ...state.classes.filter(item => item.id !== data.id)]
+                    type: SET_USERS,
+                    payload: [data, ...state.users.filter(item => item.id !== data.id)]
                 });
-                setMessage('Clase editada correctamente.');
+                setMessage('Usuario editado correctamente.');
             } else {
                 setMessage('Hubo un problema al procesar la solicitud.');
                 setSeverity(ERROR);
@@ -86,16 +86,16 @@ export function useClasses() {
         setDisabled: (arg0: boolean) => void
     ) => {
         const { status, data } = await handleQuery({
-            url: `${CLASS_URL}/${auth?.me.gym.hash}/${formData.id}`,
+            url: `${USER_URL}/${auth?.me.gym.hash}/${formData.id}`,
             method: 'DELETE'
         });
         if (status === STATUS_CODES.OK) {
             dispatch({
-                type: SET_CLASSES,
-                payload: [...state.classes.filter(item => item.id !== data.id)]
+                type: SET_USERS,
+                payload: [...state.users.filter(item => item.id !== data.id)]
             });
             setSeverity(SUCCESS);
-            setMessage('Clase eliminada correctamente.');
+            setMessage('Usuario eliminado correctamente.');
             handleClose(reset);
         }
         if (status === STATUS_CODES.SERVER_ERROR) {

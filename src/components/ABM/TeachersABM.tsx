@@ -8,6 +8,8 @@ import { useTeachers } from "../../hooks/useTeachers";
 import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from '../common/ModalComponent'
 
+import { NEW, EDIT, DELETE } from '../../config/openTypes';
+
 export function TeachersABM() {
 
     const { state } = useContext(DataContext);
@@ -68,12 +70,12 @@ export function TeachersABM() {
             setFormData={setFormData}
         >
             <ModalComponent
-                open={open === 'NEW' || open === 'EDIT'}
+                open={open === NEW || open === EDIT}
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {open === 'NEW' && 'Registrar nuevo profesor'}
-                    {open === 'EDIT' && `Editar profesor #${formData.id}`}
+                    {open === NEW && 'Registrar nuevo profesor'}
+                    {open === EDIT && `Editar profesor #${formData.id}`}
                 </Typography>
                 <form onChange={handleChange} onSubmit={(e) => handleSubmit(
                     e,
@@ -159,7 +161,7 @@ export function TeachersABM() {
                 </form>
             </ModalComponent>
             <ModalComponent
-                open={open === 'DELETE'}
+                open={open === DELETE}
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>

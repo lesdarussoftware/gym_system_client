@@ -73,9 +73,9 @@ export function Header({ showOptions = false }: { showOptions?: boolean }) {
                         </Typography>
                         <Typography
                             sx={menuItemStyles}
-                            onClick={() => navigate('/visitas')}
+                            onClick={() => navigate('/clientes')}
                         >
-                            Visitas
+                            Clientes
                         </Typography>
                         <Typography
                             sx={menuItemStyles}

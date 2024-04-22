@@ -4,6 +4,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
 
+import { NEW, EDIT, DELETE } from '../../config/openTypes';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface EnhancedTableToolbarProps {
     numSelected: number;
@@ -31,7 +33,7 @@ export function EnhancedTableToolbar({
                 }),
             }}
         >
-            <Tooltip title="Nuevo" onClick={() => setOpen('NEW')}>
+            <Tooltip title="Nuevo" onClick={() => setOpen(NEW)}>
                 <IconButton>
                     <AddCircleSharpIcon />
                 </IconButton>
@@ -39,7 +41,7 @@ export function EnhancedTableToolbar({
             {selected.length === 1 &&
                 <>
                     <Tooltip title="Eliminar" onClick={() => {
-                        setOpen('DELETE');
+                        setOpen(DELETE);
                         setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                     }}>
                         <IconButton>
@@ -47,7 +49,7 @@ export function EnhancedTableToolbar({
                         </IconButton>
                     </Tooltip>
                     <Tooltip title={"Editar"} onClick={() => {
-                        setOpen('EDIT');
+                        setOpen(EDIT);
                         setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                     }}>
                         <IconButton>

@@ -9,6 +9,7 @@ import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from '../common/ModalComponent'
 
 import { getNumberInputAbsValue } from "../../helpers/math";
+import { NEW, EDIT, DELETE } from '../../config/openTypes';
 
 export function ClassesABM() {
 
@@ -51,12 +52,12 @@ export function ClassesABM() {
             setFormData={setFormData}
         >
             <ModalComponent
-                open={open === 'NEW' || open === 'EDIT'}
+                open={open === NEW || open === EDIT}
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {open === 'NEW' && 'Registrar nueva clase'}
-                    {open === 'EDIT' && `Editar clase #${formData.id}`}
+                    {open === NEW && 'Registrar nueva clase'}
+                    {open === EDIT && `Editar clase #${formData.id}`}
                 </Typography>
                 <form onChange={handleChange} onSubmit={(e) => handleSubmit(
                     e,
@@ -119,7 +120,7 @@ export function ClassesABM() {
                 </form>
             </ModalComponent>
             <ModalComponent
-                open={open === 'DELETE'}
+                open={open === DELETE}
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
