@@ -38,7 +38,10 @@ export function EnhancedTableToolbar({
             </Tooltip>
             {selected.length === 1 &&
                 <>
-                    <Tooltip title="Eliminar">
+                    <Tooltip title="Eliminar" onClick={() => {
+                        setOpen('DELETE');
+                        setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                    }}>
                         <IconButton>
                             <DeleteIcon />
                         </IconButton>

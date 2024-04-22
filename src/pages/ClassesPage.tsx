@@ -71,8 +71,8 @@ export function ClassesPage() {
                 setDisabled(false);
             }
             if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
-                handleClose();
                 setSeverity(SUCCESS);
+                handleClose();
             }
             setOpenMessage(true);
         }
@@ -81,6 +81,28 @@ export function ClassesPage() {
     const handleClose = () => {
         setOpen(null);
         reset();
+    }
+
+    const handleDelete = async () => {
+        const { status, data } = await handleQuery({
+            url: `${CLASS_URL}/${auth?.me.gym.hash}/${formData.id}`,
+            method: 'DELETE'
+        });
+        if (status === STATUS_CODES.OK) {
+            dispatch({
+                type: SET_CLASSES,
+                payload: [...state.classes.filter(item => item.id !== data.id)]
+            });
+            setSeverity(SUCCESS);
+            setMessage('Clase eliminada correctamente.');
+            handleClose();
+        }
+        if (status === STATUS_CODES.SERVER_ERROR) {
+            setMessage(data.message);
+            setSeverity(ERROR);
+            setDisabled(false);
+        }
+        setOpenMessage(true);
     }
 
     const headCells = [
@@ -178,6 +200,42 @@ export function ClassesPage() {
                                 </Box>
                             </Box>
                         </form>
+                    </ModalComponent>
+                    <ModalComponent
+                        open={open === 'DELETE'}
+                        onClose={handleClose}
+                    >
+                        <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                            {`¿Desea borrar el registro de la clase ${formData.name} (#${formData.id})?`}
+                        </Typography>
+                        <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button
+                                type="button"
+                                variant="outlined"
+                                sx={{
+                                    width: '50%',
+                                    margin: '0 auto',
+                                    marginTop: 1
+                                }}
+                                onClick={handleClose}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="contained"
+                                sx={{
+                                    width: '50%',
+                                    margin: '0 auto',
+                                    marginTop: 1
+                                }}
+                                disabled={disabled}
+                                onClick={handleDelete}
+                            >
+                                Confirmar
+                            </Button>
+                        </Box>
                     </ModalComponent>
                 </DataGrid>
             </Box>
