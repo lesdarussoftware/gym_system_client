@@ -12,6 +12,7 @@ import { Box } from '@mui/material';
 import { Header } from "../components/common/Header";
 import { ClassesABM } from "../components/ABM/ClassesABM";
 import { TeachersABM } from '../components/ABM/TeachersABM';
+import { ClientsABM } from '../components/ABM/ClientsABM';
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -66,7 +67,7 @@ export function ABMPage() {
                         <Typography>Clientes</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        sdgdfgdfgd
+                        <ClientsABM />
                     </AccordionDetails>
                 </Accordion>
                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
