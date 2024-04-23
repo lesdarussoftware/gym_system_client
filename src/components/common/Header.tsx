@@ -65,12 +65,6 @@ export function Header() {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
                 <Typography
                     sx={menuItemStyles}
-                    onClick={() => navigate('/dashboard')}
-                >
-                    Inicio
-                </Typography>
-                <Typography
-                    sx={menuItemStyles}
                     onClick={() => navigate('/clientes')}
                 >
                     Clientes

@@ -52,6 +52,7 @@ export function ClassesABM() {
             rows={state.classes}
             setOpen={setOpen}
             setFormData={setFormData}
+            showClassesDetails
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}

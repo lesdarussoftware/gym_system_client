@@ -15,6 +15,7 @@ interface EnhancedTableToolbarProps {
     setFormData: any;
     selected: any;
     rows: any;
+    showClassesDetails?: boolean
 }
 
 export function EnhancedTableToolbar({
@@ -22,7 +23,8 @@ export function EnhancedTableToolbar({
     setOpen,
     setFormData,
     selected,
-    rows
+    rows,
+    showClassesDetails
 }: EnhancedTableToolbarProps) {
     return (
         <Toolbar
@@ -35,11 +37,13 @@ export function EnhancedTableToolbar({
                 }),
             }}
         >
-            <Tooltip title="Nuevo" onClick={() => setOpen(NEW)}>
-                <IconButton>
-                    <AddCircleSharpIcon />
-                </IconButton>
-            </Tooltip>
+            {selected.length === 0 &&
+                <Tooltip title="Nuevo" onClick={() => setOpen(NEW)}>
+                    <IconButton>
+                        <AddCircleSharpIcon />
+                    </IconButton>
+                </Tooltip>
+            }
             {selected.length === 1 &&
                 <>
                     <Tooltip title="Eliminar" onClick={() => {
@@ -58,22 +62,26 @@ export function EnhancedTableToolbar({
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={"Ver profesores"} onClick={() => {
-                        setOpen(VIEW_TEACHERS);
-                        setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                    }}>
-                        <IconButton>
-                            <PersonSearchSharpIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={"Ver días y horarios"} onClick={() => {
-                        setOpen(VIEW_SCHEDULES);
-                        setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                    }}>
-                        <IconButton>
-                            <CalendarMonthSharpIcon />
-                        </IconButton>
-                    </Tooltip>
+                    {showClassesDetails &&
+                        <>
+                            <Tooltip title={"Ver profesores"} onClick={() => {
+                                setOpen(VIEW_TEACHERS);
+                                setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                            }}>
+                                <IconButton>
+                                    <PersonSearchSharpIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title={"Ver días y horarios"} onClick={() => {
+                                setOpen(VIEW_SCHEDULES);
+                                setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                            }}>
+                                <IconButton>
+                                    <CalendarMonthSharpIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </>
+                    }
                 </>
             }
         </Toolbar>

@@ -11,12 +11,12 @@ export function LoginPage() {
     const { auth } = useContext(AuthContext);
 
     useEffect(() => {
-        if (auth) navigate('/dashboard');
+        if (auth) navigate('/clientes');
     }, [auth])
 
     return (
         <Box>
-            <LoginForm submitAction={() => navigate('/dashboard')} />
+            <LoginForm submitAction={() => navigate('/clientes')} />
         </Box>
     );
 }
