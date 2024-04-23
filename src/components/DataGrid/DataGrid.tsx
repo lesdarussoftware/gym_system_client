@@ -19,8 +19,8 @@ interface DataGridProps {
     children?: React.ReactNode;
     headCells: HeadCell[];
     rows: any[];
-    setOpen: any;
-    setFormData: any;
+    setOpen?: any;
+    setFormData?: any;
     defaultOrder?: 'asc' | 'desc';
     defaultOrderBy?: string;
     stopPointerEvents?: boolean;
@@ -61,7 +61,8 @@ export function DataGrid({
     setOpen,
     setFormData,
     defaultOrder = 'desc',
-    defaultOrderBy = 'id'
+    defaultOrderBy = 'id',
+    stopPointerEvents
 }: DataGridProps) {
 
     const [order, setOrder] = React.useState<'asc' | 'desc'>(defaultOrder);
@@ -125,13 +126,15 @@ export function DataGrid({
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar
-                    numSelected={selected.length}
-                    setOpen={setOpen}
-                    setFormData={setFormData}
-                    selected={selected}
-                    rows={rows}
-                />
+                {setOpen && setFormData &&
+                    <EnhancedTableToolbar
+                        numSelected={selected.length}
+                        setOpen={setOpen}
+                        setFormData={setFormData}
+                        selected={selected}
+                        rows={rows}
+                    />
+                }
                 <TableContainer>
                     <Table
                         aria-labelledby="tableTitle"
@@ -145,6 +148,7 @@ export function DataGrid({
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
+                            stopPointerEvents={stopPointerEvents}
                         />
                         <TableBody>
                             {visibleRows.map((row, index) => {
@@ -155,7 +159,9 @@ export function DataGrid({
                                     <TableRow
                                         hover
                                         onClick={(event) => {
-                                            handleClick(event, row.id)
+                                            if (!stopPointerEvents) {
+                                                handleClick(event, row.id)
+                                            }
                                         }}
                                         role="checkbox"
                                         aria-checked={isItemSelected}
@@ -163,15 +169,17 @@ export function DataGrid({
                                         key={row.id ?? index}
                                         selected={isItemSelected}
                                     >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox
-                                                color="primary"
-                                                checked={isItemSelected}
-                                                inputProps={{
-                                                    'aria-labelledby': labelId,
-                                                }}
-                                            />
-                                        </TableCell>
+                                        {!stopPointerEvents &&
+                                            <TableCell padding="checkbox">
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={isItemSelected}
+                                                    inputProps={{
+                                                        'aria-labelledby': labelId,
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        }
                                         {headCells.map(cell => cell.accessor).map(accessor => (
                                             <TableCell key={accessor} align="center" sx={{ cursor: 'pointer' }}>
                                                 {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}

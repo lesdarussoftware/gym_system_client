@@ -7,3 +7,4 @@ export const CLIENT_URL = BASE_URL + '/clients';
 export const USER_URL = BASE_URL + '/users';
 export const TEACHER_URL = BASE_URL + '/teachers';
 export const CLASS_URL = BASE_URL + '/classes';
+export const SCHEDULE_URL = BASE_URL + '/schedules';

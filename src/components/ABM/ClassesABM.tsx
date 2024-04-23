@@ -7,9 +7,10 @@ import { useClasses } from "../../hooks/useClasses";
 
 import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from '../common/ModalComponent'
+import { ClassSchedules } from "./ClassSchedules";
 
 import { getNumberInputAbsValue } from "../../helpers/math";
-import { NEW, EDIT, DELETE } from '../../config/openTypes';
+import { NEW, EDIT, DELETE, VIEW_SCHEDULES } from '../../config/openTypes';
 
 export function ClassesABM() {
 
@@ -152,6 +153,21 @@ export function ClassesABM() {
                         onClick={() => handleDelete(formData, reset, setDisabled)}
                     >
                         Confirmar
+                    </Button>
+                </Box>
+            </ModalComponent>
+            <ModalComponent
+                open={open === VIEW_SCHEDULES}
+                onClose={() => handleClose(reset)}
+            >
+                <ClassSchedules formData={formData} />
+                <Box sx={{ marginTop: 1, display: 'flex', justifyContent: 'end' }}>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        onClick={() => handleClose(reset)}
+                    >
+                        Cerrar
                     </Button>
                 </Box>
             </ModalComponent>

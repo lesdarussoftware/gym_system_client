@@ -9,10 +9,13 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 
+import { AuthContext } from '../providers/AuthProvider';
+
 import { Header } from "../components/common/Header";
 import { ClassesABM } from "../components/ABM/ClassesABM";
 import { TeachersABM } from '../components/ABM/TeachersABM';
 import { UsersABM } from '../components/ABM/UsersABM';
+import { LoginForm } from '../components/common/LoginForm';
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -51,6 +54,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export function ABMPage() {
+
+    const { auth } = React.useContext(AuthContext);
     const [expanded, setExpanded] = React.useState<string | false>('panel1');
 
     const handleChange =
@@ -60,33 +65,38 @@ export function ABMPage() {
 
     return (
         <>
-            <Header showOptions />
-            <Box sx={{ padding: 2 }}>
-                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                    <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Typography>Clases</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <ClassesABM />
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                    <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                        <Typography>Profesores</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <TeachersABM />
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-                    <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                        <Typography>Usuarios</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <UsersABM />
-                    </AccordionDetails>
-                </Accordion>
-            </Box>
+            {auth ?
+                <>
+                    <Header />
+                    <Box sx={{ padding: 2 }}>
+                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                                <Typography>Clases</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <ClassesABM />
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                                <Typography>Profesores</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <TeachersABM />
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                                <Typography>Usuarios</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <UsersABM />
+                            </AccordionDetails>
+                        </Accordion>
+                    </Box>
+                </> :
+                <LoginForm />
+            }
         </>
     );
 }

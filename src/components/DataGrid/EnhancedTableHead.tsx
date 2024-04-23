@@ -17,6 +17,7 @@ interface EnhancedTableHeadProps {
     numSelected: number;
     rowCount: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+    stopPointerEvents?: boolean;
 }
 
 export function EnhancedTableHead({
@@ -26,7 +27,8 @@ export function EnhancedTableHead({
     orderBy,
     numSelected,
     rowCount,
-    onRequestSort
+    onRequestSort,
+    stopPointerEvents
 }: EnhancedTableHeadProps) {
 
     const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
@@ -36,17 +38,19 @@ export function EnhancedTableHead({
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
-                </TableCell>
+                {!stopPointerEvents &&
+                    <TableCell padding="checkbox">
+                        <Checkbox
+                            color="primary"
+                            indeterminate={numSelected > 0 && numSelected < rowCount}
+                            checked={rowCount > 0 && numSelected === rowCount}
+                            onChange={onSelectAllClick}
+                            inputProps={{
+                                'aria-label': 'select all desserts',
+                            }}
+                        />
+                    </TableCell>
+                }
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}

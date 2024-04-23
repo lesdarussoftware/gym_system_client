@@ -92,7 +92,7 @@ interface Teacher {
     updated_at: Date;
 }
 
-interface Class {
+export interface Class {
     id: number;
     gym_hash: string;
     name: string;

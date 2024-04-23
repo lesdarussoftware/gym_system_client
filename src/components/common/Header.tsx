@@ -14,7 +14,7 @@ import { useQuery } from '../../hooks/useQuery';
 import { LOGOUT_URL } from '../../config/urls';
 import { AuthContext } from '../../providers/AuthProvider';
 
-export function Header({ showOptions = false }: { showOptions?: boolean }) {
+export function Header() {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -63,34 +63,30 @@ export function Header({ showOptions = false }: { showOptions?: boolean }) {
             justifyContent: 'end'
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
-                {showOptions &&
-                    <>
-                        <Typography
-                            sx={menuItemStyles}
-                            onClick={() => navigate('/dashboard')}
-                        >
-                            Inicio
-                        </Typography>
-                        <Typography
-                            sx={menuItemStyles}
-                            onClick={() => navigate('/clientes')}
-                        >
-                            Clientes
-                        </Typography>
-                        <Typography
-                            sx={menuItemStyles}
-                            onClick={() => navigate('/horarios')}
-                        >
-                            Horarios
-                        </Typography>
-                        <Typography
-                            sx={menuItemStyles}
-                            onClick={() => navigate('/abm')}
-                        >
-                            ABMs
-                        </Typography>
-                    </>
-                }
+                <Typography
+                    sx={menuItemStyles}
+                    onClick={() => navigate('/dashboard')}
+                >
+                    Inicio
+                </Typography>
+                <Typography
+                    sx={menuItemStyles}
+                    onClick={() => navigate('/clientes')}
+                >
+                    Clientes
+                </Typography>
+                <Typography
+                    sx={menuItemStyles}
+                    onClick={() => navigate('/horarios')}
+                >
+                    Horarios
+                </Typography>
+                <Typography
+                    sx={menuItemStyles}
+                    onClick={() => navigate('/abm')}
+                >
+                    ABMs
+                </Typography>
                 <Tooltip title="Account settings">
                     <IconButton
                         onClick={handleClick}
