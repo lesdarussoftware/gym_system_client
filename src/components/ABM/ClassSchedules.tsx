@@ -26,7 +26,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
         disabled,
         reset
     } = useForm({
-        defaultData: { id: '', class_id: formData.id, day: '', hour: '' },
+        defaultData: { class_id: formData.id, day: '', hour: '' },
         rules: { day: { required: true, }, hour: { required: true } }
     });
     const { handleSubmitSchedule, handleDeleteSchedule } = useClasses();
@@ -84,6 +84,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
                             name="day"
                             onChange={handleChange}
                         >
+                            <MenuItem value="">Seleccione</MenuItem>
                             <MenuItem value={DAYS.MONDAY}>{DAYS.MONDAY}</MenuItem>
                             <MenuItem value={DAYS.TUESDAY}>{DAYS.TUESDAY}</MenuItem>
                             <MenuItem value={DAYS.WEDNESDAY}>{DAYS.WEDNESDAY}</MenuItem>
@@ -108,6 +109,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
                             name="hour"
                             onChange={handleChange}
                         >
+                            <MenuItem value="">Seleccione</MenuItem>
                             {HOURS.map(h => (
                                 <MenuItem key={h} value={h}>{h}</MenuItem>
                             ))}

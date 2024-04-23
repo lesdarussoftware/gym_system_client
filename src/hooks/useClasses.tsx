@@ -6,7 +6,7 @@ import { DataContext } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "./useQuery";
 
-import { CLASS_URL, SCHEDULE_URL } from "../config/urls";
+import { CLASS_URL, SCHEDULE_URL, TEACHER_CLASS_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
 import { SET_CLASSES } from "../config/dataReducerActionTypes";
 import { ERROR, SUCCESS } from "../config/messageProviderTypes";
@@ -118,6 +118,49 @@ export function useClasses() {
         }
     }
 
+    const handleSubmitTeacherClass = async (
+        e: { preventDefault: () => void; },
+        validate: () => any,
+        formData: { id: any; },
+        setDisabled: (arg0: boolean) => void,
+        reset: (() => void) | undefined
+    ) => {
+        e.preventDefault();
+        if (validate()) {
+            const { status, data } = await handleQuery({
+                url: TEACHER_CLASS_URL,
+                method: 'POST',
+                body: JSON.stringify({
+                    ...formData,
+                    gym_hash: auth?.me.gym.hash
+                })
+            });
+            if (status === STATUS_CODES.CREATED) {
+                dispatch({
+                    type: SET_CLASSES,
+                    payload: [
+                        ...state.classes.filter(item => item.id !== data.class_id),
+                        {
+                            ...state.classes.find(item => item.id === data.class_id)!,
+                            teachers: [
+                                data,
+                                ...state.classes.find(item => item.id === data.class_id)!.teachers
+                            ]
+                        }
+                    ]
+                });
+                setMessage('Profesor registrado correctamente.');
+                setSeverity(SUCCESS);
+                handleClose(reset);
+            } else {
+                setMessage(data.message);
+                setSeverity(ERROR);
+                setDisabled(false);
+            }
+            setOpenMessage(true);
+        }
+    }
+
     const handleClose = (reset: (() => void) | undefined) => {
         setOpen(null);
         reset!();
@@ -175,5 +218,41 @@ export function useClasses() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen, handleSubmitSchedule, handleDeleteSchedule }
+    const handleDeleteTeacherClass = async (teacher_id: number, class_id: number, reset: () => void) => {
+        const { status, data } = await handleQuery({
+            url: `${TEACHER_CLASS_URL}/${auth?.me.gym.hash}/${teacher_id}/${class_id}`,
+            method: 'DELETE'
+        });
+        if (status === STATUS_CODES.OK) {
+            dispatch({
+                type: SET_CLASSES,
+                payload: [
+                    ...state.classes.filter(item => item.id !== data.class_id),
+                    {
+                        ...state.classes.find(item => item.id === data.class_id)!,
+                        teachers: [
+                            ...state.classes.find(item => item.id === data.class_id)!.teachers
+                                .filter(item => item.teacher_id !== data.teacher_id)
+                        ]
+                    }
+                ]
+            });
+            setSeverity(SUCCESS);
+            setMessage('Horario eliminado correctamente.');
+            handleClose(reset);
+        }
+        setOpenMessage(true);
+    }
+
+    return {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        handleSubmitSchedule,
+        handleDeleteSchedule,
+        handleDeleteTeacherClass,
+        handleSubmitTeacherClass
+    }
 }
