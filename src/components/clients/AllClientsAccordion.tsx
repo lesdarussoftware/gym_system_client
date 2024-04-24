@@ -6,7 +6,7 @@ import { ClientsABM } from './ClientsABM';
 
 export function AllClientsAccordion() {
 
-    const [expanded, setExpanded] = useState<string | false>(false);
+    const [expanded, setExpanded] = useState<string | false>('panel1');
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -16,7 +16,7 @@ export function AllClientsAccordion() {
     return (
         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
             <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>Ver todos los clientes</Typography>
+                <Typography>Lista de clientes</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <ClientsABM />

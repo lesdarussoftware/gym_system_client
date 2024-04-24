@@ -11,7 +11,7 @@ interface Visit {
     updated_at: Date;
 }
 
-interface Membership {
+export interface Membership {
     id: number;
     client_id: number;
     client: Client;
@@ -54,7 +54,7 @@ interface Schedule {
     updated_at: Date;
 }
 
-interface Client {
+export interface Client {
     id: number;
     first_name: string;
     last_name: string;
