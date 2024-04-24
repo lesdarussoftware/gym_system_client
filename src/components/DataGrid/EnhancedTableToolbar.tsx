@@ -5,8 +5,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
 import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
+import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 
-import { NEW, EDIT, DELETE, VIEW_TEACHERS, VIEW_SCHEDULES } from '../../config/openTypes';
+import { NEW, EDIT, DELETE, VIEW_TEACHERS, VIEW_SCHEDULES, VIEW_MEMBERSHIP_DETAILS } from '../../config/openTypes';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface EnhancedTableToolbarProps {
@@ -15,7 +16,8 @@ interface EnhancedTableToolbarProps {
     setFormData: any;
     selected: any;
     rows: any;
-    showClassesDetails?: boolean
+    showClassesDetails?: boolean;
+    showMembershipDetails?: boolean;
 }
 
 export function EnhancedTableToolbar({
@@ -24,7 +26,8 @@ export function EnhancedTableToolbar({
     setFormData,
     selected,
     rows,
-    showClassesDetails
+    showClassesDetails,
+    showMembershipDetails
 }: EnhancedTableToolbarProps) {
     return (
         <Toolbar
@@ -44,7 +47,7 @@ export function EnhancedTableToolbar({
                     </IconButton>
                 </Tooltip>
             }
-            {selected.length === 1 &&
+            {selected.length === 1 && rows.length > 0 &&
                 <>
                     <Tooltip title="Eliminar" onClick={() => {
                         setOpen(DELETE);
@@ -81,6 +84,16 @@ export function EnhancedTableToolbar({
                                 </IconButton>
                             </Tooltip>
                         </>
+                    }
+                    {showMembershipDetails &&
+                        <Tooltip title={"Ver detalles"} onClick={() => {
+                            setOpen(VIEW_MEMBERSHIP_DETAILS);
+                            setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                        }}>
+                            <IconButton>
+                                <RemoveRedEyeSharpIcon />
+                            </IconButton>
+                        </Tooltip>
                     }
                 </>
             }

@@ -56,7 +56,7 @@ export function VisitDashboard() {
                     <Accordion expanded={expanded === 'panel1'} onChange={handleChangeVisibility('panel1')}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
                             <Typography>
-                                Membresías del cliente {`${client.first_name} ${client.last_name}`}
+                                Membresías vencidas del cliente {`${client.first_name} ${client.last_name}`}
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>

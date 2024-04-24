@@ -25,6 +25,7 @@ interface DataGridProps {
     defaultOrderBy?: string;
     stopPointerEvents?: boolean;
     showClassesDetails?: boolean;
+    showMembershipDetails?: boolean;
 }
 
 function descendingComparator(a: any, b: any, orderBy: string) {
@@ -64,7 +65,8 @@ export function DataGrid({
     defaultOrder = 'desc',
     defaultOrderBy = 'id',
     stopPointerEvents,
-    showClassesDetails
+    showClassesDetails,
+    showMembershipDetails
 }: DataGridProps) {
 
     const [order, setOrder] = React.useState<'asc' | 'desc'>(defaultOrder);
@@ -136,6 +138,7 @@ export function DataGrid({
                         selected={selected}
                         rows={rows}
                         showClassesDetails={showClassesDetails}
+                        showMembershipDetails={showMembershipDetails}
                     />
                 }
                 <TableContainer>
