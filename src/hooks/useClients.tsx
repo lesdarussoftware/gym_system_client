@@ -18,7 +18,7 @@ export function useClients() {
     const { state, dispatch } = useContext(DataContext);
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
-    const [open, setOpen] = useState(null);
+    const [open, setOpen] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -40,11 +40,10 @@ export function useClients() {
     ) => {
         e.preventDefault();
         if (validate()) {
-            const methods = { [NEW]: 'POST', [EDIT]: 'PUT' };
             const urls = { [NEW]: CLIENT_URL, [EDIT]: `${CLIENT_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
-                url: urls[open!],
-                method: methods[open!],
+                url: open === NEW || open === EDIT ? urls[open] : '',
+                method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
                 body: JSON.stringify({
                     ...formData,
                     gym_hash: auth?.me.gym.hash
@@ -84,11 +83,10 @@ export function useClients() {
     ) => {
         e.preventDefault();
         if (validate()) {
-            const methods = { [NEW]: 'POST', [EDIT]: 'PUT' };
             const urls = { [NEW]: MEMBERSHIP_URL, [EDIT]: `${MEMBERSHIP_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
-                url: urls[open!],
-                method: methods[open!],
+                url: open === NEW || open === EDIT ? urls[open] : '',
+                method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
                 body: JSON.stringify({
                     ...formData,
                     gym_hash: auth?.me.gym.hash

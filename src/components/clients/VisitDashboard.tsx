@@ -9,6 +9,7 @@ import { MemebershipsABM } from "./MembershipsABM";
 import { Accordion, AccordionDetails, AccordionSummary } from "../common/MUIAccordion";
 
 import { ERROR } from "../../config/messageProviderTypes";
+import { ShowCurrentMembership } from "./ShowCurrentMembership";
 
 export function VisitDashboard() {
 
@@ -19,7 +20,7 @@ export function VisitDashboard() {
         rules: { dni: { required: true } }
     });
     const [client, setClient] = useState<Client | undefined>(undefined);
-    const [expanded, setExpanded] = useState<string | false>('panel1');
+    const [expanded, setExpanded] = useState<string | false>(false);
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -53,6 +54,9 @@ export function VisitDashboard() {
                     >
                         Buscar nuevo cliente
                     </Button>
+                    <Box sx={{ marginBottom: 3, textAlign: 'center' }}>
+                        <ShowCurrentMembership client={client} />
+                    </Box>
                     <Accordion expanded={expanded === 'panel1'} onChange={handleChangeVisibility('panel1')}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
                             <Typography>

@@ -18,6 +18,7 @@ interface EnhancedTableToolbarProps {
     rows: any;
     showClassesDetails?: boolean;
     showMembershipDetails?: boolean;
+    hideAddMembership?: boolean;
 }
 
 export function EnhancedTableToolbar({
@@ -27,7 +28,8 @@ export function EnhancedTableToolbar({
     selected,
     rows,
     showClassesDetails,
-    showMembershipDetails
+    showMembershipDetails,
+    hideAddMembership
 }: EnhancedTableToolbarProps) {
     return (
         <Toolbar
@@ -40,7 +42,7 @@ export function EnhancedTableToolbar({
                 }),
             }}
         >
-            {selected.length === 0 &&
+            {(selected.length === 0 && !hideAddMembership) &&
                 <Tooltip title="Nuevo" onClick={() => setOpen(NEW)}>
                     <IconButton>
                         <AddCircleSharpIcon />
