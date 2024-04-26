@@ -3,11 +3,11 @@ import { Membership } from "../../providers/DataProvider";
 import { DataGrid } from "../DataGrid/DataGrid";
 import { format } from "date-fns";
 
-type MembershipDetailesProps = {
+type InactiveMembershipDetailesProps = {
     membership: Membership;
 }
 
-export function MembershipDetails({ membership }: MembershipDetailesProps) {
+export function InactiveMembershipDetails({ membership }: InactiveMembershipDetailesProps) {
 
     const classes = membership?.classes.map(c => ({ id: c.id, name: c.class.name }))
     const visits = membership?.classes.flatMap(c => c.visits)

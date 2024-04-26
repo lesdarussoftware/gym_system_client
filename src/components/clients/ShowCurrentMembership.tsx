@@ -5,7 +5,7 @@ import { Client, DataContext } from "../../providers/DataProvider";
 import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
 
-import { VisitRegister } from "./VisitRegister";
+import { EditCurrentMembership } from "./EditCurrentMembership";
 import { AddMembershipForm } from "./AddMembershipForm";
 
 import { membershipIsActive } from "../../helpers/membership";
@@ -41,7 +41,7 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
     return (
         <Box>
             {membership ?
-                <VisitRegister membership={membership} /> :
+                <EditCurrentMembership membership={membership} /> :
                 <>
                     <Typography variant="h5" marginBottom={2}>
                         El cliente no tiene una membresía activa

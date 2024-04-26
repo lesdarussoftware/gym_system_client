@@ -9,7 +9,7 @@ import { useForm } from "../../hooks/useForm";
 
 import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from "../common/ModalComponent";
-import { MembershipDetails } from "./MembershipDetails";
+import { InactiveMembershipDetails } from "./InactiveMembershipDetails";
 
 import { DELETE, VIEW_MEMBERSHIP_DETAILS } from "../../config/openTypes";
 import { membershipIsActive } from "../../helpers/membership";
@@ -140,7 +140,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
                 open={open === VIEW_MEMBERSHIP_DETAILS}
                 onClose={() => handleClose(reset)}
             >
-                <MembershipDetails
+                <InactiveMembershipDetails
                     membership={state.clients.find(c => c.id === client.id)!.memberships
                         .find(m => m.id === formData.id)!
                     }
