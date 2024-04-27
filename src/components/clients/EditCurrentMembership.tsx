@@ -1,16 +1,20 @@
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { useContext } from "react";
+import { Box, Chip, Divider, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { Membership } from "../../providers/DataProvider";
+import { DataContext, Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClients } from "../../hooks/useClients";
+import { useMemberships } from "../../hooks/useMemberships";
 
 import { AddMembershipForm } from "./AddMembershipForm";
 import { AddNewVisit } from "./AddNewVisit";
+import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
+import { DELETE, EDIT } from "../../config/openTypes";
 
 type EditCurrentMembershipProps = {
     membership: Membership;
@@ -18,9 +22,12 @@ type EditCurrentMembershipProps = {
 
 export function EditCurrentMembership({ membership }: EditCurrentMembershipProps) {
 
-    const { open, setOpen, handleClose, handleSubmitMembership, handleDeleteMembership } = useClients();
-    const { formData, setFormData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
+    const { state } = useContext(DataContext);
+    const { open, setOpen, handleClose } = useClients();
+    const { handleSubmit, handleDelete, addMembershipClass, removeMembershipClass } = useMemberships()
+    const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
         defaultData: {
+            id: membership.id,
             start: membership.start,
             duration: membership.duration,
             price: membership.price,
@@ -46,66 +53,103 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
     });
 
     return (
-        <>
-            <Box sx={{ display: 'flex', gap: 1, width: '80%', margin: '0 auto' }}>
-                <Box sx={{ width: '30%', borderRadius: 1, boxShadow: '3px 3px 5px gray', padding: 1 }}>
-                    <Typography variant="h6">
-                        Detalles
-                    </Typography>
-                    <Tooltip title="Eliminar" onClick={() => {
-                        // setOpen(DELETE);
-                        // setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                    }}>
-                        <IconButton>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={"Editar"} onClick={() => {
-                        // setOpen(EDIT);
-                        // setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                    }}>
-                        <IconButton>
-                            <EditIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Fecha inicio</th>
-                                <td>{format(new Date(membership.start), 'dd-MM-yy')}</td>
-                            </tr>
-                            <tr>
-                                <th>Fecha vencimiento</th>
-                                <td>{format(getExpirationDate(membership), 'dd-MM-yy')}</td>
-                            </tr>
-                            <tr>
-                                <th>N° visitas</th>
-                                <td>{`${visits.length}/${membership.limit}`}</td>
-                            </tr>
-                            <tr>
-                                <th>Monto</th>
-                                <td>${membership.price}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <Box sx={{ display: 'flex', gap: 1, width: '80%', margin: '0 auto' }}>
+            <Box sx={{ width: '30%', borderRadius: 1, boxShadow: '3px 3px 5px gray', padding: 1 }}>
+                <Typography variant="h6">
+                    Detalles
+                </Typography>
+                <Tooltip title="Eliminar" onClick={() => setOpen(DELETE)}>
+                    <IconButton>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title={"Editar"} onClick={() => setOpen(EDIT)}>
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Fecha inicio</th>
+                            <td>{format(new Date(membership.start), 'dd-MM-yy')}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha vencimiento</th>
+                            <td>{format(getExpirationDate(membership), 'dd-MM-yy')}</td>
+                        </tr>
+                        <tr>
+                            <th>N° visitas</th>
+                            <td>{`${visits.length}/${membership.limit}`}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto</th>
+                            <td>${membership.price}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <Box>
+                    <Divider textAlign="center">
+                        Clases
+                    </Divider>
+                    <Stack direction="row" flexWrap="wrap" gap={1} spacing={1}>
+                        {state.classes.filter(c => classes.map(c => c.name).includes(c.name))
+                            .map(c => {
+                                return (
+                                    <Chip
+                                        key={c.id}
+                                        label={c.name}
+                                        onDelete={() => removeMembershipClass({
+                                            client_id: membership.client_id,
+                                            membership_id: membership.id,
+                                            class_id: c.id
+                                        })}
+                                    />
+                                );
+                            })}
+                        {state.classes.filter(c => !classes.map(c => c.name).includes(c.name))
+                            .map(c => {
+                                return (
+                                    <Chip
+                                        key={c.id}
+                                        label={c.name}
+                                        variant="outlined"
+                                        onClick={() => addMembershipClass({
+                                            client_id: membership.client_id,
+                                            membership_id: membership.id,
+                                            class_id: c.id
+                                        })}
+                                    />
+                                );
+                            })}
+                    </Stack>
                 </Box>
-                <AddMembershipForm
-                    open={open}
-                    handleClose={handleClose}
-                    reset={reset}
-                    formData={formData}
-                    handleChange={handleChange}
-                    handleSubmitMembership={handleSubmitMembership}
-                    validate={validate}
-                    disabled={disabled}
-                    setDisabled={setDisabled}
-                    errors={errors}
-                />
-                <AddNewVisit
-                    visits={visits}
-                    classes={classes}
-                />
             </Box>
-        </>
+            <AddMembershipForm
+                open={open}
+                handleClose={handleClose}
+                reset={reset}
+                formData={formData}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                validate={validate}
+                disabled={disabled}
+                setDisabled={setDisabled}
+                errors={errors}
+            />
+            <AddNewVisit
+                visits={visits}
+                classes={classes}
+            />
+            <DeleteMembershipModal
+                open={open}
+                handleClose={handleClose}
+                reset={reset}
+                formData={formData}
+                disabled={disabled}
+                handleDelete={handleDelete}
+                setDisabled={setDisabled}
+            />
+        </Box>
     );
 }

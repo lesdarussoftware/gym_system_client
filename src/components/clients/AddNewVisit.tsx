@@ -5,6 +5,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { es } from 'date-fns/locale/es';
+
 import { useForm } from "../../hooks/useForm";
 
 type AddNewVisitProps = {
@@ -57,7 +58,7 @@ export function AddNewVisit({
                 <Box sx={{ margin: 2 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
                         <DatePicker
-                            label="Fecha de inicio"
+                            label="Fecha"
                             value={new Date(formData.date)}
                             onChange={value => handleChange({
                                 target: {

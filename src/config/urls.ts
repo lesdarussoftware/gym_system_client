@@ -10,3 +10,4 @@ export const CLASS_URL = BASE_URL + '/classes';
 export const SCHEDULE_URL = BASE_URL + '/schedules';
 export const TEACHER_CLASS_URL = BASE_URL + '/teacher-classes';
 export const MEMBERSHIP_URL = BASE_URL + '/memberships';
+export const MEMBERSHIP_CLASS_URL = BASE_URL + '/membership-classes';

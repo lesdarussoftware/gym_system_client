@@ -62,6 +62,10 @@ export function useClasses() {
                     payload: [data, ...state.classes.filter(item => item.id !== data.id)]
                 });
                 setMessage('Clase editada correctamente.');
+            } else if (status === STATUS_CODES.SERVER_ERROR) {
+                setMessage(data.message);
+                setSeverity(ERROR);
+                setDisabled(false);
             } else {
                 setMessage('Hubo un problema al procesar la solicitud.');
                 setSeverity(ERROR);

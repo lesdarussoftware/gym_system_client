@@ -4,6 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Client, DataContext } from "../../providers/DataProvider";
 import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
+import { useMemberships } from "../../hooks/useMemberships";
 
 import { EditCurrentMembership } from "./EditCurrentMembership";
 import { AddMembershipForm } from "./AddMembershipForm";
@@ -18,7 +19,8 @@ type ShowCurrentMembershipProps = {
 export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
 
     const { state } = useContext(DataContext);
-    const { open, setOpen, handleClose, handleSubmitMembership } = useClients();
+    const { handleSubmit } = useMemberships();
+    const { open, setOpen, handleClose } = useClients();
     const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
         defaultData: {
             id: '',
@@ -55,7 +57,7 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
                         reset={reset}
                         formData={formData}
                         handleChange={handleChange}
-                        handleSubmitMembership={handleSubmitMembership}
+                        handleSubmit={handleSubmit}
                         validate={validate}
                         disabled={disabled}
                         setDisabled={setDisabled}

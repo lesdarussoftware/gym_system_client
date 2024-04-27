@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { format } from "date-fns";
 
 import { Client, DataContext } from "../../providers/DataProvider";
 import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
+import { useMemberships } from "../../hooks/useMemberships";
 
 import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from "../common/ModalComponent";
 import { InactiveMembershipDetails } from "./InactiveMembershipDetails";
+import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
-import { DELETE, VIEW_MEMBERSHIP_DETAILS } from "../../config/openTypes";
+import { VIEW_MEMBERSHIP_DETAILS } from "../../config/openTypes";
 import { membershipIsActive } from "../../helpers/membership";
-import { AddMembershipForm } from "./AddMembershipForm";
 
 type MembershipsAMBPRops = {
     client: Client;
@@ -22,8 +23,9 @@ type MembershipsAMBPRops = {
 export function MemebershipsABM({ client }: MembershipsAMBPRops) {
 
     const { state } = useContext(DataContext);
-    const { open, setOpen, handleClose, handleSubmitMembership, handleDeleteMembership } = useClients();
-    const { formData, setFormData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
+    const { handleDelete } = useMemberships();
+    const { open, setOpen, handleClose } = useClients();
+    const { formData, setFormData, reset, setDisabled, disabled } = useForm({
         defaultData: {
             id: '',
             client_id: client.id,
@@ -88,54 +90,15 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
             showMembershipDetails
             hideAddMembership
         >
-            <AddMembershipForm
+            <DeleteMembershipModal
                 open={open}
                 handleClose={handleClose}
                 reset={reset}
                 formData={formData}
-                handleChange={handleChange}
-                handleSubmitMembership={handleSubmitMembership}
-                validate={validate}
                 disabled={disabled}
+                handleDelete={handleDelete}
                 setDisabled={setDisabled}
-                errors={errors}
             />
-            <ModalComponent
-                open={open === DELETE}
-                onClose={() => handleClose(reset)}
-            >
-                <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {`¿Desea borrar el registro de la membresía #${formData.id}?`}
-                </Typography>
-                <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Button
-                        type="button"
-                        variant="outlined"
-                        sx={{
-                            width: '50%',
-                            margin: '0 auto',
-                            marginTop: 1
-                        }}
-                        onClick={() => handleClose(reset)}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="contained"
-                        sx={{
-                            width: '50%',
-                            margin: '0 auto',
-                            marginTop: 1
-                        }}
-                        disabled={disabled}
-                        onClick={() => handleDeleteMembership(formData, reset, setDisabled)}
-                    >
-                        Confirmar
-                    </Button>
-                </Box>
-            </ModalComponent>
             <ModalComponent
                 open={open === VIEW_MEMBERSHIP_DETAILS}
                 onClose={() => handleClose(reset)}

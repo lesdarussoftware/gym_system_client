@@ -15,7 +15,7 @@ type AddMembershipFormProps = {
     reset: any,
     formData: any,
     handleChange: any,
-    handleSubmitMembership: any,
+    handleSubmit: any,
     validate: any,
     disabled: boolean,
     setDisabled: any,
@@ -28,7 +28,7 @@ export function AddMembershipForm({
     reset,
     formData,
     handleChange,
-    handleSubmitMembership,
+    handleSubmit,
     validate,
     disabled,
     setDisabled,
@@ -43,7 +43,7 @@ export function AddMembershipForm({
                 {open === NEW && 'Registrar nueva membresía'}
                 {open === EDIT && `Editar membresía #${formData.id}`}
             </Typography>
-            <form onChange={handleChange} onSubmit={(e) => handleSubmitMembership(
+            <form onChange={handleChange} onSubmit={(e) => handleSubmit(
                 e,
                 validate,
                 formData,
