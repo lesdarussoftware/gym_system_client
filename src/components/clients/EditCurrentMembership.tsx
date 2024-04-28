@@ -10,7 +10,7 @@ import { useClients } from "../../hooks/useClients";
 import { useMemberships } from "../../hooks/useMemberships";
 
 import { AddMembershipForm } from "./AddMembershipForm";
-import { AddNewVisit } from "./AddNewVisit";
+import { HandleVisits } from "./HandleVisits";
 import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
@@ -47,6 +47,8 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
     const visits = membership.classes.flatMap(c => c.visits).map(v => {
         const currClass = classes.find(c => c.id === v.membership_class_id)!
         return {
+            id: v.id,
+            membership_class_id: v.membership_class_id,
             class: currClass.name,
             date: format(new Date(v.date), 'dd-MM-yy')
         }
@@ -137,10 +139,6 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 setDisabled={setDisabled}
                 errors={errors}
             />
-            <AddNewVisit
-                visits={visits}
-                classes={classes}
-            />
             <DeleteMembershipModal
                 open={open}
                 handleClose={handleClose}
@@ -149,6 +147,11 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 disabled={disabled}
                 handleDelete={handleDelete}
                 setDisabled={setDisabled}
+            />
+            <HandleVisits
+                visits={visits}
+                classes={classes}
+                membership={membership}
             />
         </Box>
     );

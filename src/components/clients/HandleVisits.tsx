@@ -1,3 +1,4 @@
+import { useState } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,22 +7,48 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { es } from 'date-fns/locale/es';
 
+import { Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
+import { useMemberships } from "../../hooks/useMemberships";
+import { STATUS_CODES } from "../../config/statusCodes";
+import { ModalComponent } from "../common/ModalComponent";
+import { DELETE } from "../../config/openTypes";
 
-type AddNewVisitProps = {
+type HandleVisitsProps = {
     visits: any;
     classes: any;
+    membership: Membership;
 }
 
-export function AddNewVisit({
+export function HandleVisits({
     visits,
-    classes
-}: AddNewVisitProps) {
+    classes,
+    membership
+}: HandleVisitsProps) {
 
-    const { formData, reset, handleChange, setDisabled, disabled } = useForm({
-        defaultData: { date: new Date(Date.now()), membership_class_id: '' },
+    const { addVisit, removeVisit } = useMemberships();
+    const { formData, setFormData, handleChange } = useForm({
+        defaultData: { id: '', date: new Date(Date.now()), membership_class_id: '' },
         rules: { date: { required: true } }
     });
+    const [open, setOpen] = useState<string | null>(null);
+
+    const handleSubmit = async () => {
+        const { status } = await addVisit({
+            date: formData.date,
+            membership_class_id: formData.membership_class_id,
+            membership_id: membership.id,
+            client_id: membership.client_id
+        });
+        if (status === STATUS_CODES.CREATED) {
+            handleReset();
+        }
+    }
+
+    const handleReset = () => {
+        setFormData({ id: '', date: new Date(Date.now()), membership_class_id: '' })
+        setOpen(null)
+    }
 
     return (
         <>
@@ -38,8 +65,12 @@ export function AddNewVisit({
                                 <p>{v.date}</p>
                                 <p>
                                     <Tooltip title="Eliminar" onClick={() => {
-                                        // setOpen(DELETE);
-                                        // setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                                        setOpen(DELETE);
+                                        setFormData({
+                                            ...formData,
+                                            id: v.id,
+                                            membership_class_id: v.membership_class_id
+                                        });
                                     }}>
                                         <IconButton>
                                             <DeleteIcon />
@@ -76,13 +107,19 @@ export function AddNewVisit({
                                 key={c.id}
                                 sx={{
                                     border: '1px solid black',
+                                    backgroundColor: '#fff',
                                     width: 80,
                                     height: 80,
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     borderRadius: 1,
-                                    gap: 1
+                                    gap: 1,
+                                    transition: '100ms all',
+                                    transform: formData.membership_class_id === c.id ? 'scale(1.1)' : '',
+                                    ':hover': {
+                                        cursor: 'pointer'
+                                    }
                                 }}
                                 onClick={() => handleChange({
                                     target: {
@@ -100,13 +137,64 @@ export function AddNewVisit({
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, width: '15%' }}>
-                <Button variant="contained">
+                <Button
+                    variant="contained"
+                    disabled={formData.membership_class_id === ''}
+                    onClick={handleSubmit}
+                >
                     Confirmar
                 </Button>
-                <Button variant="outlined">
+                <Button
+                    variant="outlined"
+                    disabled={formData.membership_class_id === ''}
+                    onClick={handleReset}
+                >
                     Cancelar
                 </Button>
             </Box>
+            <ModalComponent
+                open={open === DELETE}
+                onClose={() => handleReset()}
+            >
+                <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                    ¿Desea borrar esta visita?
+                </Typography>
+                <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        sx={{
+                            width: '50%',
+                            margin: '0 auto',
+                            marginTop: 1
+                        }}
+                        onClick={() => handleReset()}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="contained"
+                        sx={{
+                            width: '50%',
+                            margin: '0 auto',
+                            marginTop: 1
+                        }}
+                        onClick={() => {
+                            removeVisit({
+                                id: formData.id,
+                                membership_class_id: formData.membership_class_id,
+                                membership_id: membership.id,
+                                client_id: membership.client_id
+                            });
+                            handleReset();
+                        }}
+                    >
+                        Confirmar
+                    </Button>
+                </Box>
+            </ModalComponent>
         </>
     );
 }
