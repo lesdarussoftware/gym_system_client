@@ -97,17 +97,23 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                     <Stack direction="row" flexWrap="wrap" gap={1} spacing={1}>
                         {state.classes.filter(c => classes.map(c => c.name).includes(c.name))
                             .map(c => {
-                                return (
-                                    <Chip
-                                        key={c.id}
-                                        label={c.name}
-                                        onDelete={() => removeMembershipClass({
-                                            client_id: membership.client_id,
-                                            membership_id: membership.id,
-                                            class_id: c.id
-                                        })}
-                                    />
-                                );
+                                if (visits.some(v => v.class === c.name)) {
+                                    return (
+                                        <Chip key={c.id} label={c.name} />
+                                    );
+                                } else {
+                                    return (
+                                        <Chip
+                                            key={c.id}
+                                            label={c.name}
+                                            onDelete={() => removeMembershipClass({
+                                                client_id: membership.client_id,
+                                                membership_id: membership.id,
+                                                class_id: c.id
+                                            })}
+                                        />
+                                    );
+                                }
                             })}
                         {state.classes.filter(c => !classes.map(c => c.name).includes(c.name))
                             .map(c => {

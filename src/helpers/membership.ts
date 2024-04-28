@@ -2,8 +2,7 @@ import { Membership } from "../providers/DataProvider";
 
 export function membershipIsActive(membership: Membership): boolean {
     const currentDate = new Date();
-    const expirationDate = new Date(membership.start);
-    expirationDate.setDate(expirationDate.getDate() + membership.duration);
+    const expirationDate = getExpirationDate(membership);
 
     const exceededLimit = membership.classes.reduce((totalVisits, membershipClass) => {
         return totalVisits + membershipClass.visits.length;

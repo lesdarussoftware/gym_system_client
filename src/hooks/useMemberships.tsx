@@ -276,7 +276,7 @@ export function useMemberships() {
         membership_id: number;
     }) => {
         const { status, data } = await handleQuery({
-            url: `${VISIT_URL}/${auth?.me.gym.hash}/${formData.id}`,
+            url: `${VISIT_URL}/${auth?.me.gym.hash}/${formData.membership_class_id}/${formData.id}`,
             method: 'DELETE'
         });
         if (status === STATUS_CODES.OK) {
