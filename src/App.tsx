@@ -8,6 +8,7 @@ import { MessageProvider } from "./providers/MessageProvider";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { ClientsPage } from "./pages/ClientsPage";
+import { SchedulesPage } from "./pages/SchedulesPage";
 import { ABMPage } from "./pages/ABMPage";
 import { ErrorPage } from "./pages/ErrorPage";
 
@@ -22,6 +23,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/clientes" element={<ClientsPage />} />
+              <Route path="/horarios" element={<SchedulesPage />} />
               <Route path="/abm" element={<ABMPage />} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
