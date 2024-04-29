@@ -14,7 +14,7 @@ export function ErrorPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box>
+                    <Box sx={{ padding: 2 }}>
                         Error 404 - Página no encontrada.
                     </Box>
                 </> :

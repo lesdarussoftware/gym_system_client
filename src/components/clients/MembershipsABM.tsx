@@ -33,13 +33,15 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
             duration: 30,
             price: 0,
             limit: 12,
-            gym_hash: ''
+            gym_hash: '',
+            observations: ''
         },
         rules: {
             start: { required: true },
             duration: { required: true },
             limit: { required: true },
-            price: { required: true }
+            price: { required: true },
+            observations: { maxLength: 255 }
         }
     });
 

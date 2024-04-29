@@ -1,25 +1,26 @@
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 
-import { Client, DataContext } from "../../providers/DataProvider";
+import { DataContext } from "../../providers/DataProvider";
 import { MessageContext } from "../../providers/MessageProvider";
+import { HandleClientContext } from "../../providers/HandleClientProvider";
 import { useForm } from "../../hooks/useForm";
 
 import { MemebershipsABM } from "./MembershipsABM";
 import { Accordion, AccordionDetails, AccordionSummary } from "../common/MUIAccordion";
+import { ShowCurrentMembership } from "./ShowCurrentMembership";
 
 import { ERROR } from "../../config/messageProviderTypes";
-import { ShowCurrentMembership } from "./ShowCurrentMembership";
 
 export function VisitDashboard() {
 
     const { state } = useContext(DataContext);
     const { setSeverity, setMessage, setOpenMessage } = useContext(MessageContext);
+    const { client, setClient } = useContext(HandleClientContext);
     const { formData, errors, validate, handleChange, disabled, setDisabled, reset } = useForm({
         defaultData: { dni: '' },
         rules: { dni: { required: true } }
     });
-    const [client, setClient] = useState<Client | undefined>(undefined);
     const [expanded, setExpanded] = useState<string | false>(false);
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
@@ -50,7 +51,7 @@ export function VisitDashboard() {
                         type="button"
                         variant="contained"
                         sx={{ marginBottom: 2 }}
-                        onClick={() => setClient(undefined)}
+                        onClick={() => setClient(null)}
                     >
                         Buscar nuevo cliente
                     </Button>

@@ -112,6 +112,20 @@ export function AddMembershipForm({
                             </Typography>
                         }
                     </FormControl>
+                    <FormControl>
+                        <InputLabel htmlFor="observations">Observaciones</InputLabel>
+                        <Input
+                            id="observations"
+                            type="text"
+                            name="observations"
+                            value={formData.observations}
+                        />
+                        {errors.observations?.type === 'maxLength' &&
+                            <Typography variant="caption" color="red" marginTop={1}>
+                                * Las observaciones son demasiado largas.
+                            </Typography>
+                        }
+                    </FormControl>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                         <Button
                             type="button"

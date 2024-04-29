@@ -31,13 +31,15 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
             start: membership.start,
             duration: membership.duration,
             price: membership.price,
-            limit: membership.limit
+            limit: membership.limit,
+            observations: membership.observations
         },
         rules: {
             start: { required: true },
             duration: { required: true },
             limit: { required: true },
-            price: { required: true }
+            price: { required: true },
+            observations: { maxLength: 255 }
         }
     });
     const classes = membership.classes.map(c => ({
@@ -55,8 +57,8 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
     });
 
     return (
-        <Box sx={{ display: 'flex', gap: 1, width: '80%', margin: '0 auto' }}>
-            <Box sx={{ width: '30%', borderRadius: 1, boxShadow: '3px 3px 5px gray', padding: 1 }}>
+        <Box sx={{ display: 'flex', gap: 1, margin: '0 auto' }}>
+            <Box sx={{ width: '30%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1 }}>
                 <Typography variant="h6">
                     Detalles
                 </Typography>
@@ -70,7 +72,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
-                <table>
+                <table style={{ width: '100%' }}>
                     <tbody>
                         <tr>
                             <th>Fecha inicio</th>
@@ -88,13 +90,17 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                             <th>Monto</th>
                             <td>${membership.price}</td>
                         </tr>
+                        <tr>
+                            <th>Observaciones</th>
+                            <td>{membership.observations}</td>
+                        </tr>
                     </tbody>
                 </table>
-                <Box>
+                <Box sx={{ marginTop: 1 }}>
                     <Divider textAlign="center">
                         Clases
                     </Divider>
-                    <Stack direction="row" flexWrap="wrap" gap={1} spacing={1}>
+                    <Stack direction="row" flexWrap="wrap" gap={1} spacing={1} padding={1}>
                         {state.classes.filter(c => classes.map(c => c.name).includes(c.name))
                             .map(c => {
                                 if (visits.some(v => v.class === c.name)) {

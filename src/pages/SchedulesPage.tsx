@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { Box } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, tooltipClasses, TooltipProps, Tooltip } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
@@ -7,14 +8,26 @@ import { useClasses } from "../hooks/useClasses";
 
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
+
 import { DAYS } from "../config/schedules";
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}));
 
 export function SchedulesPage() {
 
     const { auth } = useContext(AuthContext);
     const { state } = useContext(DataContext);
     useClasses();
-    console.log(state.classes)
 
     const headers = [
         DAYS.MONDAY,
@@ -32,48 +45,79 @@ export function SchedulesPage() {
                 <>
                     <Header />
                     <Box sx={{ padding: 2 }}>
-                        <table border={1}>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    {headers.map(h => (
-                                        <th key={h}>{h}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {state.classes.sort((a, b) => {
-                                    if (a.name > b.name) return 1;
-                                    if (a.name < b.name) return -1;
-                                    return 0;
-                                }).map(c => {
-                                    return (
-                                        <tr key={c.id}>
-                                            <td>
-                                                {c.name}
-                                            </td>
-                                            {headers.map(h => {
-                                                if (c.schedules.some(s => s.day === h)) {
-                                                    return (
-                                                        <td key={h}>
-                                                            <ul style={{ listStyle: 'none', padding: 0 }}>
-                                                                {c.schedules.filter(s => s.day === h).map(s => {
-                                                                    return (
-                                                                        <li key={s.id}>{`${s.hour} hs`}</li>
-                                                                    );
-                                                                })}
-                                                            </ul>
-                                                        </td>
-                                                    );
-                                                } else {
-                                                    return <td key={h}></td>
-                                                }
-                                            })}
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                        <TableContainer component={Paper} sx={{ width: '100%' }}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell></TableCell>
+                                        {headers.map(h => (
+                                            <TableCell align="center" key={h}>{h}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {state.classes.sort((a, b) => {
+                                        if (a.name > b.name) return 1;
+                                        if (a.name < b.name) return -1;
+                                        return 0;
+                                    }).map(c => {
+                                        return (
+                                            <TableRow key={c.id}>
+                                                <TableCell align="center">
+                                                    {c.name}
+                                                </TableCell>
+                                                {headers.map(h => {
+                                                    if (c.schedules.some(s => s.day === h)) {
+                                                        return (
+                                                            <TableCell align="center" key={h} sx={{
+                                                                transition: '300ms all',
+                                                                ':hover': {
+                                                                    backgroundColor: '#BDBDBD'
+                                                                }
+                                                            }}>
+                                                                <ul style={{ listStyle: 'none', padding: 0 }}>
+                                                                    {c.schedules.filter(s => s.day === h).map(s => {
+                                                                        return (
+                                                                            <HtmlTooltip
+                                                                                title={
+                                                                                    <>
+                                                                                        <Typography
+                                                                                            color="body1"
+                                                                                            sx={{
+                                                                                                fontWeight: 'bold',
+                                                                                                textAlign: 'center',
+                                                                                                marginBottom: 1
+                                                                                            }}
+                                                                                        >
+                                                                                            Observaciones
+                                                                                        </Typography>
+                                                                                        <Typography color="inherit">
+                                                                                            {s.observations}
+                                                                                        </Typography>
+                                                                                    </>
+                                                                                }
+                                                                            >
+                                                                                <p>
+                                                                                    {`${s.hour} hs`}
+                                                                                </p>
+                                                                            </HtmlTooltip>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            </TableCell>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <TableCell align="center" key={h}></TableCell>
+                                                        );
+                                                    }
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Box>
                 </> :
                 <LoginForm />

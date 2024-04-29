@@ -7,6 +7,7 @@ interface Visit {
     membership_class_id: number;
     membership_class: MembershipClass;
     date: Date;
+    observations?: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -19,6 +20,7 @@ export interface Membership {
     duration: number;
     price: number;
     limit: number;
+    observations?: string;
     classes: MembershipClass[];
     created_at: Date;
     updated_at: Date;
@@ -50,6 +52,7 @@ interface Schedule {
     class: Class;
     day: 'Lunes' | 'Martes' | 'Miercoles' | 'Jueves' | 'Viernes' | 'Sabado' | 'Domingo';
     hour: number;
+    observations?: string;
     created_at: Date;
     updated_at: Date;
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -10,8 +10,10 @@ import { es } from 'date-fns/locale/es';
 import { Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useMemberships } from "../../hooks/useMemberships";
-import { STATUS_CODES } from "../../config/statusCodes";
+
 import { ModalComponent } from "../common/ModalComponent";
+
+import { STATUS_CODES } from "../../config/statusCodes";
 import { DELETE } from "../../config/openTypes";
 
 type HandleVisitsProps = {
@@ -52,37 +54,41 @@ export function HandleVisits({
 
     return (
         <>
-            <Box sx={{ width: '20%', borderRadius: 1, boxShadow: '3px 3px 5px gray', padding: 1 }}>
+            <Box sx={{ width: '23%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1 }}>
                 <Typography variant="h6">
                     Historial
                 </Typography>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                    {visits.map((v: any, idx: number) => {
-                        return (
-                            <li key={idx} style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <p>{idx + 1}</p>
-                                <p>{v.class}</p>
-                                <p>{v.date}</p>
-                                <p>
-                                    <Tooltip title="Eliminar" onClick={() => {
-                                        setOpen(DELETE);
-                                        setFormData({
-                                            ...formData,
-                                            id: v.id,
-                                            membership_class_id: v.membership_class_id
-                                        });
-                                    }}>
-                                        <IconButton>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </p>
-                            </li>
-                        );
-                    })}
-                </ul>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableBody>
+                            {visits.map((v: any, idx: number) => {
+                                return (
+                                    <TableRow key={idx}>
+                                        <TableCell align="center">{idx + 1}</TableCell>
+                                        <TableCell align="center">{v.class}</TableCell>
+                                        <TableCell align="center">{v.date}</TableCell>
+                                        <TableCell align="center">
+                                            <Tooltip title="Eliminar" onClick={() => {
+                                                setOpen(DELETE);
+                                                setFormData({
+                                                    ...formData,
+                                                    id: v.id,
+                                                    membership_class_id: v.membership_class_id
+                                                });
+                                            }}>
+                                                <IconButton>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Box>
-            <Box sx={{ width: '35%', borderRadius: 1, boxShadow: '3px 3px 5px gray', padding: 1 }}>
+            <Box sx={{ width: '32%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1 }}>
                 <Typography variant="h6">
                     Registrar nueva visita
                 </Typography>
@@ -100,13 +106,12 @@ export function HandleVisits({
                         />
                     </LocalizationProvider>
                 </Box>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'space-around' }}>
                     {classes.map((c: any) => {
                         return (
                             <Box
                                 key={c.id}
                                 sx={{
-                                    border: '1px solid black',
                                     backgroundColor: '#fff',
                                     width: 80,
                                     height: 80,
@@ -114,7 +119,10 @@ export function HandleVisits({
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     borderRadius: 1,
+                                    boxShadow: '0 0 3px #BDBDBD',
                                     gap: 1,
+                                    padding: 5,
+                                    wordWrap: 'break-word',
                                     transition: '100ms all',
                                     transform: formData.membership_class_id === c.id ? 'scale(1.1)' : '',
                                     ':hover': {
