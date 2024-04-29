@@ -64,10 +64,10 @@ export function HandleVisits({
                             {visits.map((v: any, idx: number) => {
                                 return (
                                     <TableRow key={idx}>
-                                        <TableCell align="center">{idx + 1}</TableCell>
-                                        <TableCell align="center">{v.class}</TableCell>
-                                        <TableCell align="center">{v.date}</TableCell>
-                                        <TableCell align="center">
+                                        <TableCell align="center" sx={{ padding: 0 }}>#{idx + 1}</TableCell>
+                                        <TableCell align="center" sx={{ padding: 0 }}>{v.class}</TableCell>
+                                        <TableCell align="center" sx={{ padding: 0 }}>{v.date}</TableCell>
+                                        <TableCell align="center" sx={{ padding: 0 }}>
                                             <Tooltip title="Eliminar" onClick={() => {
                                                 setOpen(DELETE);
                                                 setFormData({

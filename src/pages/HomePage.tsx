@@ -28,7 +28,7 @@ export function HomePage() {
     const iconStyles = {
         flex: 1,
         transform: 'scale(3)',
-        // color: '#FFD700'
+        color: '#FFD700'
     };
 
     return (
