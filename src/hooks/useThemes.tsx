@@ -4,6 +4,7 @@ export function useThemes() {
 
     const themes = {
         [DARK]: {
+            mode: DARK,
             palette: {
                 primary: {
                     main: '#FFD700',
@@ -27,6 +28,7 @@ export function useThemes() {
             }
         },
         [LIGHT]: {
+            mode: LIGHT,
             palette: {
                 primary: {
                     main: '#FFD700',

@@ -76,10 +76,13 @@ type ThemeSwitchProps = {
 }
 
 function ThemeSwitch({ handleChangeTheme }: ThemeSwitchProps) {
+
+    const { theme } = React.useContext(ThemeContext);
+
     return (
         <FormGroup>
             <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+                control={<MaterialUISwitch sx={{ m: 1 }} checked={theme.mode === DARK} />}
                 label="Tema"
                 onChange={handleChangeTheme}
             />
