@@ -10,20 +10,10 @@ export function useThemes() {
                     main: '#FFD700',
                 },
                 text: {
-                    primary: '#fff'
+                    primary: '#000'
                 },
                 background: {
-                    default: '#1A1A1A'
-                }
-            },
-            components: {
-                MuiInputLabel: {
-                    styleOverrides: {
-                        root: {
-                            color: '#fff',
-                            borderColor: '#fff'
-                        }
-                    }
+                    default: '#011638'
                 }
             }
         },

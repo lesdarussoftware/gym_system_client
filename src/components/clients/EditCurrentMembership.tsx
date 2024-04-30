@@ -8,6 +8,7 @@ import { DataContext, Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClients } from "../../hooks/useClients";
 import { useMemberships } from "../../hooks/useMemberships";
+import { ThemeContext } from "../../App";
 
 import { AddMembershipForm } from "./AddMembershipForm";
 import { HandleVisits } from "./HandleVisits";
@@ -15,6 +16,7 @@ import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
 import { DELETE, EDIT } from "../../config/openTypes";
+import { DARK } from "../../config/themes";
 
 type EditCurrentMembershipProps = {
     membership: Membership;
@@ -23,6 +25,7 @@ type EditCurrentMembershipProps = {
 export function EditCurrentMembership({ membership }: EditCurrentMembershipProps) {
 
     const { state } = useContext(DataContext);
+    const { theme } = useContext(ThemeContext);
     const { open, setOpen, handleClose } = useClients();
     const { handleSubmit, handleDelete, addMembershipClass, removeMembershipClass } = useMemberships()
     const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
@@ -58,17 +61,23 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
 
     return (
         <Box sx={{ display: 'flex', gap: 1, margin: '0 auto' }}>
-            <Box sx={{ width: '30%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1 }}>
+            <Box sx={{
+                width: '30%',
+                borderRadius: 1,
+                border: '1px solid #BDBDBD',
+                padding: 1,
+                color: theme.mode === DARK ? '#fff' : '#000'
+            }}>
                 <Typography variant="h6">
                     Detalles
                 </Typography>
                 <Tooltip title="Eliminar" onClick={() => setOpen(DELETE)}>
-                    <IconButton>
+                    <IconButton sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Editar"} onClick={() => setOpen(EDIT)}>
-                    <IconButton>
+                    <IconButton sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
@@ -97,7 +106,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                     </tbody>
                 </table>
                 <Box sx={{ marginTop: 1 }}>
-                    <Divider textAlign="center">
+                    <Divider textAlign="center" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
                         Clases
                     </Divider>
                     <Stack direction="row" flexWrap="wrap" gap={1} spacing={1} padding={1}>
@@ -105,13 +114,25 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                             .map(c => {
                                 if (visits.some(v => v.class === c.name)) {
                                     return (
-                                        <Chip key={c.id} label={c.name} />
-                                    );
-                                } else {
-                                    return (
                                         <Chip
                                             key={c.id}
                                             label={c.name}
+                                            sx={{
+                                                color: '#fff',
+                                                backgroundColor: 'gray'
+                                            }}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <Chip
+                                            key={c.id}
+                                            label={c.name}
+                                            sx={{
+                                                border: '1px solid #fff',
+                                                color: '#fff',
+                                                backgroundColor: 'gray'
+                                            }}
                                             onDelete={() => removeMembershipClass({
                                                 client_id: membership.client_id,
                                                 membership_id: membership.id,
@@ -128,6 +149,12 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                                         key={c.id}
                                         label={c.name}
                                         variant="outlined"
+                                        sx={{
+                                            backgroundColor: '#fff',
+                                            ':hover': {
+                                                color: theme.mode === DARK ? '#fff' : '#000',
+                                            }
+                                        }}
                                         onClick={() => addMembershipClass({
                                             client_id: membership.client_id,
                                             membership_id: membership.id,
@@ -165,6 +192,6 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 classes={classes}
                 membership={membership}
             />
-        </Box>
+        </Box >
     );
 }

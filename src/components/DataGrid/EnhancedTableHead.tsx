@@ -57,11 +57,13 @@ export function EnhancedTableHead({
                         align="center"
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
+                        sx={{ color: '#000' }}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
+                            sx={{ color: '#000 !important' }}
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (

@@ -47,7 +47,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
         },
     },
     '& .MuiSwitch-thumb': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#FFD700',
+        backgroundColor: theme.mode === 'dark' ? '#003892' : '#FFD700',
         width: 32,
         height: 32,
         '&::before': {
@@ -66,7 +66,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
     '& .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: theme.mode === 'dark' ? '#8796A5' : '#aab4be',
         borderRadius: 20 / 2,
     },
 }));
@@ -98,6 +98,7 @@ export function Header() {
     const { handleQuery } = useQuery();
     const { auth, setAuth } = React.useContext(AuthContext);
     const { setTheme } = React.useContext(ThemeContext);
+    const { theme } = React.useContext(ThemeContext);
     const { pathname } = useLocation();
     const { themes } = useThemes();
 
@@ -159,7 +160,7 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/clientes' ? '#000' : '',
+                        color: pathname === '/clientes' ? '#000' : theme.mode === DARK ? '#fff' : '#000',
                         backgroundColor: pathname === '/clientes' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/clientes')}
@@ -169,7 +170,7 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/horarios' ? '#000' : '',
+                        color: pathname === '/horarios' ? '#000' : theme.mode === DARK ? '#fff' : '#000',
                         backgroundColor: pathname === '/horarios' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/horarios')}
@@ -179,7 +180,7 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/abm' ? '#000' : '',
+                        color: pathname === '/abm' ? '#000' : theme.mode === DARK ? '#fff' : '#000',
                         backgroundColor: pathname === '/abm' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/abm')}

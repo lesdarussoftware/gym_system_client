@@ -190,7 +190,7 @@ export function DataGrid({
                                             </TableCell>
                                         }
                                         {headCells.map(cell => cell.accessor).map(accessor => (
-                                            <TableCell key={accessor} align="center" sx={{ cursor: 'pointer' }}>
+                                            <TableCell key={accessor} align="center" sx={{ cursor: 'pointer', color: '#000' }}>
                                                 {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
                                             </TableCell>
                                         ))}
@@ -223,6 +223,7 @@ export function DataGrid({
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Condensar tabla"
+                sx={{ color: '#000' }}
             />
         </Box>
     );

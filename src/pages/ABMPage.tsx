@@ -29,7 +29,7 @@ export function ABMPage() {
                     <Box sx={{ padding: 2 }}>
                         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                             <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                                <Typography>Clases</Typography>
+                                <Typography sx={{ color: '#000' }}>Clases</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <ClassesABM />
@@ -37,7 +37,7 @@ export function ABMPage() {
                         </Accordion>
                         <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                                <Typography>Profesores</Typography>
+                                <Typography sx={{ color: '#000' }}>Profesores</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <TeachersABM />
@@ -45,7 +45,7 @@ export function ABMPage() {
                         </Accordion>
                         <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                             <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                                <Typography>Usuarios</Typography>
+                                <Typography sx={{ color: '#000' }}>Usuarios</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <UsersABM />
