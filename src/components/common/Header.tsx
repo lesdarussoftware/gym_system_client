@@ -83,7 +83,7 @@ function ThemeSwitch({ handleChangeTheme }: ThemeSwitchProps) {
         <FormGroup>
             <FormControlLabel
                 control={<MaterialUISwitch sx={{ m: 1 }} checked={theme.mode === DARK} />}
-                label="Tema"
+                label=""
                 onChange={handleChangeTheme}
             />
         </FormGroup>
@@ -140,8 +140,8 @@ export function Header() {
         transition: '100ms all',
         ':hover': {
             cursor: 'pointer',
-            color: '#fff',
-            backgroundColor: '#BDBDBD'
+            color: '#000',
+            backgroundColor: '#FFD700'
         }
     }
 
@@ -159,8 +159,8 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/clientes' ? '#fff' : '',
-                        backgroundColor: pathname === '/clientes' ? '#BDBDBD' : ''
+                        color: pathname === '/clientes' ? '#000' : '',
+                        backgroundColor: pathname === '/clientes' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/clientes')}
                 >
@@ -169,8 +169,8 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/horarios' ? '#fff' : '',
-                        backgroundColor: pathname === '/horarios' ? '#BDBDBD' : ''
+                        color: pathname === '/horarios' ? '#000' : '',
+                        backgroundColor: pathname === '/horarios' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/horarios')}
                 >
@@ -179,8 +179,8 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/abm' ? '#fff' : '',
-                        backgroundColor: pathname === '/abm' ? '#BDBDBD' : ''
+                        color: pathname === '/abm' ? '#000' : '',
+                        backgroundColor: pathname === '/abm' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/abm')}
                 >
