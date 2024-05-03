@@ -77,7 +77,11 @@ export function VisitDashboard() {
                         <Typography variant="h5" marginBottom={2} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
                             Ingrese el DNI de un cliente
                         </Typography>
-                        <form onChange={handleChange} onSubmit={handleSubmit}>
+                        <form
+                            onChange={handleChange}
+                            onSubmit={handleSubmit}
+                            style={{ display: 'flex', alignItems: 'end', gap: '10px', justifyContent: 'center' }}
+                        >
                             <FormControl>
                                 <InputLabel htmlFor="dni" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>N°</InputLabel>
                                 <Input id="dni" type="tel" name="dni" value={formData.dni} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }} />

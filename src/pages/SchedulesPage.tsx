@@ -5,11 +5,13 @@ import { styled } from '@mui/material/styles';
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
 import { useClasses } from "../hooks/useClasses";
+import { ThemeContext } from "../App";
 
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
 
 import { DAYS } from "../config/schedules";
+import { DARK } from "../config/themes";
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -27,6 +29,7 @@ export function SchedulesPage() {
 
     const { auth } = useContext(AuthContext);
     const { state } = useContext(DataContext);
+    const { theme } = useContext(ThemeContext);
     useClasses();
 
     const headers = [
@@ -45,13 +48,25 @@ export function SchedulesPage() {
                 <>
                     <Header />
                     <Box sx={{ padding: 2 }}>
-                        <TableContainer component={Paper} sx={{ width: '100%' }}>
+                        <TableContainer
+                            component={Paper}
+                            sx={{
+                                width: '100%',
+                                backgroundColor: theme.mode === DARK ? '#3c3c3c' : '#f5f5f5'
+                            }}
+                        >
                             <Table>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell></TableCell>
                                         {headers.map(h => (
-                                            <TableCell align="center" key={h}>{h}</TableCell>
+                                            <TableCell
+                                                align="center"
+                                                sx={{ color: theme.mode === DARK ? '#fff' : '#3c3c3c' }}
+                                                key={h}
+                                            >
+                                                {h}
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 </TableHead>
@@ -63,18 +78,23 @@ export function SchedulesPage() {
                                     }).map(c => {
                                         return (
                                             <TableRow key={c.id}>
-                                                <TableCell align="center">
+                                                <TableCell
+                                                    align="center"
+                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#3c3c3c' }}
+                                                >
                                                     {c.name}
                                                 </TableCell>
                                                 {headers.map(h => {
                                                     if (c.schedules.some(s => s.day === h)) {
                                                         return (
-                                                            <TableCell align="center" key={h} sx={{
-                                                                transition: '300ms all',
-                                                                ':hover': {
-                                                                    backgroundColor: '#BDBDBD'
-                                                                }
-                                                            }}>
+                                                            <TableCell align="center" key={h}
+                                                                sx={{
+                                                                    color: theme.mode === DARK ? '#fff' : '#3c3c3c',
+                                                                    transition: '300ms all',
+                                                                    ':hover': {
+                                                                        backgroundColor: '#BDBDBD'
+                                                                    }
+                                                                }}>
                                                                 <ul style={{ listStyle: 'none', padding: 0 }}>
                                                                     {c.schedules.filter(s => s.day === h).map(s => {
                                                                         return (

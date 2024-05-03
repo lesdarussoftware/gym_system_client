@@ -149,7 +149,7 @@ export function Header() {
     return (
         <Box sx={{
             height: 60,
-            marginBottom: 1,
+            borderRadius: 1,
             paddingRight: 3,
             paddingLeft: 3,
             display: 'flex',

@@ -13,7 +13,7 @@ export function useThemes() {
                     primary: '#000'
                 },
                 background: {
-                    default: '#011638'
+                    default: '#030918'
                 }
             }
         },

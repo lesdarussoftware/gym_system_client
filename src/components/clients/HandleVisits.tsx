@@ -152,6 +152,12 @@ export function HandleVisits({
                 <Button
                     variant="contained"
                     disabled={formData.membership_class_id === ''}
+                    sx={{
+                        ":disabled": {
+                            color: '#A6A6A6',
+                            backgroundColor: '#E0E0E0'
+                        }
+                    }}
                     onClick={handleSubmit}
                 >
                     Confirmar
@@ -159,6 +165,13 @@ export function HandleVisits({
                 <Button
                     variant="outlined"
                     disabled={formData.membership_class_id === ''}
+                    sx={{
+                        ":disabled": {
+                            color: "BDBDD0",
+                            backgroundColor: "#fff",
+                            border: "1px solid #E0E0E0"
+                        }
+                    }}
                     onClick={handleReset}
                 >
                     Cancelar
