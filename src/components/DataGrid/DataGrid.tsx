@@ -14,6 +14,10 @@ import Switch from '@mui/material/Switch';
 
 import { EnhancedTableHead, HeadCell } from './EnhancedTableHead';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
+import { ThemeContext } from '../../App';
+
+import { DARK } from '../../config/themes';
+import { makeStyles } from '@mui/material';
 
 interface DataGridProps {
     children?: React.ReactNode;
@@ -70,6 +74,8 @@ export function DataGrid({
     showMembershipDetails,
     hideAddMembership
 }: DataGridProps) {
+
+    const { theme } = React.useContext(ThemeContext);
 
     const [order, setOrder] = React.useState<'asc' | 'desc'>(defaultOrder);
     const [orderBy, setOrderBy] = React.useState<string>(defaultOrderBy);
@@ -130,7 +136,7 @@ export function DataGrid({
     );
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', backgroundColor: theme.mode === DARK ? '#030918' : '#fff' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 {setOpen && setFormData &&
                     <EnhancedTableToolbar
@@ -177,6 +183,12 @@ export function DataGrid({
                                         tabIndex={-1}
                                         key={row.id ?? index}
                                         selected={isItemSelected}
+                                        sx={{
+                                            backgroundColor: theme.mode === DARK ? '#030918' : '#fff',
+                                            ':hover': {
+                                                backgroundColor: theme.mode === DARK ? '#fff' : ''
+                                            }
+                                        }}
                                     >
                                         {!stopPointerEvents &&
                                             <TableCell padding="checkbox">
@@ -186,11 +198,19 @@ export function DataGrid({
                                                     inputProps={{
                                                         'aria-labelledby': labelId,
                                                     }}
+                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
                                                 />
                                             </TableCell>
                                         }
-                                        {headCells.map(cell => cell.accessor).map(accessor => (
-                                            <TableCell key={accessor} align="center" sx={{ cursor: 'pointer', color: '#000' }}>
+                                        {headCells.map(cell => cell.accessor).map((accessor, idx) => (
+                                            <TableCell
+                                                key={idx}
+                                                align="center"
+                                                sx={{
+                                                    cursor: 'pointer',
+                                                    color: theme.mode === DARK ? '#fff' : '#030918'
+                                                }}
+                                            >
                                                 {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
                                             </TableCell>
                                         ))}
@@ -210,10 +230,22 @@ export function DataGrid({
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
+                    sx={{
+                        backgroundColor: theme.mode === DARK ? '#030918' : '#fff',
+                        color: theme.mode === DARK ? '#fff' : '#000'
+                    }}
                     slotProps={{
                         actions: {
                             nextButton: {
-                                disabled: ((page + 1) * offset) >= rows.length
+                                disabled: ((page + 1) * offset) >= rows.length,
+                                sx: {
+                                    color: '#CECECE !important'
+                                }
+                            },
+                            previousButton: {
+                                sx: {
+                                    color: '#CECECE !important'
+                                }
                             }
                         }
                     }}
@@ -223,7 +255,7 @@ export function DataGrid({
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Condensar tabla"
-                sx={{ color: '#000' }}
+                sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
             />
         </Box>
     );

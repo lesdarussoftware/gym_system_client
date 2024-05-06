@@ -1,5 +1,10 @@
+import { useContext } from "react";
 import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import { visuallyHidden } from '@mui/utils';
+
+import { ThemeContext } from "../../App";
+
+import { DARK } from "../../config/themes";
 
 export interface HeadCell {
     id: string;
@@ -31,13 +36,15 @@ export function EnhancedTableHead({
     stopPointerEvents
 }: EnhancedTableHeadProps) {
 
+    const { theme } = useContext(ThemeContext);
+
     const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
     return (
         <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: theme.mode === DARK ? '#030918' : '#fff' }}>
                 {!stopPointerEvents &&
                     <TableCell padding="checkbox">
                         <Checkbox
@@ -48,6 +55,7 @@ export function EnhancedTableHead({
                             inputProps={{
                                 'aria-label': 'select all desserts',
                             }}
+                            sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
                         />
                     </TableCell>
                 }
@@ -57,13 +65,12 @@ export function EnhancedTableHead({
                         align="center"
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        sx={{ color: '#000' }}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
-                            sx={{ color: '#000 !important' }}
+                            sx={{ color: '#FFD700 !important' }}
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (

@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { IconButton, Toolbar, Tooltip } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,7 +8,10 @@ import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 
+import { ThemeContext } from '../../App';
+
 import { NEW, EDIT, DELETE, VIEW_TEACHERS, VIEW_SCHEDULES, VIEW_MEMBERSHIP_DETAILS } from '../../config/openTypes';
+import { DARK } from '../../config/themes';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface EnhancedTableToolbarProps {
@@ -31,6 +35,9 @@ export function EnhancedTableToolbar({
     showMembershipDetails,
     hideAddMembership
 }: EnhancedTableToolbarProps) {
+
+    const { theme } = useContext(ThemeContext);
+
     return (
         <Toolbar
             sx={{
@@ -40,12 +47,13 @@ export function EnhancedTableToolbar({
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                 }),
+                backgroundColor: theme.mode === DARK ? '#030918' : '#fff'
             }}
         >
             {(selected.length === 0 && !hideAddMembership) &&
                 <Tooltip title="Nuevo" onClick={() => setOpen(NEW)}>
                     <IconButton>
-                        <AddCircleSharpIcon />
+                        <AddCircleSharpIcon sx={{ color: '#CECECE !important' }} />
                     </IconButton>
                 </Tooltip>
             }
@@ -56,7 +64,7 @@ export function EnhancedTableToolbar({
                         setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                     }}>
                         <IconButton>
-                            <DeleteIcon />
+                            <DeleteIcon sx={{ color: '#CECECE !important' }} />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title={"Editar"} onClick={() => {
@@ -64,7 +72,7 @@ export function EnhancedTableToolbar({
                         setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                     }}>
                         <IconButton>
-                            <EditIcon />
+                            <EditIcon sx={{ color: '#CECECE !important' }} />
                         </IconButton>
                     </Tooltip>
                     {showClassesDetails &&
@@ -74,7 +82,7 @@ export function EnhancedTableToolbar({
                                 setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                             }}>
                                 <IconButton>
-                                    <PersonSearchSharpIcon />
+                                    <PersonSearchSharpIcon sx={{ color: '#CECECE !important' }} />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title={"Ver días y horarios"} onClick={() => {
@@ -82,7 +90,7 @@ export function EnhancedTableToolbar({
                                 setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                             }}>
                                 <IconButton>
-                                    <CalendarMonthSharpIcon />
+                                    <CalendarMonthSharpIcon sx={{ color: '#CECECE !important' }} />
                                 </IconButton>
                             </Tooltip>
                         </>
@@ -93,7 +101,7 @@ export function EnhancedTableToolbar({
                             setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
                         }}>
                             <IconButton>
-                                <RemoveRedEyeSharpIcon />
+                                <RemoveRedEyeSharpIcon sx={{ color: '#CECECE !important' }} />
                             </IconButton>
                         </Tooltip>
                     }
