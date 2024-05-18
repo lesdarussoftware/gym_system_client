@@ -47,7 +47,7 @@ export function EnhancedTableToolbar({
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                 }),
-                backgroundColor: theme.mode === DARK ? '#030918' : '#fff'
+                backgroundColor: theme.mode === DARK ? '#011627' : '#fff'
             }}
         >
             {(selected.length === 0 && !hideAddMembership) &&

@@ -136,7 +136,7 @@ export function DataGrid({
     );
 
     return (
-        <Box sx={{ width: '100%', backgroundColor: theme.mode === DARK ? '#030918' : '#fff' }}>
+        <Box sx={{ width: '100%', backgroundColor: theme.mode === DARK ? '#011627' : '#fff' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 {setOpen && setFormData &&
                     <EnhancedTableToolbar
@@ -186,7 +186,7 @@ export function DataGrid({
                                         sx={{
                                             backgroundColor: isItemSelected
                                                 ? (theme.mode === DARK ? '#1e3a8a !important' : '#cce7ff') // Color de fondo cuando la fila está seleccionada
-                                                : (theme.mode === DARK ? '#030918 !important' : '#fff'), // Color de fondo normal
+                                                : (theme.mode === DARK ? '#011627 !important' : '#fff'), // Color de fondo normal
                                             ':hover': {
                                                 backgroundColor: isItemSelected
                                                     ? (theme.mode === DARK ? '#1e3a8a !important' : '#cce7ff !important') // Color de fondo cuando está seleccionada y se hace hover
@@ -202,7 +202,7 @@ export function DataGrid({
                                                     inputProps={{
                                                         'aria-labelledby': labelId,
                                                     }}
-                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
+                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
                                                 />
                                             </TableCell>
                                         }
@@ -212,7 +212,7 @@ export function DataGrid({
                                                 align="center"
                                                 sx={{
                                                     cursor: 'pointer',
-                                                    color: theme.mode === DARK ? '#fff' : '#030918'
+                                                    color: theme.mode === DARK ? '#fff' : '#011627'
                                                 }}
                                             >
                                                 {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
@@ -235,7 +235,7 @@ export function DataGrid({
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     sx={{
-                        backgroundColor: theme.mode === DARK ? '#030918' : '#fff',
+                        backgroundColor: theme.mode === DARK ? '#011627' : '#fff',
                         color: theme.mode === DARK ? '#fff' : '#000'
                     }}
                     slotProps={{
@@ -259,7 +259,7 @@ export function DataGrid({
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Condensar tabla"
-                sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
+                sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
             />
         </Box>
     );

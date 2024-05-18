@@ -44,7 +44,7 @@ export function EnhancedTableHead({
 
     return (
         <TableHead>
-            <TableRow sx={{ backgroundColor: theme.mode === DARK ? '#030918' : '#fff' }}>
+            <TableRow sx={{ backgroundColor: theme.mode === DARK ? '#011627' : '#fff' }}>
                 {!stopPointerEvents &&
                     <TableCell padding="checkbox">
                         <Checkbox
@@ -55,7 +55,7 @@ export function EnhancedTableHead({
                             inputProps={{
                                 'aria-label': 'select all desserts',
                             }}
-                            sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
+                            sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
                         />
                     </TableCell>
                 }

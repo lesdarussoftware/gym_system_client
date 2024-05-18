@@ -52,7 +52,7 @@ export function SchedulesPage() {
                             component={Paper}
                             sx={{
                                 width: '100%',
-                                backgroundColor: theme.mode === DARK ? '#030918' : '#f5f5f5'
+                                backgroundColor: theme.mode === DARK ? '#011627' : '#f5f5f5'
                             }}
                         >
                             <Table>
@@ -62,7 +62,7 @@ export function SchedulesPage() {
                                         {headers.map(h => (
                                             <TableCell
                                                 align="center"
-                                                sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
+                                                sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
                                                 key={h}
                                             >
                                                 {h}
@@ -80,7 +80,7 @@ export function SchedulesPage() {
                                             <TableRow key={c.id}>
                                                 <TableCell
                                                     align="center"
-                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#030918' }}
+                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
                                                 >
                                                     {c.name}
                                                 </TableCell>
@@ -89,7 +89,7 @@ export function SchedulesPage() {
                                                         return (
                                                             <TableCell align="center" key={h}
                                                                 sx={{
-                                                                    color: theme.mode === DARK ? '#fff' : '#030918',
+                                                                    color: theme.mode === DARK ? '#fff' : '#011627',
                                                                     transition: '300ms all',
                                                                     ':hover': {
                                                                         backgroundColor: '#BDBDBD'
