@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { Class, DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
@@ -59,9 +60,14 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
             disablePadding: true,
             label: '',
             accessor: (row: { id: number; }) => (
-                <Button onClick={() => handleDeleteSchedule(row.id, reset)}>
-                    <HighlightOffSharpIcon />
-                </Button>
+                <>
+                    <Button onClick={() => handleDeleteSchedule(row.id, reset)}>
+                        <HighlightOffSharpIcon />
+                    </Button>
+                    <Button>
+                        <EditIcon />
+                    </Button>
+                </>
             )
         },
     ]

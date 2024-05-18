@@ -184,9 +184,13 @@ export function DataGrid({
                                         key={row.id ?? index}
                                         selected={isItemSelected}
                                         sx={{
-                                            backgroundColor: theme.mode === DARK ? '#030918' : '#fff',
+                                            backgroundColor: isItemSelected
+                                                ? (theme.mode === DARK ? '#1e3a8a !important' : '#cce7ff') // Color de fondo cuando la fila está seleccionada
+                                                : (theme.mode === DARK ? '#030918 !important' : '#fff'), // Color de fondo normal
                                             ':hover': {
-                                                backgroundColor: theme.mode === DARK ? '#fff' : ''
+                                                backgroundColor: isItemSelected
+                                                    ? (theme.mode === DARK ? '#1e3a8a !important' : '#cce7ff !important') // Color de fondo cuando está seleccionada y se hace hover
+                                                    : (theme.mode === DARK ? '#003892 !important' : ''), // Color de fondo cuando solo se hace hover
                                             }
                                         }}
                                     >
