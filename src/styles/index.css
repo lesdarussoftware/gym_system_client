@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color-light: #00C52C;
+    --secondary-color-dark: #12143B;
+    --hover-primary-color: #21dd4a;
+}
+
+.btn {
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 100ms all;
+    border: 1px solid var(--primary-color-light);
+}
+
+.btn-primary {
+    background-color: var(--primary-color-light);
+    color: #FFF;
+}
+
+.btn-primary:hover {
+    background-color: var(--hover-primary-color);
+}
+
+.btn-secondary {
+    background-color: #FFF;
+    color: var(--primary-color-light);
+}

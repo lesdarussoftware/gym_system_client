@@ -1,46 +1,21 @@
-import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
-
-import { AuthContext } from "../providers/AuthProvider";
-import { ThemeContext } from "../App";
-
-import { LoginForm } from "../components/common/LoginForm";
-import { DARK } from "../config/themes";
-
 export function LoginPage() {
-
-    const navigate = useNavigate();
-    const { auth } = useContext(AuthContext);
-    const { theme } = useContext(ThemeContext);
-
-    useEffect(() => {
-        if (auth) navigate('/clientes');
-    }, [auth])
-
     return (
-        <Box sx={{ padding: 2 }}>
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '90vh',
-                flexDirection: 'column',
-                gap: 3
-            }}>
-                <Typography variant="h2" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
-                    Lesda Gym
-                </Typography>
-                <LoginForm submitAction={() => navigate('/clientes')} />
-                <Button
-                    type="button"
-                    variant="outlined"
-                    sx={{ display: 'block', margin: '0 auto', marginTop: 3 }}
-                    onClick={() => navigate('/')}
-                >
-                    Volver al inicio
-                </Button>
-            </Box>
-        </Box>
+        <div style={{ width: '50%', margin: '0 auto' }}>
+            <h3>Lesda Gym</h3>
+            <form style={{ width: '50%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <label htmlFor="username">Usuario</label>
+                    <input type="text" name="username" />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <label htmlFor="password">Contraseña</label>
+                    <input type="password" name="password" />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <input type="submit" value="Iniciar sesión" className="btn btn-primary" />
+                    <input type="button" value="Volver" className="btn btn-secondary" />
+                </div>
+            </form>
+        </div>
     );
 }
