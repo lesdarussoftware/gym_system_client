@@ -64,7 +64,6 @@ export function EnhancedTableHead({
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
-                            sx={{ color: '#FFD700 !important' }}
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (

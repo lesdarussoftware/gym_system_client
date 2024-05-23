@@ -55,8 +55,8 @@ export function Header() {
         transition: '100ms all',
         ':hover': {
             cursor: 'pointer',
-            color: '#000',
-            backgroundColor: '#FFD700'
+            color: '#fff',
+            backgroundColor: '#00C52C'
         }
     }
 
@@ -74,8 +74,9 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: '#000',
-                        backgroundColor: pathname === '/clientes' ? '#FFD700' : ''
+                        paddingY: 0.5,
+                        color: pathname === '/clientes' ? '#fff' : '#000',
+                        backgroundColor: pathname === '/clientes' ? '#00C52C' : ''
                     }}
                     onClick={() => navigate('/clientes')}
                 >
@@ -84,8 +85,9 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: '#000',
-                        backgroundColor: pathname === '/horarios' ? '#FFD700' : ''
+                        paddingY: 0.5,
+                        color: pathname === '/horarios' ? '#fff' : '#000',
+                        backgroundColor: pathname === '/horarios' ? '#00C52C' : ''
                     }}
                     onClick={() => navigate('/horarios')}
                 >
@@ -94,8 +96,9 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: '#000',
-                        backgroundColor: pathname === '/abm' ? '#FFD700' : ''
+                        paddingY: 0.5,
+                        color: pathname === '/abm' ? '#fff' : '#000',
+                        backgroundColor: pathname === '/abm' ? '#00C52C' : ''
                     }}
                     onClick={() => navigate('/abm')}
                 >

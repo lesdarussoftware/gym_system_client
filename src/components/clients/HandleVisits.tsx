@@ -95,7 +95,7 @@ export function HandleVisits({
                 <Box sx={{ margin: 2, padding: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
                         <DatePicker
-                            label={<span style={{ color: '#FFD700' }}>Fecha</span>}
+                            label="Fecha"
                             sx={{ backgroundColor: '#fff !important', borderRadius: 1 }}
                             value={new Date(formData.date)}
                             onChange={value => handleChange({
