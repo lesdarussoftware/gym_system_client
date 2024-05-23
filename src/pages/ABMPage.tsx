@@ -1,25 +1,50 @@
 import { useContext, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
 import { AuthContext } from '../providers/AuthProvider';
 
-import { Accordion, AccordionDetails, AccordionSummary } from '../components/common/MUIAccordion';
 import { Header } from "../components/common/Header";
 import { ClassesABM } from "../components/ABM/ClassesABM";
 import { TeachersABM } from '../components/ABM/TeachersABM';
 import { UsersABM } from '../components/ABM/UsersABM';
 import { LoginForm } from '../components/common/LoginForm';
 
+function CustomTabPanel(props: { [x: string]: any; children: any; value: any; index: any; }) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ paddingY: 1 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
 export function ABMPage() {
 
     const { auth } = useContext(AuthContext);
-    const [expanded, setExpanded] = useState<string | false>('panel1');
+    const [value, setValue] = useState(0);
 
-    const handleChange =
-        (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-            setExpanded(newExpanded ? panel : false);
-        };
+    const handleChange = (event: any, newValue: number) => {
+        setValue(newValue);
+    };
 
     return (
         <>
@@ -27,30 +52,20 @@ export function ABMPage() {
                 <>
                     <Header />
                     <Box sx={{ padding: 2 }}>
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                                <Typography sx={{ color: '#000' }}>Clases</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <ClassesABM />
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                                <Typography sx={{ color: '#000' }}>Profesores</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <TeachersABM />
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-                            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                                <Typography sx={{ color: '#000' }}>Usuarios</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <UsersABM />
-                            </AccordionDetails>
-                        </Accordion>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                            <Tab label="Clases" {...a11yProps(0)} />
+                            <Tab label="Profesores" {...a11yProps(1)} />
+                            <Tab label="Usuarios" {...a11yProps(2)} />
+                        </Tabs>
+                        <CustomTabPanel value={value} index={0}>
+                            <ClassesABM />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={1}>
+                            <TeachersABM />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={2}>
+                            <UsersABM />
+                        </CustomTabPanel>
                     </Box>
                 </> :
                 <LoginForm />
