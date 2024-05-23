@@ -160,51 +160,56 @@ export function DataGrid({
                             stopPointerEvents={stopPointerEvents}
                         />
                         <TableBody>
-                            {visibleRows.map((row, index) => {
-                                const isItemSelected = isSelected(row.id);
-                                const labelId = `enhanced-table-checkbox-${index}`;
-
-                                return (
-                                    <TableRow
-                                        hover
-                                        onClick={(event) => {
-                                            if (!stopPointerEvents) {
-                                                handleClick(event, row.id)
+                            {visibleRows.length === 0 ?
+                                <TableRow>
+                                    <TableCell colSpan={headCells.length + 1} align='center'>
+                                        No hay registros para mostrar.
+                                    </TableCell>
+                                </TableRow> :
+                                visibleRows.map((row, index) => {
+                                    const isItemSelected = isSelected(row.id);
+                                    const labelId = `enhanced-table-checkbox-${index}`;
+                                    return (
+                                        <TableRow
+                                            hover
+                                            onClick={(event) => {
+                                                if (!stopPointerEvents) {
+                                                    handleClick(event, row.id)
+                                                }
+                                            }}
+                                            role="checkbox"
+                                            aria-checked={isItemSelected}
+                                            tabIndex={-1}
+                                            key={row.id ?? index}
+                                            selected={isItemSelected}
+                                        >
+                                            {!stopPointerEvents &&
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        color="primary"
+                                                        checked={isItemSelected}
+                                                        inputProps={{
+                                                            'aria-labelledby': labelId,
+                                                        }}
+                                                        sx={{ color: '#011627' }}
+                                                    />
+                                                </TableCell>
                                             }
-                                        }}
-                                        role="checkbox"
-                                        aria-checked={isItemSelected}
-                                        tabIndex={-1}
-                                        key={row.id ?? index}
-                                        selected={isItemSelected}
-                                    >
-                                        {!stopPointerEvents &&
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
+                                            {headCells.map(cell => cell.accessor).map((accessor, idx) => (
+                                                <TableCell
+                                                    key={idx}
+                                                    align="center"
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                        color: '#011627'
                                                     }}
-                                                    sx={{ color: '#011627' }}
-                                                />
-                                            </TableCell>
-                                        }
-                                        {headCells.map(cell => cell.accessor).map((accessor, idx) => (
-                                            <TableCell
-                                                key={idx}
-                                                align="center"
-                                                sx={{
-                                                    cursor: 'pointer',
-                                                    color: '#011627'
-                                                }}
-                                            >
-                                                {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                );
-                            })}
+                                                >
+                                                    {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    );
+                                })}
                         </TableBody>
                     </Table>
                 </TableContainer>

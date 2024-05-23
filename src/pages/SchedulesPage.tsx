@@ -68,70 +68,76 @@ export function SchedulesPage() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {state.classes.sort((a, b) => {
-                                        if (a.name > b.name) return 1;
-                                        if (a.name < b.name) return -1;
-                                        return 0;
-                                    }).map(c => {
-                                        return (
-                                            <TableRow key={c.id}>
-                                                <TableCell
-                                                    align="center"
-                                                    sx={{ color: '#011627' }}
-                                                >
-                                                    {c.name}
-                                                </TableCell>
-                                                {headers.map(h => {
-                                                    if (c.schedules.some(s => s.day === h)) {
-                                                        return (
-                                                            <TableCell align="center" key={h}
-                                                                sx={{
-                                                                    color: '#011627',
-                                                                    transition: '300ms all',
-                                                                    ':hover': {
-                                                                        backgroundColor: '#BDBDBD'
-                                                                    }
-                                                                }}>
-                                                                <ul style={{ listStyle: 'none', padding: 0 }}>
-                                                                    {c.schedules.filter(s => s.day === h).map(s => {
-                                                                        return (
-                                                                            <HtmlTooltip
-                                                                                title={
-                                                                                    <>
-                                                                                        <Typography
-                                                                                            color="body1"
-                                                                                            sx={{
-                                                                                                fontWeight: 'bold',
-                                                                                                textAlign: 'center',
-                                                                                                marginBottom: 1
-                                                                                            }}
-                                                                                        >
-                                                                                            Observaciones
-                                                                                        </Typography>
-                                                                                        <Typography color="inherit">
-                                                                                            {s.observations}
-                                                                                        </Typography>
-                                                                                    </>
-                                                                                }
-                                                                            >
-                                                                                <p>
-                                                                                    {`${s.hour} hs`}
-                                                                                </p>
-                                                                            </HtmlTooltip>
-                                                                        );
-                                                                    })}
-                                                                </ul>
-                                                            </TableCell>
-                                                        );
-                                                    } else {
-                                                        return (
-                                                            <TableCell align="center" key={h}></TableCell>
-                                                        );
-                                                    }
-                                                })}
-                                            </TableRow>
-                                        );
-                                    })}
+                                    {state.classes.length === 0 ?
+                                        <TableRow>
+                                            <TableCell colSpan={headers.length + 1} align="center">
+                                                No hay registros para mostrar.
+                                            </TableCell>
+                                        </TableRow> :
+                                        state.classes.sort((a, b) => {
+                                            if (a.name > b.name) return 1;
+                                            if (a.name < b.name) return -1;
+                                            return 0;
+                                        }).map(c => {
+                                            return (
+                                                <TableRow key={c.id}>
+                                                    <TableCell
+                                                        align="center"
+                                                        sx={{ color: '#011627' }}
+                                                    >
+                                                        {c.name}
+                                                    </TableCell>
+                                                    {headers.map(h => {
+                                                        if (c.schedules.some(s => s.day === h)) {
+                                                            return (
+                                                                <TableCell align="center" key={h}
+                                                                    sx={{
+                                                                        color: '#011627',
+                                                                        transition: '300ms all',
+                                                                        ':hover': {
+                                                                            backgroundColor: '#BDBDBD'
+                                                                        }
+                                                                    }}>
+                                                                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                                                                        {c.schedules.filter(s => s.day === h).map(s => {
+                                                                            return (
+                                                                                <HtmlTooltip
+                                                                                    title={
+                                                                                        <>
+                                                                                            <Typography
+                                                                                                color="body1"
+                                                                                                sx={{
+                                                                                                    fontWeight: 'bold',
+                                                                                                    textAlign: 'center',
+                                                                                                    marginBottom: 1
+                                                                                                }}
+                                                                                            >
+                                                                                                Observaciones
+                                                                                            </Typography>
+                                                                                            <Typography color="inherit">
+                                                                                                {s.observations}
+                                                                                            </Typography>
+                                                                                        </>
+                                                                                    }
+                                                                                >
+                                                                                    <p>
+                                                                                        {`${s.hour} hs`}
+                                                                                    </p>
+                                                                                </HtmlTooltip>
+                                                                            );
+                                                                        })}
+                                                                    </ul>
+                                                                </TableCell>
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <TableCell align="center" key={h}></TableCell>
+                                                            );
+                                                        }
+                                                    })}
+                                                </TableRow>
+                                            );
+                                        })}
                                 </TableBody>
                             </Table>
                         </TableContainer>

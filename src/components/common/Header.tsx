@@ -74,7 +74,7 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/clientes' ? '#000' : '#fff',
+                        color: '#000',
                         backgroundColor: pathname === '/clientes' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/clientes')}
@@ -84,7 +84,7 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/horarios' ? '#000' : '#fff',
+                        color: '#000',
                         backgroundColor: pathname === '/horarios' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/horarios')}
@@ -94,7 +94,7 @@ export function Header() {
                 <Typography
                     sx={{
                         ...menuItemStyles,
-                        color: pathname === '/abm' ? '#000' : '#fff',
+                        color: '#000',
                         backgroundColor: pathname === '/abm' ? '#FFD700' : ''
                     }}
                     onClick={() => navigate('/abm')}
