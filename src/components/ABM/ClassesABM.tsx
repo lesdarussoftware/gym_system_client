@@ -8,10 +8,9 @@ import { useClasses } from "../../hooks/useClasses";
 import { DataGrid } from "../DataGrid/DataGrid";
 import { ModalComponent } from '../common/ModalComponent'
 import { ClassSchedules } from "./ClassSchedules";
-import { ClassTeachers } from "./ClassTeachers";
 
 import { getNumberInputAbsValue } from "../../helpers/math";
-import { NEW, EDIT, DELETE, VIEW_SCHEDULES, VIEW_TEACHERS } from '../../config/openTypes';
+import { NEW, EDIT, DELETE, VIEW_SCHEDULES } from '../../config/openTypes';
 
 export function ClassesABM() {
 
@@ -112,7 +111,8 @@ export function ClassesABM() {
                                 sx={{
                                     width: '50%',
                                     margin: '0 auto',
-                                    marginTop: 1
+                                    marginTop: 1,
+                                    color: '#fff'
                                 }}
                                 disabled={disabled}
                             >
@@ -163,21 +163,6 @@ export function ClassesABM() {
                 onClose={() => handleClose(reset)}
             >
                 <ClassSchedules formData={formData} />
-                <Box sx={{ marginTop: 1, display: 'flex', justifyContent: 'end' }}>
-                    <Button
-                        type="button"
-                        variant="outlined"
-                        onClick={() => handleClose(reset)}
-                    >
-                        Cerrar
-                    </Button>
-                </Box>
-            </ModalComponent>
-            <ModalComponent
-                open={open === VIEW_TEACHERS}
-                onClose={() => handleClose(reset)}
-            >
-                <ClassTeachers formData={formData} />
                 <Box sx={{ marginTop: 1, display: 'flex', justifyContent: 'end' }}>
                     <Button
                         type="button"

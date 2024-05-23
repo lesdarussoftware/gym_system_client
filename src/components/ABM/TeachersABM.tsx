@@ -153,6 +153,7 @@ export function TeachersABM() {
                                     marginTop: 1
                                 }}
                                 disabled={disabled}
+                                sx={{ color: '#fff' }}
                             >
                                 Guardar
                             </Button>

@@ -47,13 +47,13 @@ export function HomePage() {
             <Button
                 type="button"
                 variant="contained"
-                sx={{ display: 'block', margin: '0 auto', marginTop: 7, marginBottom: 1 }}
+                sx={{ display: 'block', margin: '0 auto', marginTop: 7, marginBottom: 1, color: '#fff' }}
                 onClick={() => navigate('/login')}
             >
                 Iniciar sesión
             </Button>
             <Box sx={{
-                height: 250,
+                height: 200,
                 padding: 1,
                 display: 'flex',
                 gap: 1,

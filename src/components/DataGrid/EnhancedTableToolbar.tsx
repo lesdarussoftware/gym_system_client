@@ -3,11 +3,10 @@ import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
-import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 
-import { NEW, EDIT, DELETE, VIEW_TEACHERS, VIEW_SCHEDULES, VIEW_MEMBERSHIP_DETAILS } from '../../config/openTypes';
+import { NEW, EDIT, DELETE, VIEW_SCHEDULES, VIEW_MEMBERSHIP_DETAILS } from '../../config/openTypes';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface EnhancedTableToolbarProps {
@@ -69,24 +68,14 @@ export function EnhancedTableToolbar({
                         </IconButton>
                     </Tooltip>
                     {showClassesDetails &&
-                        <>
-                            <Tooltip title={"Ver profesores"} onClick={() => {
-                                setOpen(VIEW_TEACHERS);
-                                setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                            }}>
-                                <IconButton>
-                                    <PersonSearchSharpIcon sx={{ color: '#CECECE !important' }} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title={"Ver días y horarios"} onClick={() => {
-                                setOpen(VIEW_SCHEDULES);
-                                setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                            }}>
-                                <IconButton>
-                                    <CalendarMonthSharpIcon sx={{ color: '#CECECE !important' }} />
-                                </IconButton>
-                            </Tooltip>
-                        </>
+                        <Tooltip title={"Ver días y horarios"} onClick={() => {
+                            setOpen(VIEW_SCHEDULES);
+                            setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                        }}>
+                            <IconButton>
+                                <CalendarMonthSharpIcon sx={{ color: '#CECECE !important' }} />
+                            </IconButton>
+                        </Tooltip>
                     }
                     {showMembershipDetails &&
                         <Tooltip title={"Ver detalles"} onClick={() => {

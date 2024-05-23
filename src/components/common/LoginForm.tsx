@@ -81,11 +81,17 @@ export function LoginForm({ submitAction }: LoginFormProps) {
                         }
                     </FormControl>
                     <FormControl>
-                        <Button type="submit" variant="contained" sx={{
-                            width: '50%',
-                            margin: '0 auto',
-                            marginTop: 1
-                        }} disabled={disabled}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                width: '50%',
+                                margin: '0 auto',
+                                marginTop: 1,
+                                color: '#fff'
+                            }}
+                            disabled={disabled}
+                        >
                             Ingresar
                         </Button>
                     </FormControl>

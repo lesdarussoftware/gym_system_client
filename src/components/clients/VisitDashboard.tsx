@@ -50,7 +50,7 @@ export function VisitDashboard() {
                     <Button
                         type="button"
                         variant="contained"
-                        sx={{ marginBottom: 2 }}
+                        sx={{ marginBottom: 2, color: '#fff' }}
                         onClick={() => setClient(null)}
                     >
                         Buscar nuevo cliente
@@ -92,6 +92,7 @@ export function VisitDashboard() {
                                 type="submit"
                                 variant="contained"
                                 disabled={disabled}
+                                sx={{ color: '#fff' }}
                             >
                                 Buscar
                             </Button>

@@ -155,6 +155,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
                     type="submit"
                     variant="contained"
                     disabled={disabled}
+                    sx={{ color: '#fff' }}
                 >
                     Guardar
                 </Button>
