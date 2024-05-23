@@ -3,16 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
 
 import { AuthContext } from "../providers/AuthProvider";
-import { ThemeContext } from "../App";
 
 import { LoginForm } from "../components/common/LoginForm";
-import { DARK } from "../config/themes";
 
 export function LoginPage() {
 
     const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
-    const { theme } = useContext(ThemeContext);
 
     useEffect(() => {
         if (auth) navigate('/clientes');
@@ -28,7 +25,7 @@ export function LoginPage() {
                 flexDirection: 'column',
                 gap: 3
             }}>
-                <Typography variant="h2" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                <Typography variant="h2" sx={{ color: '#000' }}>
                     Lesda Gym
                 </Typography>
                 <LoginForm submitAction={() => navigate('/clientes')} />

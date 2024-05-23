@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,13 +10,11 @@ import { es } from 'date-fns/locale/es';
 import { Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useMemberships } from "../../hooks/useMemberships";
-import { ThemeContext } from "../../App";
 
 import { ModalComponent } from "../common/ModalComponent";
 
 import { STATUS_CODES } from "../../config/statusCodes";
 import { DELETE } from "../../config/openTypes";
-import { DARK } from "../../config/themes";
 
 type HandleVisitsProps = {
     visits: any;
@@ -31,7 +29,6 @@ export function HandleVisits({
 }: HandleVisitsProps) {
 
     const { addVisit, removeVisit } = useMemberships();
-    const { theme } = useContext(ThemeContext);
     const { formData, setFormData, handleChange } = useForm({
         defaultData: { id: '', date: new Date(Date.now()), membership_class_id: '' },
         rules: { date: { required: true } }
@@ -57,7 +54,7 @@ export function HandleVisits({
 
     return (
         <>
-            <Box sx={{ width: '23%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1, color: theme.mode === DARK ? '#fff' : '#000' }}>
+            <Box sx={{ width: '23%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1, color: '#000' }}>
                 <Typography variant="h6">
                     Historial
                 </Typography>
@@ -92,7 +89,7 @@ export function HandleVisits({
                 </TableContainer>
             </Box>
             <Box sx={{ width: '32%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1 }}>
-                <Typography variant="h6" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                <Typography variant="h6" sx={{ color: '#000' }}>
                     Registrar nueva visita
                 </Typography>
                 <Box sx={{ margin: 2, padding: 1 }}>
@@ -123,7 +120,7 @@ export function HandleVisits({
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     borderRadius: 1,
-                                    boxShadow: `0 0 3px ${theme.mode === DARK ? '#fff' : '#BDBDBD'}`,
+                                    boxShadow: '0 0 3px #BDBDBD',
                                     gap: 1,
                                     padding: 5,
                                     wordWrap: 'break-word',

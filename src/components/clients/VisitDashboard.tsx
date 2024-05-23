@@ -5,21 +5,18 @@ import { DataContext } from "../../providers/DataProvider";
 import { MessageContext } from "../../providers/MessageProvider";
 import { HandleClientContext } from "../../providers/HandleClientProvider";
 import { useForm } from "../../hooks/useForm";
-import { ThemeContext } from "../../App";
 
 import { MemebershipsABM } from "./MembershipsABM";
 import { Accordion, AccordionDetails, AccordionSummary } from "../common/MUIAccordion";
 import { ShowCurrentMembership } from "./ShowCurrentMembership";
 
 import { ERROR } from "../../config/messageProviderTypes";
-import { DARK } from "../../config/themes";
 
 export function VisitDashboard() {
 
     const { state } = useContext(DataContext);
     const { setSeverity, setMessage, setOpenMessage } = useContext(MessageContext);
     const { client, setClient } = useContext(HandleClientContext);
-    const { theme } = useContext(ThemeContext);
     const { formData, errors, validate, handleChange, disabled, setDisabled, reset } = useForm({
         defaultData: { dni: '' },
         rules: { dni: { required: true } }
@@ -74,7 +71,7 @@ export function VisitDashboard() {
                 </> :
                 <>
                     <Box textAlign="center">
-                        <Typography variant="h5" marginBottom={2} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                        <Typography variant="h5" marginBottom={2} sx={{ color: '#000' }}>
                             Ingrese el DNI de un cliente
                         </Typography>
                         <form
@@ -83,8 +80,8 @@ export function VisitDashboard() {
                             style={{ display: 'flex', alignItems: 'end', gap: '10px', justifyContent: 'center' }}
                         >
                             <FormControl>
-                                <InputLabel htmlFor="dni" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>N°</InputLabel>
-                                <Input id="dni" type="tel" name="dni" value={formData.dni} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }} />
+                                <InputLabel htmlFor="dni" sx={{ color: '#000' }}>N°</InputLabel>
+                                <Input id="dni" type="tel" name="dni" value={formData.dni} sx={{ color: '#000' }} />
                                 {errors.dni?.type === 'required' &&
                                     <Typography variant="caption" color="red" marginTop={1}>
                                         * El dni es requerido.

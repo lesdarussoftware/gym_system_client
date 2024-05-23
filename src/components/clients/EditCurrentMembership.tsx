@@ -8,7 +8,6 @@ import { DataContext, Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClients } from "../../hooks/useClients";
 import { useMemberships } from "../../hooks/useMemberships";
-import { ThemeContext } from "../../App";
 
 import { AddMembershipForm } from "./AddMembershipForm";
 import { HandleVisits } from "./HandleVisits";
@@ -16,7 +15,6 @@ import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
 import { DELETE, EDIT } from "../../config/openTypes";
-import { DARK } from "../../config/themes";
 
 type EditCurrentMembershipProps = {
     membership: Membership;
@@ -25,7 +23,6 @@ type EditCurrentMembershipProps = {
 export function EditCurrentMembership({ membership }: EditCurrentMembershipProps) {
 
     const { state } = useContext(DataContext);
-    const { theme } = useContext(ThemeContext);
     const { open, setOpen, handleClose } = useClients();
     const { handleSubmit, handleDelete, addMembershipClass, removeMembershipClass } = useMemberships()
     const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
@@ -66,18 +63,18 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 borderRadius: 1,
                 border: '1px solid #BDBDBD',
                 padding: 1,
-                color: theme.mode === DARK ? '#fff' : '#000'
+                color: '#000'
             }}>
                 <Typography variant="h6">
                     Detalles
                 </Typography>
                 <Tooltip title="Eliminar" onClick={() => setOpen(DELETE)}>
-                    <IconButton sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                    <IconButton sx={{ color: '#000' }}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Editar"} onClick={() => setOpen(EDIT)}>
-                    <IconButton sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                    <IconButton sx={{ color: '#000' }}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
@@ -106,7 +103,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                     </tbody>
                 </table>
                 <Box sx={{ marginTop: 1 }}>
-                    <Divider textAlign="center" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                    <Divider textAlign="center" sx={{ color: '#000' }}>
                         Clases
                     </Divider>
                     <Stack direction="row" flexWrap="wrap" gap={1} spacing={1} padding={1}>
@@ -121,11 +118,11 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                                                 color: '#fff',
                                                 backgroundColor: 'gray'
                                             }}
-                                            />
-                                        );
-                                    } else {
-                                        return (
-                                            <Chip
+                                        />
+                                    );
+                                } else {
+                                    return (
+                                        <Chip
                                             key={c.id}
                                             label={c.name}
                                             sx={{
@@ -152,7 +149,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                                         sx={{
                                             backgroundColor: '#fff',
                                             ':hover': {
-                                                color: theme.mode === DARK ? '#fff' : '#000',
+                                                color: '#000',
                                             }
                                         }}
                                         onClick={() => addMembershipClass({

@@ -5,14 +5,12 @@ import { Client, DataContext } from "../../providers/DataProvider";
 import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
 import { useMemberships } from "../../hooks/useMemberships";
-import { ThemeContext } from "../../App";
 
 import { EditCurrentMembership } from "./EditCurrentMembership";
 import { AddMembershipForm } from "./AddMembershipForm";
 
 import { membershipIsActive } from "../../helpers/membership";
 import { NEW } from "../../config/openTypes";
-import { DARK } from "../../config/themes";
 
 type ShowCurrentMembershipProps = {
     client: Client;
@@ -22,7 +20,6 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
 
     const { state } = useContext(DataContext);
     const { handleSubmit } = useMemberships();
-    const { theme } = useContext(ThemeContext);
     const { open, setOpen, handleClose } = useClients();
     const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
         defaultData: {
@@ -48,7 +45,7 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
             {membership ?
                 <EditCurrentMembership membership={membership} /> :
                 <>
-                    <Typography variant="h5" marginBottom={2} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                    <Typography variant="h5" marginBottom={2} sx={{ color: '#000' }}>
                         El cliente no tiene una membresía activa
                     </Typography>
                     <Button type="button" variant="outlined" onClick={() => setOpen(NEW)}>

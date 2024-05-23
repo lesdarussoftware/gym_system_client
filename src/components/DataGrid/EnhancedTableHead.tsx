@@ -2,10 +2,6 @@ import { useContext } from "react";
 import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import { visuallyHidden } from '@mui/utils';
 
-import { ThemeContext } from "../../App";
-
-import { DARK } from "../../config/themes";
-
 export interface HeadCell {
     id: string;
     label: string;
@@ -36,15 +32,13 @@ export function EnhancedTableHead({
     stopPointerEvents
 }: EnhancedTableHeadProps) {
 
-    const { theme } = useContext(ThemeContext);
-
     const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
     return (
         <TableHead>
-            <TableRow sx={{ backgroundColor: theme.mode === DARK ? '#011627' : '#fff' }}>
+            <TableRow sx={{ backgroundColor: '#fff' }}>
                 {!stopPointerEvents &&
                     <TableCell padding="checkbox">
                         <Checkbox
@@ -55,7 +49,7 @@ export function EnhancedTableHead({
                             inputProps={{
                                 'aria-label': 'select all desserts',
                             }}
-                            sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
+                            sx={{ color: '#011627' }}
                         />
                     </TableCell>
                 }

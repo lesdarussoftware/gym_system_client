@@ -14,10 +14,6 @@ import Switch from '@mui/material/Switch';
 
 import { EnhancedTableHead, HeadCell } from './EnhancedTableHead';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
-import { ThemeContext } from '../../App';
-
-import { DARK } from '../../config/themes';
-import { makeStyles } from '@mui/material';
 
 interface DataGridProps {
     children?: React.ReactNode;
@@ -74,8 +70,6 @@ export function DataGrid({
     showMembershipDetails,
     hideAddMembership
 }: DataGridProps) {
-
-    const { theme } = React.useContext(ThemeContext);
 
     const [order, setOrder] = React.useState<'asc' | 'desc'>(defaultOrder);
     const [orderBy, setOrderBy] = React.useState<string>(defaultOrderBy);
@@ -136,7 +130,7 @@ export function DataGrid({
     );
 
     return (
-        <Box sx={{ width: '100%', backgroundColor: theme.mode === DARK ? '#011627' : '#fff' }}>
+        <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 {setOpen && setFormData &&
                     <EnhancedTableToolbar
@@ -183,16 +177,6 @@ export function DataGrid({
                                         tabIndex={-1}
                                         key={row.id ?? index}
                                         selected={isItemSelected}
-                                        sx={{
-                                            backgroundColor: isItemSelected
-                                                ? (theme.mode === DARK ? '#1e3a8a !important' : '#cce7ff') // Color de fondo cuando la fila está seleccionada
-                                                : (theme.mode === DARK ? '#011627 !important' : '#fff'), // Color de fondo normal
-                                            ':hover': {
-                                                backgroundColor: isItemSelected
-                                                    ? (theme.mode === DARK ? '#1e3a8a !important' : '#cce7ff !important') // Color de fondo cuando está seleccionada y se hace hover
-                                                    : (theme.mode === DARK ? '#003892 !important' : ''), // Color de fondo cuando solo se hace hover
-                                            }
-                                        }}
                                     >
                                         {!stopPointerEvents &&
                                             <TableCell padding="checkbox">
@@ -202,7 +186,7 @@ export function DataGrid({
                                                     inputProps={{
                                                         'aria-labelledby': labelId,
                                                     }}
-                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
+                                                    sx={{ color: '#011627' }}
                                                 />
                                             </TableCell>
                                         }
@@ -212,7 +196,7 @@ export function DataGrid({
                                                 align="center"
                                                 sx={{
                                                     cursor: 'pointer',
-                                                    color: theme.mode === DARK ? '#fff' : '#011627'
+                                                    color: '#011627'
                                                 }}
                                             >
                                                 {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
@@ -235,8 +219,8 @@ export function DataGrid({
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     sx={{
-                        backgroundColor: theme.mode === DARK ? '#011627' : '#fff',
-                        color: theme.mode === DARK ? '#fff' : '#000'
+                        backgroundColor: '#fff',
+                        color: '#000'
                     }}
                     slotProps={{
                         actions: {
@@ -259,7 +243,7 @@ export function DataGrid({
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Condensar tabla"
-                sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
+                sx={{ color: '#011627' }}
             />
         </Box>
     );

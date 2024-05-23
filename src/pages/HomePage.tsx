@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SecuritySharpIcon from '@mui/icons-material/SecuritySharp';
@@ -6,16 +5,13 @@ import MonetizationOnSharpIcon from '@mui/icons-material/MonetizationOnSharp';
 import MarkEmailReadSharpIcon from '@mui/icons-material/MarkEmailReadSharp';
 import SupportAgentSharpIcon from '@mui/icons-material/SupportAgentSharp';
 
-import { ThemeContext } from "../App";
 
 import { Footer } from "../components/common/Footer";
 
-import { DARK } from "../config/themes";
 
 export function HomePage() {
 
     const navigate = useNavigate();
-    const { theme } = useContext(ThemeContext);
 
     const featureContainerStyles = {
         width: 200,
@@ -29,7 +25,7 @@ export function HomePage() {
 
     const featureContainerTextStyles = {
         textAlign: 'center',
-        color: theme.mode === DARK ? '#fff' : '#000'
+        color: '#000'
     };
 
     const iconStyles = {
@@ -41,10 +37,10 @@ export function HomePage() {
     return (
         <Box sx={{ padding: 5, height: '100vh' }}>
             <Box sx={{ marginBottom: 3 }}>
-                <Typography variant="h1" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                <Typography variant="h1" sx={{ color: '#000' }}>
                     Lesda Gym
                 </Typography>
-                <Typography variant="h2" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>
+                <Typography variant="h2" sx={{ color: '#000' }}>
                     La mejor experiencia para tu gimnasio
                 </Typography>
             </Box>

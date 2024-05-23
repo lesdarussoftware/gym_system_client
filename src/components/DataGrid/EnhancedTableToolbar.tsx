@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { IconButton, Toolbar, Tooltip } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -8,10 +7,7 @@ import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 
-import { ThemeContext } from '../../App';
-
 import { NEW, EDIT, DELETE, VIEW_TEACHERS, VIEW_SCHEDULES, VIEW_MEMBERSHIP_DETAILS } from '../../config/openTypes';
-import { DARK } from '../../config/themes';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface EnhancedTableToolbarProps {
@@ -35,9 +31,6 @@ export function EnhancedTableToolbar({
     showMembershipDetails,
     hideAddMembership
 }: EnhancedTableToolbarProps) {
-
-    const { theme } = useContext(ThemeContext);
-
     return (
         <Toolbar
             sx={{
@@ -47,7 +40,7 @@ export function EnhancedTableToolbar({
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                 }),
-                backgroundColor: theme.mode === DARK ? '#011627' : '#fff'
+                backgroundColor: '#fff'
             }}
         >
             {(selected.length === 0 && !hideAddMembership) &&

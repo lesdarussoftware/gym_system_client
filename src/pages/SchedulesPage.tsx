@@ -5,13 +5,11 @@ import { styled } from '@mui/material/styles';
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
 import { useClasses } from "../hooks/useClasses";
-import { ThemeContext } from "../App";
 
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
 
 import { DAYS } from "../config/schedules";
-import { DARK } from "../config/themes";
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -29,7 +27,6 @@ export function SchedulesPage() {
 
     const { auth } = useContext(AuthContext);
     const { state } = useContext(DataContext);
-    const { theme } = useContext(ThemeContext);
     useClasses();
 
     const headers = [
@@ -52,7 +49,7 @@ export function SchedulesPage() {
                             component={Paper}
                             sx={{
                                 width: '100%',
-                                backgroundColor: theme.mode === DARK ? '#011627' : '#f5f5f5'
+                                backgroundColor: '#f5f5f5'
                             }}
                         >
                             <Table>
@@ -62,7 +59,7 @@ export function SchedulesPage() {
                                         {headers.map(h => (
                                             <TableCell
                                                 align="center"
-                                                sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
+                                                sx={{ color: '#011627' }}
                                                 key={h}
                                             >
                                                 {h}
@@ -80,7 +77,7 @@ export function SchedulesPage() {
                                             <TableRow key={c.id}>
                                                 <TableCell
                                                     align="center"
-                                                    sx={{ color: theme.mode === DARK ? '#fff' : '#011627' }}
+                                                    sx={{ color: '#011627' }}
                                                 >
                                                     {c.name}
                                                 </TableCell>
@@ -89,7 +86,7 @@ export function SchedulesPage() {
                                                         return (
                                                             <TableCell align="center" key={h}
                                                                 sx={{
-                                                                    color: theme.mode === DARK ? '#fff' : '#011627',
+                                                                    color: '#011627',
                                                                     transition: '300ms all',
                                                                     ':hover': {
                                                                         backgroundColor: '#BDBDBD'

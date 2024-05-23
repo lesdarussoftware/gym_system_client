@@ -6,8 +6,6 @@ import MuiAccordionSummary, {
 } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 
-import { DARK } from '../../config/themes';
-
 export const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -37,7 +35,7 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
 }));
 
 export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    backgroundColor: theme.mode === DARK ? '#011627' : '#fff',
+    backgroundColor: '#fff',
     padding: theme.spacing(1),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));

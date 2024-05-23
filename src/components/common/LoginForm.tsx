@@ -2,13 +2,11 @@ import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
 import { AuthContext } from "../../providers/AuthProvider";
-import { ThemeContext } from "../../App";
 import { useForm } from "../../hooks/useForm";
 import { useAuth } from "../../hooks/useAuth";
 
 import { STATUS_CODES } from "../../config/statusCodes";
 
-import { DARK } from "../../config/themes";
 
 type LoginFormProps = {
     submitAction?: () => void;
@@ -17,7 +15,6 @@ type LoginFormProps = {
 export function LoginForm({ submitAction }: LoginFormProps) {
 
     const { setAuth } = useContext(AuthContext);
-    const { theme } = useContext(ThemeContext);
     const { formData, errors, disabled, setDisabled, handleChange, validate } = useForm({
         defaultData: { username: '', password: '' },
         rules: {
@@ -51,8 +48,8 @@ export function LoginForm({ submitAction }: LoginFormProps) {
             <form onChange={handleChange} onSubmit={handleSubmit}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                     <FormControl>
-                        <InputLabel htmlFor="username" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>Usuario</InputLabel>
-                        <Input id="username" type="text" name="username" value={formData.username} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }} />
+                        <InputLabel htmlFor="username" sx={{ color: '#000' }}>Usuario</InputLabel>
+                        <Input id="username" type="text" name="username" value={formData.username} sx={{ color: '#000' }} />
                         {errors.username?.type === 'required' &&
                             <Typography variant="caption" color="red" marginTop={1}>
                                 * El nombre de usuario es requerido.
@@ -65,8 +62,8 @@ export function LoginForm({ submitAction }: LoginFormProps) {
                         }
                     </FormControl>
                     <FormControl>
-                        <InputLabel htmlFor="password" sx={{ color: theme.mode === DARK ? '#fff' : '#000' }}>Contraseña</InputLabel>
-                        <Input id="password" type="password" name="password" value={formData.password} sx={{ color: theme.mode === DARK ? '#fff' : '#000' }} />
+                        <InputLabel htmlFor="password" sx={{ color: '#000' }}>Contraseña</InputLabel>
+                        <Input id="password" type="password" name="password" value={formData.password} sx={{ color: '#000' }} />
                         {errors.password?.type === 'required' &&
                             <Typography variant="caption" color="red" marginTop={1}>
                                 * La contraseña es requerida.
