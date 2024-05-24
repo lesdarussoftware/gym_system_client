@@ -18,7 +18,7 @@ export function useClasses() {
     const { state, dispatch } = useContext(DataContext);
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
-    const [open, setOpen] = useState(null);
+    const [open, setOpen] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -40,11 +40,10 @@ export function useClasses() {
     ) => {
         e.preventDefault();
         if (validate()) {
-            const methods = { [NEW]: 'POST', [EDIT]: 'PUT' };
             const urls = { [NEW]: CLASS_URL, [EDIT]: `${CLASS_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
-                url: urls[open!],
-                method: methods[open!],
+                url: open === NEW || open === EDIT ? urls[open] : '',
+                method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
                 body: JSON.stringify({
                     ...formData,
                     gym_hash: auth?.me.gym.hash
@@ -88,14 +87,16 @@ export function useClasses() {
     ) => {
         e.preventDefault();
         if (validate()) {
+            const urls = { [NEW]: SCHEDULE_URL, [EDIT]: `${SCHEDULE_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
-                url: SCHEDULE_URL,
-                method: 'POST',
+                url: open === NEW || open === EDIT ? urls[open] : '',
+                method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
                 body: JSON.stringify({
                     ...formData,
                     gym_hash: auth?.me.gym.hash
                 })
             });
+            setDisabled(false);
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLASSES,
@@ -111,12 +112,33 @@ export function useClasses() {
                     ]
                 });
                 setMessage('Horario registrado correctamente.');
-                setSeverity(SUCCESS);
-                handleClose(reset);
-            } else {
+            } else if (status === STATUS_CODES.OK) {
+                dispatch({
+                    type: SET_CLASSES,
+                    payload: [
+                        ...state.classes.filter(item => item.id !== data.class_id),
+                        {
+                            ...state.classes.find(item => item.id === data.class_id)!,
+                            schedules: [
+                                data,
+                                ...state.classes.find(item => item.id === data.class_id)!.schedules
+                                    .filter(s => s.id !== data.id)
+                            ]
+                        }
+                    ]
+                });
+                setMessage('Horario editado correctamente.');
+            } else if (status === STATUS_CODES.SERVER_ERROR) {
                 setMessage(data.message);
                 setSeverity(ERROR);
-                setDisabled(false);
+            } else {
+                setMessage('Hubo un problema al procesar la solicitud.');
+                setSeverity(ERROR);
+            }
+            if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
+                setSeverity(SUCCESS);
+                setOpen(null);
+                handleClose(reset);
             }
             setOpenMessage(true);
         }
