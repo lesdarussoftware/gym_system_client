@@ -12,6 +12,8 @@ import { LoginPage } from "./pages/LoginPage";
 import { ClientsPage } from "./pages/ClientsPage";
 import { SchedulesPage } from "./pages/SchedulesPage";
 import { ABMPage } from "./pages/ABMPage";
+import { ProfilePage } from "./pages/Profile";
+import { LicensePage } from "./pages/LicensePage";
 import { ErrorPage } from "./pages/ErrorPage";
 
 import { MAIN_COLOR } from "./config/colors";
@@ -41,6 +43,8 @@ function App() {
                   <Route path="/clientes" element={<ClientsPage />} />
                   <Route path="/horarios" element={<SchedulesPage />} />
                   <Route path="/abm" element={<ABMPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/license" element={<LicensePage />} />
                   <Route path="*" element={<ErrorPage />} />
                 </Routes>
               </BrowserRouter>

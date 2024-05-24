@@ -1,51 +1,52 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import Logout from '@mui/icons-material/Logout';
+import React, { useState, useContext } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Logout from '@mui/icons-material/Logout'
 
-import { AuthContext } from '../../providers/AuthProvider';
-import { useQuery } from '../../hooks/useQuery';
+import { AuthContext } from '../../providers/AuthProvider'
+import { useQuery } from '../../hooks/useQuery'
 
-import { LOGOUT_URL } from '../../config/urls';
-import { MAIN_COLOR } from '../../config/colors';
+import { LOGOUT_URL } from '../../config/urls'
+import { MAIN_COLOR } from '../../config/colors'
 
 export function Header() {
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const navigate = useNavigate();
-    const { handleQuery } = useQuery();
-    const { auth, setAuth } = React.useContext(AuthContext);
-    const { pathname } = useLocation();
+    const { auth, setAuth } = useContext(AuthContext)
+
+    const navigate = useNavigate()
+    const { pathname } = useLocation()
+
+    const { handleQuery } = useQuery()
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
 
     const handleClose = () => {
-        setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
 
     const handleLogout = () => {
         handleQuery({
             url: LOGOUT_URL,
             method: 'POST',
             token: auth?.refresh_token
-        });
-        setAnchorEl(null);
-        setAuth(null);
-        localStorage.removeItem('auth');
+        })
+        setAnchorEl(null)
+        setAuth(null)
+        localStorage.removeItem('auth')
         navigate('/')
-    };
+    }
 
     const menuItemStyles = {
         minWidth: 100,
@@ -105,18 +106,18 @@ export function Header() {
                 >
                     ABM
                 </Typography>
-                <Tooltip title="Account settings">
-                    <IconButton
-                        onClick={handleClick}
-                        size="small"
-                        sx={{ ml: 2 }}
-                        aria-controls={open ? 'account-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                    >
-                        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-                    </IconButton>
-                </Tooltip>
+                <IconButton
+                    onClick={handleClick}
+                    size="small"
+                    sx={{ ml: 2 }}
+                    aria-controls={open ? 'account-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                >
+                    <Avatar sx={{ width: 32, height: 32 }}>
+                        {auth?.me.first_name.charAt(0).toUpperCase()}{auth?.me.last_name.charAt(0).toUpperCase()}
+                    </Avatar>
+                </IconButton>
             </Box>
             <Menu
                 anchorEl={anchorEl}
@@ -153,10 +154,10 @@ export function Header() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => navigate('/profile')}>
                     <Avatar /> Perfil
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => navigate('/license')}>
                     <Avatar /> Licencia
                 </MenuItem>
                 <Divider />
@@ -168,5 +169,5 @@ export function Header() {
                 </MenuItem>
             </Menu>
         </Box>
-    );
+    )
 }
