@@ -14,12 +14,14 @@ import { SchedulesPage } from "./pages/SchedulesPage";
 import { ABMPage } from "./pages/ABMPage";
 import { ErrorPage } from "./pages/ErrorPage";
 
+import { MAIN_COLOR } from "./config/colors";
+
 function App() {
 
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#00C52C'
+        main: MAIN_COLOR
       },
     },
   });

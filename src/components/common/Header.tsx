@@ -16,6 +16,7 @@ import { AuthContext } from '../../providers/AuthProvider';
 import { useQuery } from '../../hooks/useQuery';
 
 import { LOGOUT_URL } from '../../config/urls';
+import { MAIN_COLOR } from '../../config/colors';
 
 export function Header() {
 
@@ -56,7 +57,7 @@ export function Header() {
         ':hover': {
             cursor: 'pointer',
             color: '#fff',
-            backgroundColor: '#00C52C'
+            backgroundColor: MAIN_COLOR
         }
     }
 
@@ -76,7 +77,7 @@ export function Header() {
                         ...menuItemStyles,
                         paddingY: 0.5,
                         color: pathname === '/clientes' ? '#fff' : '#000',
-                        backgroundColor: pathname === '/clientes' ? '#00C52C' : ''
+                        backgroundColor: pathname === '/clientes' ? MAIN_COLOR : ''
                     }}
                     onClick={() => navigate('/clientes')}
                 >
@@ -87,7 +88,7 @@ export function Header() {
                         ...menuItemStyles,
                         paddingY: 0.5,
                         color: pathname === '/horarios' ? '#fff' : '#000',
-                        backgroundColor: pathname === '/horarios' ? '#00C52C' : ''
+                        backgroundColor: pathname === '/horarios' ? MAIN_COLOR : ''
                     }}
                     onClick={() => navigate('/horarios')}
                 >
@@ -98,7 +99,7 @@ export function Header() {
                         ...menuItemStyles,
                         paddingY: 0.5,
                         color: pathname === '/abm' ? '#fff' : '#000',
-                        backgroundColor: pathname === '/abm' ? '#00C52C' : ''
+                        backgroundColor: pathname === '/abm' ? MAIN_COLOR : ''
                     }}
                     onClick={() => navigate('/abm')}
                 >

@@ -5,9 +5,9 @@ import MonetizationOnSharpIcon from '@mui/icons-material/MonetizationOnSharp';
 import MarkEmailReadSharpIcon from '@mui/icons-material/MarkEmailReadSharp';
 import SupportAgentSharpIcon from '@mui/icons-material/SupportAgentSharp';
 
-
 import { Footer } from "../components/common/Footer";
 
+import { MAIN_COLOR } from "../config/colors";
 
 export function HomePage() {
 
@@ -31,7 +31,7 @@ export function HomePage() {
     const iconStyles = {
         flex: 1,
         transform: 'scale(3)',
-        color: '#00C52C'
+        color: MAIN_COLOR
     };
 
     return (
