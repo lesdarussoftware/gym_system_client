@@ -26,15 +26,6 @@ export interface Membership {
     updated_at: Date;
 }
 
-interface TeacherClass {
-    teacher_id: number;
-    teacher: Teacher;
-    class_id: number;
-    class: Class;
-    created_at: Date;
-    updated_at: Date;
-}
-
 interface MembershipClass {
     id: number;
     membership_id: number;
@@ -46,10 +37,12 @@ interface MembershipClass {
     updated_at: Date;
 }
 
-interface Schedule {
+export interface Schedule {
     id: number;
     class_id: number;
     class: Class;
+    teacher_id: number;
+    teacher: Teacher;
     day: 'Lunes' | 'Martes' | 'Miercoles' | 'Jueves' | 'Viernes' | 'Sabado' | 'Domingo';
     hour: number;
     observations?: string;
@@ -90,7 +83,6 @@ interface Teacher {
     last_name: string;
     email?: string | null;
     phone?: string | null;
-    classes: TeacherClass[];
     created_at: Date;
     updated_at: Date;
 }
@@ -100,7 +92,6 @@ export interface Class {
     gym_hash: string;
     name: string;
     duration?: number | null;
-    teachers: TeacherClass[];
     schedules: Schedule[];
     memberships: MembershipClass[];
     created_at: Date;

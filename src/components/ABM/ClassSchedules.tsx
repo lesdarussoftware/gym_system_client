@@ -3,9 +3,10 @@ import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Typograp
 import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { Class, DataContext } from "../../providers/DataProvider";
+import { Class, DataContext, Schedule } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClasses } from "../../hooks/useClasses";
+import { useTeachers } from "../../hooks/useTeachers";
 
 import { DataGrid } from "../DataGrid/DataGrid";
 
@@ -27,10 +28,22 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
         disabled,
         reset
     } = useForm({
-        defaultData: { class_id: formData.id, day: '', hour: '', observations: '' },
-        rules: { day: { required: true, }, hour: { required: true }, observations: { maxLength: 255 } }
+        defaultData: {
+            class_id: formData.id,
+            teacher_id: '',
+            day: '',
+            hour: '',
+            observations: ''
+        },
+        rules: {
+            day: { required: true, },
+            teacher_id: { required: true },
+            hour: { required: true },
+            observations: { maxLength: 255 }
+        }
     });
     const { handleSubmitSchedule, handleDeleteSchedule } = useClasses();
+    useTeachers();
 
     const headCells = [
         {
@@ -46,6 +59,13 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
             disablePadding: true,
             label: 'Hora',
             accessor: 'hour'
+        },
+        {
+            id: 'teacher_id',
+            numeric: false,
+            disablePadding: true,
+            label: 'Profesor',
+            accessor: (row: Schedule) => `${row.teacher.first_name} ${row.teacher.last_name}`
         },
         {
             id: 'observations',
@@ -135,6 +155,27 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
                             }
                         </FormControl>
                     </Box>
+                    <FormControl sx={{ width: '100%' }}>
+                        <InputLabel id="teacher-select">Profesor</InputLabel>
+                        <Select
+                            labelId="teacher-select"
+                            id="teacher_id"
+                            value={newSchedule.teacher_id}
+                            label="Profesor"
+                            name="teacher_id"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">Seleccione</MenuItem>
+                            {state.teachers.map(t => (
+                                <MenuItem key={t.id} value={t.id}>{`${t.first_name} ${t.last_name}`}</MenuItem>
+                            ))}
+                        </Select>
+                        {errors.teacher_id?.type === 'required' &&
+                            <Typography variant="caption" color="red" marginTop={1}>
+                                * El profesor es requerido.
+                            </Typography>
+                        }
+                    </FormControl>
                     <FormControl>
                         <InputLabel htmlFor="observations">Detalles</InputLabel>
                         <Input
