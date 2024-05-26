@@ -15,6 +15,7 @@ import { ModalComponent } from "../common/ModalComponent";
 
 import { STATUS_CODES } from "../../config/statusCodes";
 import { DELETE } from "../../config/openTypes";
+import { MAIN_COLOR } from "../../config/colors";
 
 type HandleVisitsProps = {
     visits: any;
@@ -125,6 +126,7 @@ export function HandleVisits({
                                     padding: 5,
                                     wordWrap: 'break-word',
                                     transition: '100ms all',
+                                    color: MAIN_COLOR,
                                     transform: formData.membership_class_id === c.id ? 'scale(1.1)' : '',
                                     ':hover': {
                                         cursor: 'pointer'
@@ -150,6 +152,7 @@ export function HandleVisits({
                     variant="contained"
                     disabled={formData.membership_class_id === ''}
                     sx={{
+                        color: '#fff',
                         ":disabled": {
                             color: '#A6A6A6',
                             backgroundColor: '#E0E0E0'
@@ -201,7 +204,8 @@ export function HandleVisits({
                         sx={{
                             width: '50%',
                             margin: '0 auto',
-                            marginTop: 1
+                            marginTop: 1,
+                            color: '#fff'
                         }}
                         onClick={() => {
                             removeVisit({

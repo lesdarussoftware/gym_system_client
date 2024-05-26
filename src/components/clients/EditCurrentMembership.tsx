@@ -15,6 +15,7 @@ import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
 import { DELETE, EDIT } from "../../config/openTypes";
+import { MAIN_COLOR } from "../../config/colors";
 
 type EditCurrentMembershipProps = {
     membership: Membership;
@@ -69,12 +70,12 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                     Detalles
                 </Typography>
                 <Tooltip title="Eliminar" onClick={() => setOpen(DELETE)}>
-                    <IconButton sx={{ color: '#000' }}>
+                    <IconButton>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Editar"} onClick={() => setOpen(EDIT)}>
-                    <IconButton sx={{ color: '#000' }}>
+                    <IconButton>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
@@ -116,7 +117,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                                             label={c.name}
                                             sx={{
                                                 color: '#fff',
-                                                backgroundColor: 'gray'
+                                                backgroundColor: MAIN_COLOR
                                             }}
                                         />
                                     );
@@ -125,11 +126,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                                         <Chip
                                             key={c.id}
                                             label={c.name}
-                                            sx={{
-                                                border: '1px solid #fff',
-                                                color: '#fff',
-                                                backgroundColor: 'gray'
-                                            }}
+                                            sx={{ border: '1px solid #fff' }}
                                             onDelete={() => removeMembershipClass({
                                                 client_id: membership.client_id,
                                                 membership_id: membership.id,

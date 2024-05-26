@@ -30,6 +30,7 @@ export function useMemberships() {
         e.preventDefault();
         if (validate()) {
             const urls = { [NEW]: MEMBERSHIP_URL, [EDIT]: `${MEMBERSHIP_URL}/${auth?.me.gym.hash}/${formData.id}` };
+            console.log(open)
             const { status, data } = await handleQuery({
                 url: open === NEW || open === EDIT ? urls[open] : '',
                 method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
@@ -322,5 +323,15 @@ export function useMemberships() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleDelete, addMembershipClass, removeMembershipClass, addVisit, removeVisit }
+    return {
+        handleSubmit,
+        handleDelete,
+        addMembershipClass,
+        removeMembershipClass,
+        addVisit,
+        removeVisit,
+        handleClose,
+        open,
+        setOpen
+    }
 }

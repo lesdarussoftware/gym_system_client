@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Box, Button, Typography } from "@mui/material";
 
 import { Client, DataContext } from "../../providers/DataProvider";
-import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
 import { useMemberships } from "../../hooks/useMemberships";
 
@@ -19,8 +18,7 @@ type ShowCurrentMembershipProps = {
 export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
 
     const { state } = useContext(DataContext);
-    const { handleSubmit } = useMemberships();
-    const { open, setOpen, handleClose } = useClients();
+    const { handleSubmit, open, setOpen, handleClose } = useMemberships();
     const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
         defaultData: {
             id: '',
