@@ -10,7 +10,6 @@ import { LoginForm } from "../components/common/LoginForm";
 export function LicensePage() {
 
     const { auth } = useContext(AuthContext);
-
     const { license } = useLicense();
 
     return (

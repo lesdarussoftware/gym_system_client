@@ -10,12 +10,13 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Logout from '@mui/icons-material/Logout'
+import ArticleIcon from '@mui/icons-material/Article';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import { AuthContext } from '../../providers/AuthProvider'
-import { useQuery } from '../../hooks/useQuery'
 
-import { LOGOUT_URL } from '../../config/urls'
 import { MAIN_COLOR } from '../../config/colors'
+import { useAuth } from '../../hooks/useAuth'
 
 export function Header() {
 
@@ -24,7 +25,8 @@ export function Header() {
     const navigate = useNavigate()
     const { pathname } = useLocation()
 
-    const { handleQuery } = useQuery()
+    const { handleLogout } = useAuth()
+    
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
 
@@ -34,18 +36,6 @@ export function Header() {
 
     const handleClose = () => {
         setAnchorEl(null)
-    }
-
-    const handleLogout = () => {
-        handleQuery({
-            url: LOGOUT_URL,
-            method: 'POST',
-            token: auth?.refresh_token
-        })
-        setAnchorEl(null)
-        setAuth(null)
-        localStorage.removeItem('auth')
-        navigate('/')
     }
 
     const menuItemStyles = {
@@ -155,13 +145,23 @@ export function Header() {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem onClick={() => navigate('/profile')}>
-                    <Avatar /> Perfil
+                    <ListItemIcon>
+                        <AccountBoxIcon fontSize="small" />
+                    </ListItemIcon>
+                    Perfil
                 </MenuItem>
                 <MenuItem onClick={() => navigate('/license')}>
-                    <Avatar /> Licencia
+                    <ListItemIcon>
+                        <ArticleIcon fontSize="small" />
+                    </ListItemIcon>
+                    Licencia
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleLogout}>
+                <MenuItem onClick={() => {
+                    handleLogout()
+                    setAnchorEl(null)
+                    setAuth(null)
+                }}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>

@@ -8,8 +8,8 @@ import { LoginForm } from "../components/common/LoginForm";
 
 export function LoginPage() {
 
-    const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (auth) navigate('/clientes');

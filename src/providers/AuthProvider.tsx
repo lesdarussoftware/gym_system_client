@@ -4,6 +4,7 @@ interface AuthData {
     access_token: string;
     refresh_token: string;
     me: {
+        id: number;
         username: string;
         role: string;
         first_name: string;

@@ -5,6 +5,7 @@ import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "./useQuery";
+import { useAuth } from "./useAuth";
 
 import { USER_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
@@ -18,7 +19,8 @@ export function useUsers() {
     const { state, dispatch } = useContext(DataContext);
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
-    const [open, setOpen] = useState(null);
+    const { handleLogout } = useAuth();
+    const [open, setOpen] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -40,11 +42,10 @@ export function useUsers() {
     ) => {
         e.preventDefault();
         if (validate()) {
-            const methods = { [NEW]: 'POST', [EDIT]: 'PUT' };
             const urls = { [NEW]: USER_URL, [EDIT]: `${USER_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
-                url: urls[open!],
-                method: methods[open!],
+                url: open === NEW || open === EDIT ? urls[open] : '',
+                method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
                 body: JSON.stringify({
                     ...formData,
                     gym_hash: auth?.me.gym.hash
@@ -106,5 +107,33 @@ export function useUsers() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen }
+    const handleChangePwd = async (
+        e: { preventDefault: () => void; },
+        validate: () => any,
+        formData: { new_password: string; },
+        setDisabled: (arg0: boolean) => void,
+        reset: (() => void) | undefined
+    ) => {
+        e.preventDefault();
+        if (validate()) {
+            const { status, data } = await handleQuery({
+                url: `${USER_URL}/change-password/${auth?.me.id}`,
+                method: 'PUT',
+                body: JSON.stringify({ password: formData.new_password })
+            });
+            if (status === STATUS_CODES.OK) {
+                setMessage('Contraseña cambiada correctamente.');
+                setSeverity(SUCCESS);
+                handleClose(reset);
+                handleLogout();
+            } else {
+                setMessage(data.message);
+                setDisabled(false);
+                setSeverity(ERROR);
+            }
+            setOpenMessage(true);
+        }
+    }
+
+    return { handleSubmit, handleClose, handleDelete, open, setOpen, handleChangePwd }
 }

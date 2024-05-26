@@ -1,39 +1,36 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../providers/AuthProvider";
+import { useQuery } from "./useQuery";
 
 import { LOGIN_URL, LOGOUT_URL } from "../config/urls";
 
 export function useAuth() {
 
-    const { auth } = useContext(AuthContext);
+    const { auth, setAuth } = useContext(AuthContext);
+    const { handleQuery } = useQuery();
+    const navigate = useNavigate();
 
     async function login(credentials: { username: string; password: string; }) {
-        const res = await fetch(LOGIN_URL, {
+        const { status, data } = await handleQuery({
+            url: LOGIN_URL,
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             body: JSON.stringify(credentials)
         });
-        const data = await res.json();
-        const status = res.status;
         return { status, data };
     }
 
-    async function logout() {
-        const res = await fetch(LOGOUT_URL, {
+    const handleLogout = () => {
+        handleQuery({
+            url: LOGOUT_URL,
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${auth?.refresh_token}`
-            }
+            token: auth?.refresh_token
         });
-        const data = await res.json();
-        const status = res.status;
-        return { status, data };
+        localStorage.removeItem('auth');
+        setAuth(null);
+        navigate('/');
     }
 
-    return { login, logout }
-
+    return { login, handleLogout }
 }

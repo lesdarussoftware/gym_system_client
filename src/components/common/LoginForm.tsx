@@ -2,10 +2,12 @@ import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
 import { AuthContext } from "../../providers/AuthProvider";
+import { MessageContext } from "../../providers/MessageProvider";
 import { useForm } from "../../hooks/useForm";
 import { useAuth } from "../../hooks/useAuth";
 
 import { STATUS_CODES } from "../../config/statusCodes";
+import { ERROR } from "../../config/messageProviderTypes";
 
 
 type LoginFormProps = {
@@ -15,6 +17,7 @@ type LoginFormProps = {
 export function LoginForm({ submitAction }: LoginFormProps) {
 
     const { setAuth } = useContext(AuthContext);
+    const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { formData, errors, disabled, setDisabled, handleChange, validate } = useForm({
         defaultData: { username: '', password: '' },
         rules: {
@@ -36,6 +39,11 @@ export function LoginForm({ submitAction }: LoginFormProps) {
                     submitAction();
                 }
             } else {
+                if (status === STATUS_CODES.UNAUTHORIZED) {
+                    setMessage('Credenciales inválidas.');
+                    setSeverity(ERROR);
+                    setOpenMessage(true);
+                }
                 setDisabled(false);
             }
         } else {

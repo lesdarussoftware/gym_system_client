@@ -233,10 +233,10 @@ export function UsersABM() {
                                 sx={{
                                     width: '50%',
                                     margin: '0 auto',
-                                    marginTop: 1
+                                    marginTop: 1,
+                                    color: '#fff'
                                 }}
                                 disabled={disabled}
-                                sx={{ color: '#fff' }}
                             >
                                 Guardar
                             </Button>

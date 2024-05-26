@@ -12,7 +12,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { ClientsPage } from "./pages/ClientsPage";
 import { SchedulesPage } from "./pages/SchedulesPage";
 import { ABMPage } from "./pages/ABMPage";
-import { ProfilePage } from "./pages/Profile";
+import { ProfilePage } from "./pages/ProfilePage";
 import { LicensePage } from "./pages/LicensePage";
 import { ErrorPage } from "./pages/ErrorPage";
 
