@@ -12,23 +12,93 @@ import Typography from '@mui/material/Typography'
 import Logout from '@mui/icons-material/Logout'
 import ArticleIcon from '@mui/icons-material/Article';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
 
 import { AuthContext } from '../../providers/AuthProvider'
 
 import { MAIN_COLOR } from '../../config/colors'
 import { useAuth } from '../../hooks/useAuth'
+import { Toolbar } from '@mui/material'
+
+function Options({ type }: { type: string; }) {
+
+    const navigate = useNavigate();
+    const { pathname } = useLocation()
+
+    let menuItemStyles = {
+        display: {},
+        minWidth: 100,
+        textAlign: 'center',
+        marginLeft: 1,
+        marginRight: 1,
+        borderRadius: 1,
+        transition: '100ms all',
+        paddingY: 0.5,
+        ':hover': {
+            cursor: 'pointer',
+            color: '#fff',
+            backgroundColor: MAIN_COLOR
+        }
+    }
+
+    if (type === 'desktop') menuItemStyles = {
+        ...menuItemStyles,
+        display: { xs: 'none', sm: 'none', md: 'block' }
+    }
+
+    return (
+        <>
+            <Typography
+                sx={{
+                    ...menuItemStyles,
+                    color: pathname === '/clientes' ? '#fff' : '#000',
+                    backgroundColor: pathname === '/clientes' ? MAIN_COLOR : ''
+                }}
+                onClick={() => navigate('/clientes')}
+            >
+                Clientes
+            </Typography>
+            <Typography
+                sx={{
+                    ...menuItemStyles,
+                    color: pathname === '/horarios' ? '#fff' : '#000',
+                    backgroundColor: pathname === '/horarios' ? MAIN_COLOR : ''
+                }}
+                onClick={() => navigate('/horarios')}
+            >
+                Horarios
+            </Typography>
+            <Typography
+                sx={{
+                    ...menuItemStyles,
+                    color: pathname === '/abm' ? '#fff' : '#000',
+                    backgroundColor: pathname === '/abm' ? MAIN_COLOR : ''
+                }}
+                onClick={() => navigate('/abm')}
+            >
+                ABM
+            </Typography>
+        </>
+    );
+}
+
 
 export function Header() {
+
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
 
     const { auth, setAuth } = useContext(AuthContext)
 
     const navigate = useNavigate()
-    const { pathname } = useLocation()
 
     const { handleLogout } = useAuth()
-    
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
+
+    const drawerWidth = 120;
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget)
@@ -38,21 +108,38 @@ export function Header() {
         setAnchorEl(null)
     }
 
-    const menuItemStyles = {
-        minWidth: 100,
-        textAlign: 'center',
-        marginLeft: 1,
-        marginRight: 1,
-        borderRadius: 1,
-        transition: '100ms all',
-        ':hover': {
-            cursor: 'pointer',
-            color: '#fff',
-            backgroundColor: MAIN_COLOR
-        }
-    }
+    const handleDrawerClose = () => {
+        setIsClosing(true);
+        setMobileOpen(false);
+    };
 
-    return (
+    const handleDrawerTransitionEnd = () => {
+        setIsClosing(false);
+    };
+
+    const handleDrawerToggle = () => {
+        if (!isClosing) {
+            setMobileOpen(!mobileOpen);
+        }
+    };
+
+    const mobileDrawer = (
+        <Box>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                gap: 2,
+                height: 150,
+                paddingY: 2
+            }}>
+                <Options type='mobile' />
+            </Box>
+        </Box>
+    );
+
+    const desktopDrawer = (
         <Box sx={{
             height: 60,
             borderRadius: 1,
@@ -60,42 +147,16 @@ export function Header() {
             paddingLeft: 3,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'end'
+            justifyContent: 'end',
+            width: '100%'
         }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
-                <Typography
-                    sx={{
-                        ...menuItemStyles,
-                        paddingY: 0.5,
-                        color: pathname === '/clientes' ? '#fff' : '#000',
-                        backgroundColor: pathname === '/clientes' ? MAIN_COLOR : ''
-                    }}
-                    onClick={() => navigate('/clientes')}
-                >
-                    Clientes
-                </Typography>
-                <Typography
-                    sx={{
-                        ...menuItemStyles,
-                        paddingY: 0.5,
-                        color: pathname === '/horarios' ? '#fff' : '#000',
-                        backgroundColor: pathname === '/horarios' ? MAIN_COLOR : ''
-                    }}
-                    onClick={() => navigate('/horarios')}
-                >
-                    Horarios
-                </Typography>
-                <Typography
-                    sx={{
-                        ...menuItemStyles,
-                        paddingY: 0.5,
-                        color: pathname === '/abm' ? '#fff' : '#000',
-                        backgroundColor: pathname === '/abm' ? MAIN_COLOR : ''
-                    }}
-                    onClick={() => navigate('/abm')}
-                >
-                    ABM
-                </Typography>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'end',
+                flexDirection: 'row'
+            }}>
+                <Options type='desktop' />
                 <IconButton
                     onClick={handleClick}
                     size="small"
@@ -169,5 +230,41 @@ export function Header() {
                 </MenuItem>
             </Menu>
         </Box>
-    )
+    );
+
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <Toolbar>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mr: 2, display: { md: 'none' } }}
+                >
+                    <MenuIcon />
+                </IconButton>
+            </Toolbar>
+            <Box
+                component="nav"
+                sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+                aria-label="mailbox folders"
+            >
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onTransitionEnd={handleDrawerTransitionEnd}
+                    onClose={handleDrawerClose}
+                    ModalProps={{ keepMounted: true }}
+                    sx={{
+                        display: { xs: 'block', md: 'none' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                >
+                    {mobileDrawer}
+                </Drawer>
+            </Box>
+            {desktopDrawer}
+        </Box>
+    );
 }

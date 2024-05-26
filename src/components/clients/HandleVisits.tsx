@@ -108,7 +108,7 @@ export function HandleVisits({
                         />
                     </LocalizationProvider>
                 </Box>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'space-around' }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'start' }}>
                     {classes.map((c: any) => {
                         return (
                             <Box

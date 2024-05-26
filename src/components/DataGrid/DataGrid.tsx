@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from 'react';
+import React, { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,8 +9,6 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 
 import { EnhancedTableHead, HeadCell } from './EnhancedTableHead';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
@@ -71,12 +69,11 @@ export function DataGrid({
     hideAddMembership
 }: DataGridProps) {
 
-    const [order, setOrder] = React.useState<'asc' | 'desc'>(defaultOrder);
-    const [orderBy, setOrderBy] = React.useState<string>(defaultOrderBy);
-    const [selected, setSelected] = React.useState<any[]>([]);
-    const [dense, setDense] = React.useState<boolean>(true);
-    const [page, setPage] = React.useState<number>(0);
-    const [offset, setOffset] = React.useState<number>(10);
+    const [order, setOrder] = useState<'asc' | 'desc'>(defaultOrder);
+    const [orderBy, setOrderBy] = useState<string>(defaultOrderBy);
+    const [selected, setSelected] = useState<any[]>([]);
+    const [page, setPage] = useState<number>(0);
+    const [offset, setOffset] = useState<number>(10);
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -118,13 +115,9 @@ export function DataGrid({
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     };
 
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDense(event.target.checked);
-    };
-
     const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
-    const visibleRows = React.useMemo(
+    const visibleRows = useMemo(
         () => stableSort(rows, getComparator(order, orderBy)),
         [order, orderBy, rows]
     );
@@ -147,7 +140,7 @@ export function DataGrid({
                 <TableContainer>
                     <Table
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
+                        size="small"
                     >
                         <EnhancedTableHead
                             headCells={headCells}
@@ -245,11 +238,6 @@ export function DataGrid({
                 />
             </Paper>
             {children}
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                label="Condensar tabla"
-                sx={{ color: '#011627' }}
-            />
         </Box>
     );
 }
