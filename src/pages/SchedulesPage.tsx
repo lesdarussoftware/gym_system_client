@@ -140,7 +140,21 @@ export function SchedulesPage() {
                         </TableContainer>
                     </Box>
                 </> :
-                <LoginForm />
+                <Box sx={{ padding: 2 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '90vh',
+                        flexDirection: 'column',
+                        gap: 3
+                    }}>
+                        <Typography variant="h2" sx={{ color: '#000' }}>
+                            Iniciar sesión
+                        </Typography>
+                        <LoginForm />
+                    </Box>
+                </Box>
             }
         </>
     );

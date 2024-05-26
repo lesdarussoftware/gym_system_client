@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { AuthContext } from "../providers/AuthProvider";
 import { useClasses } from "../hooks/useClasses";
@@ -27,7 +27,21 @@ export function ClientsPage() {
                         <AllClientsAccordion />
                     </Box>
                 </> :
-                <LoginForm />
+                <Box sx={{ padding: 2 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '90vh',
+                        flexDirection: 'column',
+                        gap: 3
+                    }}>
+                        <Typography variant="h2" sx={{ color: '#000' }}>
+                            Iniciar sesión
+                        </Typography>
+                        <LoginForm />
+                    </Box>
+                </Box>
             }
         </>
     );

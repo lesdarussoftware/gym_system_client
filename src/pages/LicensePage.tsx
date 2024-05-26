@@ -72,12 +72,34 @@ export function LicensePage() {
                                             {license.country}
                                         </TableCell>
                                     </TableRow>
+                                    <TableRow>
+                                        <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                                            Desarrollado por
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <a style={{ textDecoration: 'none' }} href="https://lesdarussoftware.github.io/web/" target="_blank">Lesdarus Software</a> &copy; | {new Date().getFullYear()}
+                                        </TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     </Box>
                 </> :
-                <LoginForm />
+                <Box sx={{ padding: 2 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '90vh',
+                        flexDirection: 'column',
+                        gap: 3
+                    }}>
+                        <Typography variant="h2" sx={{ color: '#000' }}>
+                            Iniciar sesión
+                        </Typography>
+                        <LoginForm />
+                    </Box>
+                </Box>
             }
         </>
     );

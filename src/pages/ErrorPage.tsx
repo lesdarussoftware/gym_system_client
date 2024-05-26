@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { AuthContext } from "../providers/AuthProvider";
 import { Header } from "../components/common/Header";
@@ -14,11 +14,25 @@ export function ErrorPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ padding: 2 }}>
+                    <Typography variant="h5" sx={{ padding: 2 }} align="center">
                         Error 404 - Página no encontrada.
-                    </Box>
+                    </Typography>
                 </> :
-                <LoginForm />
+                <Box sx={{ padding: 2 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '90vh',
+                        flexDirection: 'column',
+                        gap: 3
+                    }}>
+                        <Typography variant="h2" sx={{ color: '#000' }}>
+                            Iniciar sesión
+                        </Typography>
+                        <LoginForm />
+                    </Box>
+                </Box>
             }
         </>
     );
