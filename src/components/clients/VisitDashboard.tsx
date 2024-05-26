@@ -11,6 +11,7 @@ import { Accordion, AccordionDetails, AccordionSummary } from "../common/MUIAcco
 import { ShowCurrentMembership } from "./ShowCurrentMembership";
 
 import { ERROR } from "../../config/messageProviderTypes";
+import { MAIN_COLOR } from "../../config/colors";
 
 export function VisitDashboard() {
 
@@ -59,8 +60,8 @@ export function VisitDashboard() {
                         <ShowCurrentMembership client={client} />
                     </Box>
                     <Accordion expanded={expanded === 'panel1'} onChange={handleChangeVisibility('panel1')}>
-                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                            <Typography>
+                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: MAIN_COLOR }}>
+                            <Typography color="#fff">
                                 Membresías vencidas del cliente {`${client.first_name} ${client.last_name}`}
                             </Typography>
                         </AccordionSummary>
