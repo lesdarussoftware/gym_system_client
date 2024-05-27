@@ -35,11 +35,8 @@ export function AddMembershipForm({
     errors
 }: AddMembershipFormProps) {
     return (
-        <ModalComponent
-            open={open === NEW || open === EDIT}
-            onClose={() => handleClose(reset)}
-        >
-            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        <ModalComponent open={open === NEW || open === EDIT} onClose={() => handleClose(reset)}>
+            <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: 18, sm: 18, md: 20 } }}>
                 {open === NEW && 'Registrar nueva membresía'}
                 {open === EDIT && `Editar membresía #${formData.id}`}
             </Typography>
@@ -50,109 +47,113 @@ export function AddMembershipForm({
                 setDisabled,
                 reset
             )}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    <FormControl>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
-                            <DatePicker
-                                label="Fecha de inicio"
-                                value={new Date(formData.start)}
-                                onChange={value => handleChange({
-                                    target: {
-                                        name: 'date',
-                                        value: new Date(value!.toISOString())
-                                    }
-                                })}
+                <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
+                        <FormControl>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                                <DatePicker
+                                    label="Fecha de inicio"
+                                    value={new Date(formData.start)}
+                                    onChange={value => handleChange({
+                                        target: {
+                                            name: 'date',
+                                            value: new Date(value!.toISOString())
+                                        }
+                                    })}
+                                />
+                            </LocalizationProvider>
+                            {errors.date?.type === 'required' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * La fecha es requerida.
+                                </Typography>
+                            }
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="price">Precio</InputLabel>
+                            <Input
+                                id="price"
+                                type="number"
+                                name="price"
+                                value={getNumberInputAbsValue(+formData.price, 0, 99999999999)}
                             />
-                        </LocalizationProvider>
-                        {errors.date?.type === 'required' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * La fecha es requerida.
-                            </Typography>
-                        }
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="price">Precio</InputLabel>
-                        <Input
-                            id="price"
-                            type="number"
-                            name="price"
-                            value={getNumberInputAbsValue(+formData.price, 0, 99999999999)}
-                        />
-                        {errors.price?.type === 'required' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * El precio es requerido.
-                            </Typography>
-                        }
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="duration">Duración (días)</InputLabel>
-                        <Input
-                            id="duration"
-                            type="number"
-                            name="duration"
-                            value={getNumberInputAbsValue(+formData.duration, 1, 99999999999)}
-                        />
-                        {errors.duration?.type === 'required' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * La duración es requerida.
-                            </Typography>
-                        }
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="duration">Límite de visitas</InputLabel>
-                        <Input
-                            id="limit"
-                            type="number"
-                            name="limit"
-                            value={getNumberInputAbsValue(+formData.limit, 1, 99999999999)}
-                        />
-                        {errors.limit?.type === 'required' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * El límite de visitas es requerido.
-                            </Typography>
-                        }
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="observations">Observaciones</InputLabel>
-                        <Input
-                            id="observations"
-                            type="text"
-                            name="observations"
-                            value={formData.observations}
-                        />
-                        {errors.observations?.type === 'maxLength' &&
-                            <Typography variant="caption" color="red" marginTop={1}>
-                                * Las observaciones son demasiado largas.
-                            </Typography>
-                        }
-                    </FormControl>
-                    <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Button
-                            type="button"
-                            variant="outlined"
-                            sx={{
-                                width: '50%',
-                                margin: '0 auto',
-                                marginTop: 1
-                            }}
-                            onClick={() => handleClose(reset)}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{
-                                width: '50%',
-                                margin: '0 auto',
-                                marginTop: 1,
-                                color: '#fff'
-                            }}
-                            disabled={disabled}
-                        >
-                            Guardar
-                        </Button>
+                            {errors.price?.type === 'required' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * El precio es requerido.
+                                </Typography>
+                            }
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="duration">Duración (días)</InputLabel>
+                            <Input
+                                id="duration"
+                                type="number"
+                                name="duration"
+                                value={getNumberInputAbsValue(+formData.duration, 1, 99999999999)}
+                            />
+                            {errors.duration?.type === 'required' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * La duración es requerida.
+                                </Typography>
+                            }
+                        </FormControl>
                     </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
+                        <FormControl>
+                            <InputLabel htmlFor="duration">Límite de visitas</InputLabel>
+                            <Input
+                                id="limit"
+                                type="number"
+                                name="limit"
+                                value={getNumberInputAbsValue(+formData.limit, 1, 99999999999)}
+                            />
+                            {errors.limit?.type === 'required' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * El límite de visitas es requerido.
+                                </Typography>
+                            }
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="observations">Observaciones</InputLabel>
+                            <Input
+                                id="observations"
+                                type="text"
+                                name="observations"
+                                value={formData.observations}
+                            />
+                            {errors.observations?.type === 'maxLength' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * Las observaciones son demasiado largas.
+                                </Typography>
+                            }
+                        </FormControl>
+                    </Box>
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        sx={{
+                            width: '50%',
+                            margin: '0 auto',
+                            marginTop: 1
+                        }}
+                        onClick={() => handleClose(reset)}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                            width: '50%',
+                            margin: '0 auto',
+                            marginTop: 1,
+                            color: '#fff'
+                        }}
+                        disabled={disabled}
+                    >
+                        Guardar
+                    </Button>
                 </Box>
             </form>
         </ModalComponent>

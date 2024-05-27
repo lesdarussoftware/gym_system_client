@@ -81,7 +81,7 @@ export function ClientsABM() {
                 open={open === NEW || open === EDIT}
                 onClose={() => handleClose(reset)}
             >
-                <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: 18, sm: 18, md: 20 } }}>
                     {open === NEW && 'Registrar nuevo cliente'}
                     {open === EDIT && `Editar cliente #${formData.id}`}
                 </Typography>
@@ -92,106 +92,107 @@ export function ClientsABM() {
                     setDisabled,
                     reset
                 )}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                        <FormControl>
-                            <InputLabel htmlFor="first_name">Nombre</InputLabel>
-                            <Input id="first_name" type="text" name="first_name" value={formData.first_name} />
-                            {errors.first_name?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El nombre es requerido.
-                                </Typography>
-                            }
-                            {errors.first_name?.type === 'maxLength' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El nombre es demasiado largo.
-                                </Typography>
-                            }
-                        </FormControl>
-                        <FormControl>
-                            <InputLabel htmlFor="last_name">Apellido</InputLabel>
-                            <Input id="last_name" type="text" name="last_name" value={formData.last_name} />
-                            {errors.last_name?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El apellido es requerido.
-                                </Typography>
-                            }
-                            {errors.last_name?.type === 'maxLength' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El apellido es demasiado largo.
-                                </Typography>
-                            }
-                        </FormControl>
-                        <FormControl>
-                            <InputLabel htmlFor="dni">DNI</InputLabel>
-                            <Input id="dni" type="text" name="dni" value={formData.dni} />
-                            {errors.dni?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El dni es requerido.
-                                </Typography>
-                            }
-                        </FormControl>
-                        <FormControl>
-                            <InputLabel htmlFor="email">Email</InputLabel>
-                            <Input id="email" type="email" name="email" value={formData.email} />
-                            {errors.email?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El email es requerido.
-                                </Typography>
-                            }
-                            {errors.email?.type === 'maxLength' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El email es demasiado largo.
-                                </Typography>
-                            }
-                        </FormControl>
-                        <FormControl>
-                            <InputLabel htmlFor="phone">Teléfono</InputLabel>
-                            <Input id="phone" type="number" name="phone" value={formData.phone} />
-                            {errors.phone?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El teléfono es requerido.
-                                </Typography>
-                            }
-                            {errors.phone?.type === 'maxLength' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El teléfono es demasiado largo.
-                                </Typography>
-                            }
-                        </FormControl>
-                        <Box sx={{ display: 'flex', gap: 1 }}>
-                            <Button
-                                type="button"
-                                variant="outlined"
-                                sx={{
-                                    width: '50%',
-                                    margin: '0 auto',
-                                    marginTop: 1
-                                }}
-                                onClick={() => handleClose(reset)}
-                            >
-                                Cancelar
-                            </Button>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                sx={{
-                                    width: '50%',
-                                    margin: '0 auto',
-                                    marginTop: 1,
-                                    color: '#fff'
-                                }}
-                                disabled={disabled}
-                            >
-                                Guardar
-                            </Button>
+                    <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, justifyContent: 'space-between' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
+                            <FormControl>
+                                <InputLabel htmlFor="first_name">Nombre</InputLabel>
+                                <Input id="first_name" type="text" name="first_name" value={formData.first_name} />
+                                {errors.first_name?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El nombre es requerido.
+                                    </Typography>
+                                }
+                                {errors.first_name?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El nombre es demasiado largo.
+                                    </Typography>
+                                }
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel htmlFor="last_name">Apellido</InputLabel>
+                                <Input id="last_name" type="text" name="last_name" value={formData.last_name} />
+                                {errors.last_name?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El apellido es requerido.
+                                    </Typography>
+                                }
+                                {errors.last_name?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El apellido es demasiado largo.
+                                    </Typography>
+                                }
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel htmlFor="dni">DNI</InputLabel>
+                                <Input id="dni" type="text" name="dni" value={formData.dni} />
+                                {errors.dni?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El dni es requerido.
+                                    </Typography>
+                                }
+                            </FormControl>
                         </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
+                            <FormControl>
+                                <InputLabel htmlFor="email">Email</InputLabel>
+                                <Input id="email" type="email" name="email" value={formData.email} />
+                                {errors.email?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El email es requerido.
+                                    </Typography>
+                                }
+                                {errors.email?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El email es demasiado largo.
+                                    </Typography>
+                                }
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel htmlFor="phone">Teléfono</InputLabel>
+                                <Input id="phone" type="number" name="phone" value={formData.phone} />
+                                {errors.phone?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El teléfono es requerido.
+                                    </Typography>
+                                }
+                                {errors.phone?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El teléfono es demasiado largo.
+                                    </Typography>
+                                }
+                            </FormControl>
+                        </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                            type="button"
+                            variant="outlined"
+                            sx={{
+                                width: '50%',
+                                margin: '0 auto',
+                                marginTop: 1
+                            }}
+                            onClick={() => handleClose(reset)}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                width: '50%',
+                                margin: '0 auto',
+                                marginTop: 1,
+                                color: '#fff'
+                            }}
+                            disabled={disabled}
+                        >
+                            Guardar
+                        </Button>
                     </Box>
                 </form>
             </ModalComponent>
-            <ModalComponent
-                open={open === DELETE}
-                onClose={() => handleClose(reset)}
-            >
+            <ModalComponent open={open === DELETE} onClose={() => handleClose(reset)}>
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
                     {`¿Desea borrar el registro del cliente ${formData.first_name + ' ' + formData.last_name} (#${formData.id})?`}
                 </Typography>
@@ -215,7 +216,8 @@ export function ClientsABM() {
                         sx={{
                             width: '50%',
                             margin: '0 auto',
-                            marginTop: 1
+                            marginTop: 1,
+                            color: '#fff'
                         }}
                         disabled={disabled}
                         onClick={() => handleDelete(formData, reset, setDisabled)}

@@ -2,14 +2,26 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import { useState } from 'react';
 
 interface ModalComponentProps {
     children: React.ReactNode;
     open: boolean;
     onClose: () => void;
+    reduceWidth?: number | undefined;
 }
 
-export function ModalComponent({ children, open, onClose }: ModalComponentProps) {
+export function ModalComponent({ children, open, onClose, reduceWidth = 300 }: ModalComponentProps) {
+
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth < 700 ? window.innerWidth : window.innerWidth - reduceWidth)
+
+    window.onresize = () => {
+        if (window.innerWidth < 700) {
+            setScreenWidth(window.innerWidth)
+        } else {
+            setScreenWidth(window.innerWidth - 300)
+        }
+    }
 
     const style = {
         position: 'absolute',
@@ -19,7 +31,8 @@ export function ModalComponent({ children, open, onClose }: ModalComponentProps)
         backgroundColor: 'white',
         boxShadow: 24,
         padding: 3,
-        borderRadius: 1
+        borderRadius: 1,
+        width: screenWidth
     }
 
     return (

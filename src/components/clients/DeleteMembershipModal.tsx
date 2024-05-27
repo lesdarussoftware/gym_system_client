@@ -25,10 +25,7 @@ export function DeleteMembershipModal({
     setDisabled
 }: DeleteMembershipModalProps) {
     return (
-        <ModalComponent
-            open={open === DELETE}
-            onClose={() => handleClose(reset)}
-        >
+        <ModalComponent open={open === DELETE} onClose={() => handleClose(reset)}>
             <Typography variant="h6" sx={{ marginBottom: 1 }}>
                 {`¿Desea borrar el registro de la membresía #${formData.id}?`}
             </Typography>
@@ -52,7 +49,8 @@ export function DeleteMembershipModal({
                     sx={{
                         width: '50%',
                         margin: '0 auto',
-                        marginTop: 1
+                        marginTop: 1,
+                        color: '#fff'
                     }}
                     disabled={disabled}
                     onClick={() => handleDelete(formData, reset, setDisabled)}

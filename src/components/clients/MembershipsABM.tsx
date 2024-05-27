@@ -101,10 +101,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
                 handleDelete={handleDelete}
                 setDisabled={setDisabled}
             />
-            <ModalComponent
-                open={open === VIEW_MEMBERSHIP_DETAILS}
-                onClose={() => handleClose(reset)}
-            >
+            <ModalComponent open={open === VIEW_MEMBERSHIP_DETAILS} onClose={() => handleClose(reset)}>
                 <InactiveMembershipDetails
                     membership={state.clients.find(c => c.id === client.id)!.memberships
                         .find(m => m.id === formData.id)!
