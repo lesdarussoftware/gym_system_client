@@ -40,7 +40,7 @@ export function VisitDashboard() {
         }
     }
 
-    const handleChangeVisibility = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    const handleChangeVisibility = (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false);
     };
 

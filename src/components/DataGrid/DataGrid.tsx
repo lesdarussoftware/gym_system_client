@@ -119,7 +119,7 @@ export function DataGrid({
 
     const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
-    const visibleRows = React.useMemo(
+    const visibleRows = useMemo(
         () =>
             stableSort(rows, getComparator(order, orderBy)).slice(
                 page * offset,
