@@ -73,9 +73,9 @@ export function DataGrid({
     const [orderBy, setOrderBy] = useState<string>(defaultOrderBy);
     const [selected, setSelected] = useState<any[]>([]);
     const [page, setPage] = useState<number>(0);
-    const [offset, setOffset] = useState<number>(10);
+    const [offset, setOffset] = useState<number>(5);
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
+    const handleRequestSort = (_event: React.MouseEvent<unknown>, property: string) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -90,7 +90,7 @@ export function DataGrid({
         setSelected([]);
     };
 
-    const handleClick = (event: React.MouseEvent<unknown>, id: any) => {
+    const handleClick = (_event: React.MouseEvent<unknown>, id: any) => {
         const selectedIndex = selected.indexOf(id);
         let newSelected: any[] = [];
 
@@ -109,17 +109,23 @@ export function DataGrid({
         setSelected(newSelected);
     };
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (_event: unknown, newPage: number) => {
+        setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setOffset(+event.target.value);
     };
 
     const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
-    const visibleRows = useMemo(
-        () => stableSort(rows, getComparator(order, orderBy)),
-        [order, orderBy, rows]
+    const visibleRows = React.useMemo(
+        () =>
+            stableSort(rows, getComparator(order, orderBy)).slice(
+                page * offset,
+                page * offset + offset,
+            ),
+        [order, orderBy, page, offset, rows]
     );
 
     return (
@@ -209,7 +215,7 @@ export function DataGrid({
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={-1}
+                    count={rows.length}
                     rowsPerPage={offset}
                     labelRowsPerPage="Registros por página"
                     labelDisplayedRows={({ from, to }) => `${from}–${to} de ${rows.length}`}
@@ -219,21 +225,6 @@ export function DataGrid({
                     sx={{
                         backgroundColor: '#fff',
                         color: '#000'
-                    }}
-                    slotProps={{
-                        actions: {
-                            nextButton: {
-                                disabled: ((page + 1) * offset) >= rows.length,
-                                sx: {
-                                    color: '#CECECE !important'
-                                }
-                            },
-                            previousButton: {
-                                sx: {
-                                    color: '#CECECE !important'
-                                }
-                            }
-                        }
                     }}
                 />
             </Paper>
