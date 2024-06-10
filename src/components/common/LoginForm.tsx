@@ -16,7 +16,7 @@ type LoginFormProps = {
 
 export function LoginForm({ submitAction }: LoginFormProps) {
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth, openModal, setOpenModal } = useContext(AuthContext);
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { formData, errors, disabled, setDisabled, handleChange, validate } = useForm({
         defaultData: { username: '', password: '' },
@@ -34,7 +34,10 @@ export function LoginForm({ submitAction }: LoginFormProps) {
             const { status, data } = await login({ username, password });
             if (status === STATUS_CODES.OK) {
                 setAuth(data);
-                localStorage.setItem('auth', JSON.stringify(data));
+                if (openModal) {
+                    setOpenModal(false);
+                }
+                localStorage.setItem('auth_lesdagym', JSON.stringify(data));
                 if (submitAction) {
                     submitAction();
                 }
@@ -70,7 +73,7 @@ export function LoginForm({ submitAction }: LoginFormProps) {
                 </FormControl>
                 <FormControl>
                     <InputLabel htmlFor="password" sx={{ color: '#000' }}>Contraseña</InputLabel>
-                    <Input id="password" type="password" name="password" value={formData.password} sx={{ color: '#000' }} />
+                    <Input id="password" type="password" name="password" value={formData.password} sx={{ color: '#000' }} autoComplete="" />
                     {errors.password?.type === 'required' &&
                         <Typography variant="caption" color="red" marginTop={1}>
                             * La contraseña es requerida.

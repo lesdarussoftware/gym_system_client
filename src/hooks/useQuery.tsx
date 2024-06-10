@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
 import { AuthContext } from "../providers/AuthProvider";
+
 import { STATUS_CODES } from "../config/statusCodes";
 import { STATUS_MESSAGES } from "../config/statusMessages";
 import { REFRESH_URL } from "../config/urls";
@@ -14,7 +15,7 @@ type QueryProps = {
 
 export function useQuery() {
 
-    const { auth, setAuth } = useContext(AuthContext);
+    const { auth, setAuth, setOpenModal } = useContext(AuthContext);
 
     async function handleQuery({ url, method = 'GET', body, token }: QueryProps) {
         const res = await fetch(url, {
@@ -46,7 +47,7 @@ export function useQuery() {
                     refresh_token: auth!.refresh_token,
                     me: auth!.me
                 });
-                localStorage.setItem('auth', JSON.stringify({
+                localStorage.setItem('auth_lesdagym', JSON.stringify({
                     access_token: refreshData.access_token,
                     refresh_token: auth!.refresh_token,
                     me: auth!.me
@@ -56,9 +57,8 @@ export function useQuery() {
             if (refreshStatus === STATUS_CODES.UNAUTHORIZED &&
                 (refreshData.message === STATUS_MESSAGES.INVALID_TOKEN ||
                     refreshData.message === STATUS_MESSAGES.TOKEN_REVOKED)) {
-                setAuth(null);
-                localStorage.removeItem('auth');
-                console.log('ABRIR MODAL DE LOGIN');
+                setOpenModal(true);
+                console.log({ status: refreshStatus, data: refreshData });
                 return { status: refreshStatus, data: refreshData };
             } else {
                 console.log({ refreshStatus, refreshData })

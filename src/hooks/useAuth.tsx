@@ -27,7 +27,7 @@ export function useAuth() {
             method: 'POST',
             token: auth?.refresh_token
         });
-        localStorage.removeItem('auth');
+        localStorage.removeItem('auth_lesdagym');
         setAuth(null);
         navigate('/');
     }

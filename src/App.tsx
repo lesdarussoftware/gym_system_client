@@ -30,12 +30,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <DataProvider>
-          <MessageProvider>
-            <HandleClientProvider>
-              <CssBaseline />
-              <BrowserRouter basename="/gym-system">
+      <BrowserRouter basename="/gym-system">
+        <AuthProvider>
+          <DataProvider>
+            <MessageProvider>
+              <HandleClientProvider>
+                <CssBaseline />
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
@@ -46,11 +46,11 @@ function App() {
                   <Route path="/license" element={<LicensePage />} />
                   <Route path="*" element={<ErrorPage />} />
                 </Routes>
-              </BrowserRouter>
-            </HandleClientProvider>
-          </MessageProvider>
-        </DataProvider>
-      </AuthProvider>
+              </HandleClientProvider>
+            </MessageProvider>
+          </DataProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
