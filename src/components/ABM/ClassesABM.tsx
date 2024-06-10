@@ -56,6 +56,7 @@ export function ClassesABM() {
             <ModalComponent
                 open={open === NEW || open === EDIT}
                 onClose={() => handleClose(reset)}
+                reduceWidth={800}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
                     {open === NEW && 'Registrar nueva clase'}

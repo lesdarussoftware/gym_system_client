@@ -11,7 +11,7 @@ interface ModalComponentProps {
     reduceWidth?: number | undefined;
 }
 
-export function ModalComponent({ children, open, onClose, reduceWidth = 300 }: ModalComponentProps) {
+export function ModalComponent({ children, open, onClose, reduceWidth = 800 }: ModalComponentProps) {
 
     const [screenWidth, setScreenWidth] = useState(window.innerWidth < 700 ? window.innerWidth : window.innerWidth - reduceWidth)
 

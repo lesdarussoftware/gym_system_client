@@ -91,6 +91,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
             setOpen={setOpen}
             showMembershipDetails
             hideAddMembership
+            hideEditAction
         >
             <DeleteMembershipModal
                 open={open}
@@ -101,7 +102,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
                 handleDelete={handleDelete}
                 setDisabled={setDisabled}
             />
-            <ModalComponent open={open === VIEW_MEMBERSHIP_DETAILS} onClose={() => handleClose(reset)}>
+            <ModalComponent open={open === VIEW_MEMBERSHIP_DETAILS} onClose={() => handleClose(reset)} reduceWidth={800}>
                 <InactiveMembershipDetails
                     membership={state.clients.find(c => c.id === client.id)!.memberships
                         .find(m => m.id === formData.id)!

@@ -45,7 +45,7 @@ export function LicensePage() {
                                             Vencimiento
                                         </TableCell>
                                         <TableCell align="center">
-                                            {license.next_deadline === null ? 'No válido' : license.next_deadline.split('T')[0].split('-').reverse().join('/')}
+                                            {license.next_deadline === null ? 'Sin vencimiento' : license.next_deadline.split('T')[0].split('-').reverse().join('/')}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>

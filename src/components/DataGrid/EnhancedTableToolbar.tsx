@@ -18,6 +18,7 @@ interface EnhancedTableToolbarProps {
     showClassesDetails?: boolean;
     showMembershipDetails?: boolean;
     hideAddMembership?: boolean;
+    hideEditAction?: boolean;
 }
 
 export function EnhancedTableToolbar({
@@ -28,7 +29,8 @@ export function EnhancedTableToolbar({
     rows,
     showClassesDetails,
     showMembershipDetails,
-    hideAddMembership
+    hideAddMembership,
+    hideEditAction
 }: EnhancedTableToolbarProps) {
     return (
         <Toolbar
@@ -59,14 +61,16 @@ export function EnhancedTableToolbar({
                             <DeleteIcon sx={{ color: '#CECECE !important' }} />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={"Editar"} onClick={() => {
-                        setOpen(EDIT);
-                        setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
-                    }}>
-                        <IconButton>
-                            <EditIcon sx={{ color: '#CECECE !important' }} />
-                        </IconButton>
-                    </Tooltip>
+                    {!hideEditAction &&
+                        <Tooltip title={"Editar"} onClick={() => {
+                            setOpen(EDIT);
+                            setFormData(rows.find((row: { id: number; }) => row.id === selected[0]));
+                        }}>
+                            <IconButton>
+                                <EditIcon sx={{ color: '#CECECE !important' }} />
+                            </IconButton>
+                        </Tooltip>
+                    }
                     {showClassesDetails &&
                         <Tooltip title={"Ver días y horarios"} onClick={() => {
                             setOpen(VIEW_SCHEDULES);
