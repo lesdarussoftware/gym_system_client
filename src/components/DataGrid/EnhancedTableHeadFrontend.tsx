@@ -20,7 +20,7 @@ interface EnhancedTableHeadProps {
     stopPointerEvents?: boolean;
 }
 
-export function EnhancedTableHead({
+export function EnhancedTableHeadFrontend({
     headCells,
     onSelectAllClick,
     order,

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
@@ -22,16 +22,14 @@ export function useUsers() {
     const { handleLogout } = useAuth();
     const [open, setOpen] = useState<string | null>(null);
 
-    useEffect(() => {
-        (async () => {
-            if (state.users.length === 0) {
-                const { status, data } = await handleQuery({ url: `${USER_URL}/${auth?.me.gym.hash}` })
-                if (status === STATUS_CODES.OK) {
-                    dispatch({ type: SET_USERS, payload: data })
-                }
+    const getUsers = async () => {
+        if (state.users.rows.length === 0) {
+            const { status, data } = await handleQuery({ url: `${USER_URL}/${auth?.me.gym.hash}` })
+            if (status === STATUS_CODES.OK) {
+                dispatch({ type: SET_USERS, payload: { rows: data[0], count: data[1] } })
             }
-        })()
-    }, [])
+        }
+    }
 
     const handleSubmit = async (
         e: { preventDefault: () => void; },
@@ -54,13 +52,13 @@ export function useUsers() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_USERS,
-                    payload: [data, ...state.users]
+                    payload: { ...state.users, rows: [data, ...state.users.rows] }
                 });
                 setMessage('Usuario registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_USERS,
-                    payload: [data, ...state.users.filter(item => item.id !== data.id)]
+                    payload: { ...state.users, rows: [data, ...state.users.rows.filter(item => item.id !== data.id)] }
                 });
                 setMessage('Usuario editado correctamente.');
             } else {
@@ -93,7 +91,7 @@ export function useUsers() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_USERS,
-                payload: [...state.users.filter(item => item.id !== data.id)]
+                payload: { ...state.users, rows: [...state.users.rows.filter(item => item.id !== data.id)] }
             });
             setSeverity(SUCCESS);
             setMessage('Usuario eliminado correctamente.');
@@ -135,5 +133,5 @@ export function useUsers() {
         }
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen, handleChangePwd }
+    return { handleSubmit, handleClose, handleDelete, open, setOpen, handleChangePwd, getUsers }
 }

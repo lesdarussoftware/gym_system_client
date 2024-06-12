@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
@@ -20,16 +20,14 @@ export function useClasses() {
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
 
-    useEffect(() => {
-        (async () => {
-            if (state.classes.length === 0) {
-                const { status, data } = await handleQuery({ url: `${CLASS_URL}/${auth?.me.gym.hash}` })
-                if (status === STATUS_CODES.OK) {
-                    dispatch({ type: SET_CLASSES, payload: data })
-                }
+    const getClasses = async () => {
+        if (state.classes.rows.length === 0) {
+            const { status, data } = await handleQuery({ url: `${CLASS_URL}/${auth?.me.gym.hash}` })
+            if (status === STATUS_CODES.OK) {
+                dispatch({ type: SET_CLASSES, payload: { rows: data[0], count: data[1] } })
             }
-        })()
-    }, [])
+        }
+    }
 
     const handleSubmit = async (
         e: { preventDefault: () => void; },
@@ -52,13 +50,13 @@ export function useClasses() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLASSES,
-                    payload: [data, ...state.classes]
+                    payload: { ...state.classes, rows: [data[0], ...state.classes.rows] }
                 });
                 setMessage('Clase registrada correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_CLASSES,
-                    payload: [data, ...state.classes.filter(item => item.id !== data.id)]
+                    payload: { ...state.classes, rows: [data, ...state.classes.rows.filter(item => item.id !== data.id)] }
                 });
                 setMessage('Clase editada correctamente.');
             } else if (status === STATUS_CODES.SERVER_ERROR) {
@@ -100,32 +98,38 @@ export function useClasses() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLASSES,
-                    payload: [
-                        ...state.classes.filter(item => item.id !== data.class_id),
-                        {
-                            ...state.classes.find(item => item.id === data.class_id)!,
-                            schedules: [
-                                data,
-                                ...state.classes.find(item => item.id === data.class_id)!.schedules
-                            ]
-                        }
-                    ]
+                    payload: {
+                        ...state.classes,
+                        rows: [
+                            ...state.classes.rows.filter(item => item.id !== data.class_id),
+                            {
+                                ...state.classes.rows.find(item => item.id === data.class_id)!,
+                                schedules: [
+                                    data,
+                                    ...state.classes.rows.find(item => item.id === data.class_id)!.schedules
+                                ]
+                            }
+                        ]
+                    }
                 });
                 setMessage('Horario registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_CLASSES,
-                    payload: [
-                        ...state.classes.filter(item => item.id !== data.class_id),
-                        {
-                            ...state.classes.find(item => item.id === data.class_id)!,
-                            schedules: [
-                                data,
-                                ...state.classes.find(item => item.id === data.class_id)!.schedules
-                                    .filter(s => s.id !== data.id)
-                            ]
-                        }
-                    ]
+                    payload: {
+                        ...state.classes,
+                        rows: [
+                            ...state.classes.rows.filter(item => item.id !== data.class_id),
+                            {
+                                ...state.classes.rows.find(item => item.id === data.class_id)!,
+                                schedules: [
+                                    data,
+                                    ...state.classes.rows.find(item => item.id === data.class_id)!.schedules
+                                        .filter(s => s.id !== data.id)
+                                ]
+                            }
+                        ]
+                    }
                 });
                 setMessage('Horario editado correctamente.');
             } else if (status === STATUS_CODES.SERVER_ERROR) {
@@ -161,7 +165,7 @@ export function useClasses() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLASSES,
-                payload: [...state.classes.filter(item => item.id !== data.id)]
+                payload: { ...state.classes, rows: [...state.classes.rows.filter(item => item.id !== data.id)] }
             });
             setSeverity(SUCCESS);
             setMessage('Clase eliminada correctamente.');
@@ -183,16 +187,19 @@ export function useClasses() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLASSES,
-                payload: [
-                    ...state.classes.filter(item => item.id !== data.class_id),
-                    {
-                        ...state.classes.find(item => item.id === data.class_id)!,
-                        schedules: [
-                            ...state.classes.find(item => item.id === data.class_id)!.schedules
-                                .filter(item => item.id !== data.id)
-                        ]
-                    }
-                ]
+                payload: {
+                    ...state.classes,
+                    rows: [
+                        ...state.classes.rows.filter(item => item.id !== data.class_id),
+                        {
+                            ...state.classes.rows.find(item => item.id === data.class_id)!,
+                            schedules: [
+                                ...state.classes.rows.find(item => item.id === data.class_id)!.schedules
+                                    .filter(item => item.id !== data.id)
+                            ]
+                        }
+                    ]
+                }
             });
             setSeverity(SUCCESS);
             setMessage('Horario eliminado correctamente.');
@@ -208,6 +215,7 @@ export function useClasses() {
         open,
         setOpen,
         handleSubmitSchedule,
-        handleDeleteSchedule
+        handleDeleteSchedule,
+        getClasses
     }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
@@ -20,16 +20,14 @@ export function useClients() {
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
 
-    useEffect(() => {
-        (async () => {
-            if (state.clients.length === 0) {
-                const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}` })
-                if (status === STATUS_CODES.OK) {
-                    dispatch({ type: SET_CLIENTS, payload: data })
-                }
+    const getClients = async () => {
+        if (state.clients.rows.length === 0) {
+            const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}` })
+            if (status === STATUS_CODES.OK) {
+                dispatch({ type: SET_CLIENTS, payload: { rows: data[0], count: data[1] } })
             }
-        })()
-    }, [])
+        }
+    }
 
     const handleSubmit = async (
         e: { preventDefault: () => void; },
@@ -52,13 +50,13 @@ export function useClients() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLIENTS,
-                    payload: [data, ...state.clients]
+                    payload: { ...state.clients, rows: [data, ...state.clients.rows] }
                 });
                 setMessage('Cliente registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_CLIENTS,
-                    payload: [data, ...state.clients.filter(item => item.id !== data.id)]
+                    payload: { ...state.clients, rows: [data, ...state.clients.rows.filter(item => item.id !== data.id)] }
                 });
                 setMessage('Cliente editado correctamente.');
             } else {
@@ -91,7 +89,7 @@ export function useClients() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: [...state.clients.filter(item => item.id !== data.id)]
+                payload: { ...state.clients, rows: [...state.clients.rows.filter(item => item.id !== data.id)] }
             });
             setSeverity(SUCCESS);
             setMessage('Cliente eliminado correctamente.');
@@ -105,5 +103,5 @@ export function useClients() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen }
+    return { handleSubmit, handleClose, handleDelete, open, setOpen, getClients }
 }

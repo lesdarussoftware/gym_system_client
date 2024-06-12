@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,13 +10,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 
-import { EnhancedTableHeadFrontend, HeadCell } from './EnhancedTableHeadFrontend';
+import { DataContext } from '../../providers/DataProvider';
+
+import { EnhancedTableHeadBackend, HeadCell } from './EnhancedTableHeadBackend';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 
 interface DataGridProps {
     children?: React.ReactNode;
     headCells: HeadCell[];
     rows: any[];
+    entityKey: 'clients' | 'users' | 'teachers' | 'classes';
     setOpen?: any;
     setFormData?: any;
     defaultOrder?: 'asc' | 'desc';
@@ -28,40 +31,12 @@ interface DataGridProps {
     hideEditAction?: boolean;
 }
 
-function descendingComparator(a: any, b: any, orderBy: string) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order: 'asc' | 'desc', orderBy: string) {
-    return order === 'desc'
-        ? (a: any, b: any) => descendingComparator(a, b, orderBy)
-        : (a: any, b: any) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array: any[], comparator: (a: any, b: any) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
-
-export function DataGridFrontend({
+export function DataGridBackend({
     children,
     headCells,
-    rows,
     setOpen,
     setFormData,
+    entityKey,
     defaultOrder = 'desc',
     defaultOrderBy = 'id',
     stopPointerEvents,
@@ -70,6 +45,8 @@ export function DataGridFrontend({
     hideAddMembership,
     hideEditAction = false
 }: DataGridProps) {
+
+    const { state } = useContext(DataContext);
 
     const [order, setOrder] = useState<'asc' | 'desc'>(defaultOrder);
     const [orderBy, setOrderBy] = useState<string>(defaultOrderBy);
@@ -85,7 +62,7 @@ export function DataGridFrontend({
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
+            const newSelected = state[entityKey].rows.map((n) => n.id);
             setSelected(newSelected);
             return;
         }
@@ -121,14 +98,9 @@ export function DataGridFrontend({
 
     const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
-    const visibleRows = useMemo(
-        () =>
-            stableSort(rows, getComparator(order, orderBy)).slice(
-                page * offset,
-                page * offset + offset,
-            ),
-        [order, orderBy, page, offset, rows]
-    );
+    useEffect(() => {
+
+    }, [order, orderBy, page, offset, state[entityKey].rows])
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
@@ -139,7 +111,7 @@ export function DataGridFrontend({
                         setOpen={setOpen}
                         setFormData={setFormData}
                         selected={selected}
-                        rows={rows}
+                        rows={state[entityKey].rows}
                         showClassesDetails={showClassesDetails}
                         showMembershipDetails={showMembershipDetails}
                         hideAddMembership={hideAddMembership}
@@ -151,24 +123,24 @@ export function DataGridFrontend({
                         aria-labelledby="tableTitle"
                         size="small"
                     >
-                        <EnhancedTableHeadFrontend
+                        <EnhancedTableHeadBackend
                             headCells={headCells}
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={state[entityKey].count}
                             stopPointerEvents={stopPointerEvents}
                         />
                         <TableBody>
-                            {visibleRows.length === 0 ?
+                            {state[entityKey].rows.length === 0 ?
                                 <TableRow>
                                     <TableCell colSpan={headCells.length + 1} align='center'>
                                         No hay registros para mostrar.
                                     </TableCell>
                                 </TableRow> :
-                                visibleRows.map((row, index) => {
+                                state[entityKey].rows.map((row, index) => {
                                     const isItemSelected = isSelected(row.id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     return (
@@ -197,18 +169,20 @@ export function DataGridFrontend({
                                                     />
                                                 </TableCell>
                                             }
-                                            {headCells.map(cell => cell.accessor).map((accessor, idx) => (
-                                                <TableCell
-                                                    key={idx}
-                                                    align="center"
-                                                    sx={{
-                                                        cursor: 'pointer',
-                                                        color: '#011627'
-                                                    }}
-                                                >
-                                                    {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
-                                                </TableCell>
-                                            ))}
+                                            {headCells
+                                                .map(cell => cell.accessor)
+                                                .map((accessor, idx) => (
+                                                    <TableCell
+                                                        key={idx}
+                                                        align="center"
+                                                        sx={{
+                                                            cursor: 'pointer',
+                                                            color: '#011627'
+                                                        }}
+                                                    >
+                                                        {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
+                                                    </TableCell>
+                                                ))}
                                         </TableRow>
                                     );
                                 })}
@@ -218,10 +192,10 @@ export function DataGridFrontend({
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={rows.length}
+                    count={state[entityKey].count}
                     rowsPerPage={offset}
                     labelRowsPerPage="Registros por página"
-                    labelDisplayedRows={({ from, to }) => `${from}–${to} de ${rows.length}`}
+                    labelDisplayedRows={({ from, to }) => `${from}–${to} de ${state[entityKey].count}`}
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}

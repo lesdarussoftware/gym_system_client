@@ -100,17 +100,17 @@ export interface Class {
 
 // Definimos el tipo para el estado del contexto
 interface State {
-    clients: Client[];
-    users: User[];
-    teachers: Teacher[];
-    classes: Class[];
+    clients: { rows: Client[], count: number };
+    users: { rows: User[], count: number };
+    teachers: { rows: Teacher[], count: number };
+    classes: { rows: Class[], count: number };
 }
 
 type Action =
-    | { type: "SET_CLIENTS"; payload: Client[] }
-    | { type: "SET_USERS"; payload: User[] }
-    | { type: "SET_TEACHERS"; payload: Teacher[] }
-    | { type: "SET_CLASSES"; payload: Class[] };
+    | { type: "SET_CLIENTS"; payload: { rows: Client[], count: number } }
+    | { type: "SET_USERS"; payload: { rows: User[], count: number } }
+    | { type: "SET_TEACHERS"; payload: { rows: Teacher[], count: number } }
+    | { type: "SET_CLASSES"; payload: { rows: Class[], count: number } };
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -128,10 +128,10 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const initialState: State = {
-    clients: [],
-    users: [],
-    teachers: [],
-    classes: [],
+    clients: { rows: [], count: 0 },
+    users: { rows: [], count: 0 },
+    teachers: { rows: [], count: 0 },
+    classes: { rows: [], count: 0 }
 };
 
 export const DataContext = createContext<{

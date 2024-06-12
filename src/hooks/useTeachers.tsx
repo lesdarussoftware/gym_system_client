@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext } from "../providers/DataProvider";
@@ -20,16 +20,14 @@ export function useTeachers() {
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState(null);
 
-    useEffect(() => {
-        (async () => {
-            if (state.teachers.length === 0) {
-                const { status, data } = await handleQuery({ url: `${TEACHER_URL}/${auth?.me.gym.hash}` })
-                if (status === STATUS_CODES.OK) {
-                    dispatch({ type: SET_TEACHERS, payload: data })
-                }
+    const getTeachers = async () => {
+        if (state.teachers.rows.length === 0) {
+            const { status, data } = await handleQuery({ url: `${TEACHER_URL}/${auth?.me.gym.hash}` })
+            if (status === STATUS_CODES.OK) {
+                dispatch({ type: SET_TEACHERS, payload: { rows: data[0], count: data[1] } })
             }
-        })()
-    }, [])
+        }
+    }
 
     const handleSubmit = async (
         e: { preventDefault: () => void; },
@@ -53,13 +51,13 @@ export function useTeachers() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_TEACHERS,
-                    payload: [data, ...state.teachers]
+                    payload: { ...state.teachers, rows: [data, ...state.teachers.rows] }
                 });
                 setMessage('Profesor registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_TEACHERS,
-                    payload: [data, ...state.teachers.filter(item => item.id !== data.id)]
+                    payload: { ...state.teachers, rows: [data, ...state.teachers.rows.filter(item => item.id !== data.id)] }
                 });
                 setMessage('Profesor editado correctamente.');
             } else {
@@ -92,7 +90,7 @@ export function useTeachers() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_TEACHERS,
-                payload: [...state.teachers.filter(item => item.id !== data.id)]
+                payload: { ...state.teachers, rows: [...state.teachers.rows.filter(item => item.id !== data.id)] }
             });
             setSeverity(SUCCESS);
             setMessage('Profesor eliminado correctamente.');
@@ -106,5 +104,5 @@ export function useTeachers() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen }
+    return { handleSubmit, handleClose, handleDelete, open, setOpen, getTeachers }
 }
