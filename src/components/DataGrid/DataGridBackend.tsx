@@ -100,7 +100,7 @@ export function DataGridBackend({
     const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
     useEffect(() => {
-        getter();
+        getter(`?sortOrder=${order}&orderBy=${orderBy}&page=${page}&offset=${offset}`);
     }, [order, orderBy, page, offset])
 
     return (

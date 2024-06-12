@@ -21,11 +21,9 @@ export function useTeachers() {
     const [open, setOpen] = useState(null);
 
     const getTeachers = async (params: string | undefined) => {
-        if (state.teachers.rows.length === 0) {
-            const { status, data } = await handleQuery({ url: `${TEACHER_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
-            if (status === STATUS_CODES.OK) {
-                dispatch({ type: SET_TEACHERS, payload: { rows: data[0], count: data[1] } })
-            }
+        const { status, data } = await handleQuery({ url: `${TEACHER_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
+        if (status === STATUS_CODES.OK) {
+            dispatch({ type: SET_TEACHERS, payload: { rows: data[0], count: data[1] } })
         }
     }
 

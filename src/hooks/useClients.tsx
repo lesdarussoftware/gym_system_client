@@ -21,11 +21,9 @@ export function useClients() {
     const [open, setOpen] = useState<string | null>(null);
 
     const getClients = async (params: string | undefined) => {
-        if (state.clients.rows.length === 0) {
-            const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
-            if (status === STATUS_CODES.OK) {
-                dispatch({ type: SET_CLIENTS, payload: { rows: data[0], count: data[1] } })
-            }
+        const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
+        if (status === STATUS_CODES.OK) {
+            dispatch({ type: SET_CLIENTS, payload: { rows: data[0], count: data[1] } })
         }
     }
 
