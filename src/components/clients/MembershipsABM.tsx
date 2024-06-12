@@ -8,7 +8,7 @@ import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
 import { useMemberships } from "../../hooks/useMemberships";
 
-import { DataGrid } from "../DataGrid/DataGrid";
+import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from "../common/ModalComponent";
 import { InactiveMembershipDetails } from "./InactiveMembershipDetails";
 import { DeleteMembershipModal } from "./DeleteMembershipModal";
@@ -84,7 +84,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
     ]
 
     return (
-        <DataGrid
+        <DataGridFrontend
             headCells={headCells}
             rows={state.clients.find(c => c.id === client.id)!.memberships.filter(m => !membershipIsActive(m))}
             setFormData={setFormData}
@@ -118,6 +118,6 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGrid>
+        </DataGridFrontend>
     );
 }

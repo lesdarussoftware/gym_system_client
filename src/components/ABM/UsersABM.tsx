@@ -6,7 +6,7 @@ import { DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useUsers } from "../../hooks/useUsers";
 
-import { DataGrid } from "../DataGrid/DataGrid";
+import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
 
 import { ADMIN, SUPERUSER, USER } from "../../config/roles";
@@ -101,7 +101,7 @@ export function UsersABM() {
     ]
 
     return (
-        <DataGrid
+        <DataGridFrontend
             headCells={headCells}
             rows={state.users}
             setOpen={setOpen}
@@ -285,6 +285,6 @@ export function UsersABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGrid>
+        </DataGridFrontend>
     );
 }

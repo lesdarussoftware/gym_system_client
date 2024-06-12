@@ -56,7 +56,7 @@ function stableSort(array: any[], comparator: (a: any, b: any) => number) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export function DataGrid({
+export function DataGridFrontend({
     children,
     headCells,
     rows,

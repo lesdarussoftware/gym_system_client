@@ -5,7 +5,7 @@ import { DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClasses } from "../../hooks/useClasses";
 
-import { DataGrid } from "../DataGrid/DataGrid";
+import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
 import { ClassSchedules } from "./ClassSchedules";
 
@@ -46,7 +46,7 @@ export function ClassesABM() {
     ]
 
     return (
-        <DataGrid
+        <DataGridFrontend
             headCells={headCells}
             rows={state.classes}
             setOpen={setOpen}
@@ -175,6 +175,6 @@ export function ClassesABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGrid>
+        </DataGridFrontend>
     );
 }

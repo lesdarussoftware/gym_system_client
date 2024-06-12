@@ -5,7 +5,7 @@ import { DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClients } from "../../hooks/useClients";
 
-import { DataGrid } from "../DataGrid/DataGrid";
+import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
 
 import { NEW, EDIT, DELETE } from '../../config/openTypes'
@@ -71,7 +71,7 @@ export function ClientsABM() {
     ]
 
     return (
-        <DataGrid
+        <DataGridFrontend
             headCells={headCells}
             rows={state.clients}
             setOpen={setOpen}
@@ -226,6 +226,6 @@ export function ClientsABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGrid>
+        </DataGridFrontend>
     );
 }

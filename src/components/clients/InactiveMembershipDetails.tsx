@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Membership } from "../../providers/DataProvider";
-import { DataGrid } from "../DataGrid/DataGrid";
+import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { format } from "date-fns";
 
 type InactiveMembershipDetailesProps = {
@@ -34,7 +34,7 @@ export function InactiveMembershipDetails({ membership }: InactiveMembershipDeta
             <Typography variant="h6" marginBottom={1}>
                 Clases y visitas
             </Typography>
-            <DataGrid
+            <DataGridFrontend
                 headCells={headCells}
                 rows={visits ?? []}
                 stopPointerEvents

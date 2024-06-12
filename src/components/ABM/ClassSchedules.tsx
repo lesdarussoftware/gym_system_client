@@ -8,7 +8,7 @@ import { useForm } from "../../hooks/useForm";
 import { useClasses } from "../../hooks/useClasses";
 import { useTeachers } from "../../hooks/useTeachers";
 
-import { DataGrid } from "../DataGrid/DataGrid";
+import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 
 import { DAYS, HOURS } from "../../config/schedules";
 import { EDIT, NEW, DELETE } from "../../config/openTypes";
@@ -224,7 +224,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
                 </Box>
             }
             <Box sx={{ marginTop: 2 }}>
-                <DataGrid
+                <DataGridFrontend
                     headCells={headCells}
                     rows={state.classes.find(c => c.id === formData.id)?.schedules || []}
                     stopPointerEvents
