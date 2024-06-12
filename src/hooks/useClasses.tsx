@@ -20,9 +20,9 @@ export function useClasses() {
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
 
-    const getClasses = async () => {
+    const getClasses = async (params: string | undefined) => {
         if (state.classes.rows.length === 0) {
-            const { status, data } = await handleQuery({ url: `${CLASS_URL}/${auth?.me.gym.hash}` })
+            const { status, data } = await handleQuery({ url: `${CLASS_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
             if (status === STATUS_CODES.OK) {
                 dispatch({ type: SET_CLASSES, payload: { rows: data[0], count: data[1] } })
             }

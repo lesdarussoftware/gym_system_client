@@ -1,18 +1,16 @@
-import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { DataContext } from "../../providers/DataProvider";
+import { Client } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClients } from "../../hooks/useClients";
 
-import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
+import { DataGridBackend } from "../DataGrid/DataGridBackend";
 
 import { NEW, EDIT, DELETE } from '../../config/openTypes'
 
 export function ClientsABM() {
 
-    const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', first_name: '', last_name: '', dni: '', email: '', phone: '', gym_hash: '' },
         rules: {
@@ -23,7 +21,7 @@ export function ClientsABM() {
             phone: { required: true, maxLength: 55 }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen } = useClients();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClients } = useClients();
 
     const headCells = [
         {
@@ -31,49 +29,50 @@ export function ClientsABM() {
             numeric: true,
             disablePadding: false,
             label: 'N° registro',
-            accessor: 'id'
+            accessor: (row: Client) => row.id
         },
         {
             id: 'first_name',
             numeric: false,
             disablePadding: true,
             label: 'Nombre',
-            accessor: 'first_name'
+            accessor: (row: Client) => row.first_name
         },
         {
             id: 'last_name',
             numeric: false,
             disablePadding: true,
             label: 'Apellido',
-            accessor: 'last_name'
+            accessor: (row: Client) => row.last_name
         },
         {
             id: 'dni',
             numeric: false,
             disablePadding: true,
             label: 'DNI',
-            accessor: 'dni'
+            accessor: (row: Client) => row.dni
         },
         {
             id: 'email',
             numeric: false,
             disablePadding: true,
             label: 'Email',
-            accessor: 'email'
+            accessor: (row: Client) => row.email
         },
         {
             id: 'phone',
             numeric: false,
             disablePadding: true,
             label: 'Teléfono',
-            accessor: 'phone'
+            accessor: (row: Client) => row.phone
         }
     ]
 
     return (
-        <DataGridFrontend
+        <DataGridBackend
             headCells={headCells}
-            rows={state.clients}
+            getter={getClients}
+            entityKey="clients"
             setOpen={setOpen}
             setFormData={setFormData}
         >
@@ -226,6 +225,6 @@ export function ClientsABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGridFrontend>
+        </DataGridBackend>
     );
 }

@@ -1,25 +1,23 @@
-import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { DataContext } from "../../providers/DataProvider";
+import { Class } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClasses } from "../../hooks/useClasses";
 
-import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
 import { ClassSchedules } from "./ClassSchedules";
+import { DataGridBackend } from "../DataGrid/DataGridBackend";
 
 import { getNumberInputAbsValue } from "../../helpers/math";
 import { NEW, EDIT, DELETE, VIEW_SCHEDULES } from '../../config/openTypes';
 
 export function ClassesABM() {
 
-    const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', name: '', duration: '', gym_hash: '' },
         rules: { name: { required: true, maxLength: 55 } }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen } = useClasses();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClasses } = useClasses();
 
     const headCells = [
         {
@@ -27,28 +25,29 @@ export function ClassesABM() {
             numeric: true,
             disablePadding: false,
             label: 'N° registro',
-            accessor: 'id'
+            accessor: (row: Class) => row.id
         },
         {
             id: 'name',
             numeric: false,
             disablePadding: true,
             label: 'Nombre',
-            accessor: 'name'
+            accessor: (row: Class) => row.name
         },
         {
             id: 'duration',
             numeric: false,
             disablePadding: true,
             label: 'Duración (min.)',
-            accessor: 'duration'
+            accessor: (row: Class) => row.duration
         }
     ]
 
     return (
-        <DataGridFrontend
+        <DataGridBackend
             headCells={headCells}
-            rows={state.classes}
+            getter={getClasses}
+            entityKey="classes"
             setOpen={setOpen}
             setFormData={setFormData}
             showClassesDetails
@@ -175,6 +174,6 @@ export function ClassesABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGridFrontend>
+        </DataGridBackend>
     );
 }

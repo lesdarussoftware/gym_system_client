@@ -18,8 +18,8 @@ import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 interface DataGridProps {
     children?: React.ReactNode;
     headCells: HeadCell[];
-    rows: any[];
     entityKey: 'clients' | 'users' | 'teachers' | 'classes';
+    getter: (params?: string | undefined) => void;
     setOpen?: any;
     setFormData?: any;
     defaultOrder?: 'asc' | 'desc';
@@ -37,6 +37,7 @@ export function DataGridBackend({
     setOpen,
     setFormData,
     entityKey,
+    getter,
     defaultOrder = 'desc',
     defaultOrderBy = 'id',
     stopPointerEvents,
@@ -99,8 +100,8 @@ export function DataGridBackend({
     const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
     useEffect(() => {
-
-    }, [order, orderBy, page, offset, state[entityKey].rows])
+        getter();
+    }, [order, orderBy, page, offset])
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>

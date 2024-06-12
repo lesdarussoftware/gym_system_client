@@ -2,12 +2,12 @@ import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 
 import { AuthContext } from "../../providers/AuthProvider";
-import { DataContext } from "../../providers/DataProvider";
+import { User } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useUsers } from "../../hooks/useUsers";
 
-import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
+import { DataGridBackend } from "../DataGrid/DataGridBackend";
 
 import { ADMIN, SUPERUSER, USER } from "../../config/roles";
 import { NEW, EDIT, DELETE } from '../../config/openTypes';
@@ -15,7 +15,6 @@ import { NEW, EDIT, DELETE } from '../../config/openTypes';
 export function UsersABM() {
 
     const { auth } = useContext(AuthContext);
-    const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: {
             id: '',
@@ -53,7 +52,7 @@ export function UsersABM() {
             }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen } = useUsers();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getUsers } = useUsers();
 
     const headCells = [
         {
@@ -61,49 +60,50 @@ export function UsersABM() {
             numeric: true,
             disablePadding: false,
             label: 'N° registro',
-            accessor: 'id'
+            accessor: (row: User) => row.id
         },
         {
             id: 'first_name',
             numeric: false,
             disablePadding: true,
             label: 'Nombre',
-            accessor: 'first_name'
+            accessor: (row: User) => row.first_name
         },
         {
             id: 'last_name',
             numeric: false,
             disablePadding: true,
             label: 'Apellido',
-            accessor: 'last_name'
+            accessor: (row: User) => row.last_name
         },
         {
             id: 'username',
             numeric: false,
             disablePadding: true,
             label: 'Nombre de usuario',
-            accessor: 'username'
+            accessor: (row: User) => row.username
         },
         {
             id: 'email',
             numeric: false,
             disablePadding: true,
             label: 'Email',
-            accessor: 'email'
+            accessor: (row: User) => row.email
         },
         {
             id: 'role',
             numeric: false,
             disablePadding: true,
             label: 'Rol',
-            accessor: 'role'
+            accessor: (row: User) => row.role
         }
     ]
 
     return (
-        <DataGridFrontend
+        <DataGridBackend
             headCells={headCells}
-            rows={state.users}
+            getter={getUsers}
+            entityKey="users"
             setOpen={setOpen}
             setFormData={setFormData}
         >
@@ -285,6 +285,6 @@ export function UsersABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGridFrontend>
+        </DataGridBackend>
     );
 }

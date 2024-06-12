@@ -1,18 +1,16 @@
-import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { DataContext } from "../../providers/DataProvider";
+import { Teacher } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useTeachers } from "../../hooks/useTeachers";
 
-import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { ModalComponent } from '../common/ModalComponent'
+import { DataGridBackend } from "../DataGrid/DataGridBackend";
 
 import { NEW, EDIT, DELETE } from '../../config/openTypes';
 
 export function TeachersABM() {
 
-    const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', first_name: '', last_name: '', email: '', phone: '', gym_hash: '' },
         rules: {
@@ -22,7 +20,7 @@ export function TeachersABM() {
             phone: { maxLength: 55 }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen } = useTeachers();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getTeachers } = useTeachers();
 
     const headCells = [
         {
@@ -30,42 +28,43 @@ export function TeachersABM() {
             numeric: true,
             disablePadding: false,
             label: 'N° registro',
-            accessor: 'id'
+            accessor: (row: Teacher) => row.id
         },
         {
             id: 'first_name',
             numeric: false,
             disablePadding: true,
             label: 'Nombre',
-            accessor: 'first_name'
+            accessor: (row: Teacher) => row.first_name
         },
         {
             id: 'last_name',
             numeric: false,
             disablePadding: true,
             label: 'Apellido',
-            accessor: 'last_name'
+            accessor: (row: Teacher) => row.last_name
         },
         {
             id: 'email',
             numeric: false,
             disablePadding: true,
             label: 'Email',
-            accessor: 'email'
+            accessor: (row: Teacher) => row.email
         },
         {
             id: 'phone',
             numeric: false,
             disablePadding: true,
             label: 'Teléfono',
-            accessor: 'phone'
+            accessor: (row: Teacher) => row.phone
         }
     ]
 
     return (
-        <DataGridFrontend
+        <DataGridBackend
             headCells={headCells}
-            rows={state.teachers}
+            getter={getTeachers}
+            entityKey="teachers"
             setOpen={setOpen}
             setFormData={setFormData}
         >
@@ -198,6 +197,6 @@ export function TeachersABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-        </DataGridFrontend>
+        </DataGridBackend>
     );
 }

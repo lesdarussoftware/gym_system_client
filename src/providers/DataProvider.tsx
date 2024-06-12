@@ -63,7 +63,7 @@ export interface Client {
     updated_at: Date;
 }
 
-interface User {
+export interface User {
     id: number;
     first_name: string;
     last_name: string;
@@ -76,7 +76,7 @@ interface User {
     updated_at: Date;
 }
 
-interface Teacher {
+export interface Teacher {
     id: number;
     gym_hash: string;
     first_name: string;
