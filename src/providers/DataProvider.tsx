@@ -1,6 +1,6 @@
 import { createContext, ReactNode, Dispatch, useReducer } from "react";
 
-import { SET_CLIENTS, SET_USERS, SET_TEACHERS, SET_CLASSES } from '../config/dataReducerActionTypes'
+import { SET_CLIENTS, SET_USERS, SET_TEACHERS, SET_CLASSES, SET_PACKS } from '../config/dataReducerActionTypes'
 
 interface Visit {
     id: number;
@@ -98,19 +98,29 @@ export interface Class {
     updated_at: Date;
 }
 
-// Definimos el tipo para el estado del contexto
+export interface Pack {
+    id: number;
+    gym_hash: string;
+    name: string;
+    price: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
 interface State {
     clients: { rows: Client[], count: number };
     users: { rows: User[], count: number };
     teachers: { rows: Teacher[], count: number };
     classes: { rows: Class[], count: number };
+    packs: { rows: Pack[], count: number };
 }
 
 type Action =
     | { type: "SET_CLIENTS"; payload: { rows: Client[], count: number } }
     | { type: "SET_USERS"; payload: { rows: User[], count: number } }
     | { type: "SET_TEACHERS"; payload: { rows: Teacher[], count: number } }
-    | { type: "SET_CLASSES"; payload: { rows: Class[], count: number } };
+    | { type: "SET_CLASSES"; payload: { rows: Class[], count: number } }
+    | { type: "SET_PACKS"; payload: { rows: Pack[], count: number } };
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -122,6 +132,8 @@ const reducer = (state: State, action: Action): State => {
             return { ...state, teachers: action.payload };
         case SET_CLASSES:
             return { ...state, classes: action.payload };
+        case SET_PACKS:
+            return { ...state, packs: action.payload };
         default:
             return state;
     }
@@ -131,7 +143,8 @@ const initialState: State = {
     clients: { rows: [], count: 0 },
     users: { rows: [], count: 0 },
     teachers: { rows: [], count: 0 },
-    classes: { rows: [], count: 0 }
+    classes: { rows: [], count: 0 },
+    packs: { rows: [], count: 0 }
 };
 
 export const DataContext = createContext<{

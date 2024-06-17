@@ -9,6 +9,7 @@ import { ClassesABM } from "../components/ABM/ClassesABM";
 import { TeachersABM } from '../components/ABM/TeachersABM';
 import { UsersABM } from '../components/ABM/UsersABM';
 import { LoginForm } from '../components/common/LoginForm';
+import { PacksABM } from '../components/ABM/PacksABM';
 
 function CustomTabPanel(props: { [x: string]: any; children: any; value: any; index: any; }) {
     const { children, value, index, ...other } = props;
@@ -54,16 +55,20 @@ export function ABMPage() {
                     <Box sx={{ padding: 2 }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Clases" {...a11yProps(0)} />
-                            <Tab label="Profesores" {...a11yProps(1)} />
-                            <Tab label="Usuarios" {...a11yProps(2)} />
+                            <Tab label="Paquetes" {...a11yProps(1)} />
+                            <Tab label="Profesores" {...a11yProps(2)} />
+                            <Tab label="Usuarios" {...a11yProps(3)} />
                         </Tabs>
                         <CustomTabPanel value={value} index={0}>
                             <ClassesABM />
                         </CustomTabPanel>
                         <CustomTabPanel value={value} index={1}>
-                            <TeachersABM />
+                            <PacksABM />
                         </CustomTabPanel>
                         <CustomTabPanel value={value} index={2}>
+                            <TeachersABM />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={3}>
                             <UsersABM />
                         </CustomTabPanel>
                     </Box>

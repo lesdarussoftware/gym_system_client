@@ -18,7 +18,7 @@ import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 interface DataGridProps {
     children?: React.ReactNode;
     headCells: HeadCell[];
-    entityKey: 'clients' | 'users' | 'teachers' | 'classes';
+    entityKey: 'clients' | 'users' | 'teachers' | 'classes' | 'packs';
     getter: (params?: string | undefined) => void;
     setOpen?: any;
     setFormData?: any;

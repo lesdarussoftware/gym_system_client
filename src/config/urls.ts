@@ -11,3 +11,4 @@ export const SCHEDULE_URL = BASE_URL + '/schedules';
 export const MEMBERSHIP_URL = BASE_URL + '/memberships';
 export const MEMBERSHIP_CLASS_URL = BASE_URL + '/membership-classes';
 export const VISIT_URL = BASE_URL + '/visits';
+export const PACK_URL = BASE_URL + '/packs';
