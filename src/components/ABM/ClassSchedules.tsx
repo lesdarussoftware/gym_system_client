@@ -168,7 +168,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="">Seleccione</MenuItem>
-                                    {state.teachers.map(t => (
+                                    {state.teachers.rows.map(t => (
                                         <MenuItem key={t.id} value={t.id}>{`${t.first_name} ${t.last_name}`}</MenuItem>
                                     ))}
                                 </Select>
@@ -226,7 +226,7 @@ export function ClassSchedules({ formData }: ClassSchedulesProps) {
             <Box sx={{ marginTop: 2 }}>
                 <DataGridFrontend
                     headCells={headCells}
-                    rows={state.classes.find(c => c.id === formData.id)?.schedules || []}
+                    rows={state.classes.rows.find(c => c.id === formData.id)?.schedules || []}
                     stopPointerEvents
                     setOpen={open !== null ? false : setOpen}
                     setFormData={open !== null ? false : setFormData}

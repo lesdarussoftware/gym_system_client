@@ -86,7 +86,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
     return (
         <DataGridFrontend
             headCells={headCells}
-            rows={state.clients.find(c => c.id === client.id)!.memberships.filter(m => !membershipIsActive(m))}
+            rows={state.clients.rows.find(c => c.id === client.id)!.memberships.filter(m => !membershipIsActive(m))}
             setFormData={setFormData}
             setOpen={setOpen}
             showMembershipDetails
@@ -104,7 +104,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
             />
             <ModalComponent open={open === VIEW_MEMBERSHIP_DETAILS} onClose={() => handleClose(reset)} reduceWidth={800}>
                 <InactiveMembershipDetails
-                    membership={state.clients.find(c => c.id === client.id)!.memberships
+                    membership={state.clients.rows.find(c => c.id === client.id)!.memberships
                         .find(m => m.id === formData.id)!
                     }
                 />

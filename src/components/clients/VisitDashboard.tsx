@@ -27,7 +27,7 @@ export function VisitDashboard() {
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         if (validate()) {
-            const exists = state.clients.find(c => c.dni === +formData.dni);
+            const exists = state.clients.rows.find(c => c.dni === +formData.dni);
             if (exists) {
                 setClient(exists);
                 reset();

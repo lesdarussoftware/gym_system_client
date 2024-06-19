@@ -1,8 +1,10 @@
-import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Autocomplete, Box, Button, FormControl, Input, InputLabel, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 
-import { Pack } from "../../providers/DataProvider";
+import { DataContext, Pack, PackClass } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { usePacks } from "../../hooks/usePacks";
+import { useClasses } from "../../hooks/useClasses";
 
 import { ModalComponent } from '../common/ModalComponent'
 import { DataGridBackend } from "../DataGrid/DataGridBackend";
@@ -11,11 +13,18 @@ import { NEW, EDIT, DELETE } from '../../config/openTypes';
 
 export function PacksABM() {
 
+    const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', name: '', price: '', gym_hash: '' },
         rules: { name: { required: true, maxLength: 55 }, price: { required: true } }
-    })
+    });
+    const { getClasses } = useClasses();
     const { handleSubmit, handleClose, handleDelete, open, setOpen, getPacks } = usePacks();
+    const [packClasses, setPackClasses] = useState<PackClass[]>([]);
+
+    useEffect(() => {
+        getClasses();
+    }, [])
 
     const headCells = [
         {
@@ -89,6 +98,50 @@ export function PacksABM() {
                                 value={formData.price}
                             />
                         </FormControl>
+                        <FormControl>
+                            <Autocomplete
+                                disablePortal
+                                id="class-autocomplete"
+                                options={state.classes.rows.map(c => c.name).sort()}
+                                renderInput={(params) => <TextField {...params} label="Clase" />}
+                            />
+                        </FormControl>
+                        <TableContainer component={Paper}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">Nombre</TableCell>
+                                    <TableCell align="center">Cantidad</TableCell>
+                                    <TableCell align="center">Precio</TableCell>
+                                    <TableCell align="center">Total</TableCell>
+                                    <TableCell align="center"></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {packClasses.length === 0 ?
+                                    <TableRow>
+                                        <TableCell align="center"></TableCell>
+                                        <TableCell align="center"></TableCell>
+                                        <TableCell align="center">No hay registros que mostrar.</TableCell>
+                                        <TableCell align="center"></TableCell>
+                                        <TableCell align="center"></TableCell>
+                                    </TableRow> :
+                                    <TableRow>
+                                        {packClasses.map(pc => {
+                                            const c = state.classes.rows.find(c => c.id === pc.class_id)
+                                            return (
+                                                <TableRow>
+                                                    <TableCell align="center">{c?.name}</TableCell>
+                                                    <TableCell align="center">{pc.amount}</TableCell>
+                                                    <TableCell align="center">{c?.price}</TableCell>
+                                                    <TableCell align="center">{c!.price * pc.amount}</TableCell>
+                                                    <TableCell align="center"></TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    </TableRow>
+                                }
+                            </TableBody>
+                        </TableContainer>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                             <Button
                                 type="button"
@@ -156,21 +209,6 @@ export function PacksABM() {
                     </Button>
                 </Box>
             </ModalComponent>
-            {/* <ModalComponent
-                open={open === VIEW_SCHEDULES}
-                onClose={() => handleClose(reset)}
-            >
-                <ClassSchedules formData={formData} />
-                <Box sx={{ marginTop: 1, display: 'flex', justifyContent: 'end' }}>
-                    <Button
-                        type="button"
-                        variant="outlined"
-                        onClick={() => handleClose(reset)}
-                    >
-                        Cerrar
-                    </Button>
-                </Box>
-            </ModalComponent> */}
         </DataGridBackend>
     );
 }

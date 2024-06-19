@@ -36,7 +36,7 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
             price: { required: true }
         }
     });
-    const membership = state.clients.find(c => c.id === client.id)!.memberships.find(m => membershipIsActive(m));
+    const membership = state.clients.rows.find(c => c.id === client.id)!.memberships.find(m => membershipIsActive(m));
 
     return (
         <Box>

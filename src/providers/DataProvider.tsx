@@ -91,6 +91,7 @@ export interface Class {
     id: number;
     gym_hash: string;
     name: string;
+    price: number;
     duration?: number | null;
     schedules: Schedule[];
     memberships: MembershipClass[];
@@ -103,6 +104,15 @@ export interface Pack {
     gym_hash: string;
     name: string;
     price: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface PackClass {
+    id: number;
+    pack_id: number;
+    class_id: number;
+    amount: number;
     created_at: Date;
     updated_at: Date;
 }

@@ -61,13 +61,13 @@ export function SchedulesPage() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {state.classes.length === 0 ?
+                                    {state.classes.rows.length === 0 ?
                                         <TableRow>
                                             <TableCell colSpan={headers.length + 1} align="center">
                                                 No hay registros para mostrar.
                                             </TableCell>
                                         </TableRow> :
-                                        state.classes.sort((a, b) => {
+                                        state.classes.rows.sort((a, b) => {
                                             if (a.name > b.name) return 1;
                                             if (a.name < b.name) return -1;
                                             return 0;

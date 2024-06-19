@@ -28,7 +28,7 @@ export function ProfilePage() {
         }
     });
 
-    const user = state.users.find(u => u.username === auth?.me.username && u.gym_hash === auth.me.gym.hash);
+    const user = state.users.rows.find(u => u.username === auth?.me.username && u.gym_hash === auth.me.gym.hash);
 
     return (
         <>

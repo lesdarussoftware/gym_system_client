@@ -20,7 +20,7 @@ export function useTeachers() {
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState(null);
 
-    const getTeachers = async (params: string | undefined) => {
+    const getTeachers = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${TEACHER_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
         if (status === STATUS_CODES.OK) {
             dispatch({ type: SET_TEACHERS, payload: { rows: data[0], count: data[1] } })

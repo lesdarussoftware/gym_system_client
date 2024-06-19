@@ -14,7 +14,7 @@ import { NEW, EDIT, DELETE, VIEW_SCHEDULES } from '../../config/openTypes';
 export function ClassesABM() {
 
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
-        defaultData: { id: '', name: '', duration: '', gym_hash: '' },
+        defaultData: { id: '', name: '', duration: '', gym_hash: '', price: '' },
         rules: { name: { required: true, maxLength: 55 } }
     })
     const { handleSubmit, handleClose, handleDelete, open, setOpen, getClasses } = useClasses();
@@ -30,16 +30,23 @@ export function ClassesABM() {
         {
             id: 'name',
             numeric: false,
-            disablePadding: true,
+            disablePadding: false,
             label: 'Nombre',
             accessor: (row: Class) => row.name
         },
         {
             id: 'duration',
-            numeric: false,
-            disablePadding: true,
+            numeric: true,
+            disablePadding: false,
             label: 'Duración (min.)',
             accessor: (row: Class) => row.duration
+        },
+        {
+            id: 'price',
+            numeric: false,
+            disablePadding: false,
+            label: 'Precio',
+            accessor: (row: Class) => `$${row.price.toFixed(2)}`
         }
     ]
 
@@ -90,6 +97,15 @@ export function ClassesABM() {
                                 type="number"
                                 name="duration"
                                 value={getNumberInputAbsValue(+formData.duration, 1, 3600)}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="price">Precio</InputLabel>
+                            <Input
+                                id="price"
+                                type="number"
+                                name="price"
+                                value={getNumberInputAbsValue(+formData.price, 0, 1000000)}
                             />
                         </FormControl>
                         <Box sx={{ display: 'flex', gap: 1 }}>
