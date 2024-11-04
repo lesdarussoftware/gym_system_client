@@ -14,12 +14,12 @@ import ArticleIcon from '@mui/icons-material/Article';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
+import { Toolbar } from '@mui/material'
 
 import { AuthContext } from '../../providers/AuthProvider'
+import { useAuth } from '../../hooks/useAuth'
 
 import { MAIN_COLOR } from '../../config/colors'
-import { useAuth } from '../../hooks/useAuth'
-import { Toolbar } from '@mui/material'
 
 function Options({ type }: { type: string; }) {
 
