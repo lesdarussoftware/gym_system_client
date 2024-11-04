@@ -1,11 +1,13 @@
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { DataContext } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { AuthContext } from "../providers/AuthProvider";
 import { HandleClientContext } from "../providers/HandleClientProvider";
 import { useForm } from "../hooks/useForm";
+import { useClasses } from "../hooks/useClasses";
+import { useClients } from "../hooks/useClients";
 
 import { MemebershipsABM } from "../components/clients/MembershipsABM";
 import { ShowCurrentMembership } from "../components/clients/ShowCurrentMembership";
@@ -20,10 +22,19 @@ export function IncomesPage() {
     const { state } = useContext(DataContext);
     const { setSeverity, setMessage, setOpenMessage } = useContext(MessageContext);
     const { client, setClient } = useContext(HandleClientContext);
+    const { getClasses } = useClasses()
+    const { getClients } = useClients()
     const { formData, errors, validate, handleChange, disabled, setDisabled, reset } = useForm({
         defaultData: { dni: '' },
         rules: { dni: { required: true } }
     });
+
+    useEffect(() => {
+        if (auth) {
+            getClasses()
+            getClients()
+        }
+    }, [])
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
