@@ -9,6 +9,7 @@ import { HandleClientProvider } from "./providers/HandleClientProvider";
 
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
+import { IncomesPage } from "./pages/IncomesPage";
 import { ClientsPage } from "./pages/ClientsPage";
 import { SchedulesPage } from "./pages/SchedulesPage";
 import { ABMPage } from "./pages/ABMPage";
@@ -39,6 +40,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/ingresos" element={<IncomesPage />} />
                   <Route path="/clientes" element={<ClientsPage />} />
                   <Route path="/horarios" element={<SchedulesPage />} />
                   <Route path="/abm" element={<ABMPage />} />
