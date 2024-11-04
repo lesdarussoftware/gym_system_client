@@ -30,7 +30,6 @@ export function useMemberships() {
         e.preventDefault();
         if (validate()) {
             const urls = { [NEW]: MEMBERSHIP_URL, [EDIT]: `${MEMBERSHIP_URL}/${auth?.me.gym.hash}/${formData.id}` };
-            console.log(open)
             const { status, data } = await handleQuery({
                 url: open === NEW || open === EDIT ? urls[open] : '',
                 method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
@@ -42,32 +41,38 @@ export function useMemberships() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLIENTS,
-                    payload: [
-                        ...state.clients.filter(item => item.id !== data.client_id),
-                        {
-                            ...state.clients.find(item => item.id === data.client_id)!,
-                            memberships: [
-                                data,
-                                ...state.clients.find(item => item.id === data.client_id)!.memberships
-                            ]
-                        }
-                    ]
+                    payload: {
+                        ...state.clients,
+                        rows: [
+                            ...state.clients.rows.filter(item => item.id !== data.client_id),
+                            {
+                                ...state.clients.rows.find(item => item.id === data.client_id)!,
+                                memberships: [
+                                    data,
+                                    ...state.clients.rows.find(item => item.id === data.client_id)!.memberships
+                                ]
+                            }
+                        ]
+                    }
                 });
                 setMessage('Membresía registrada correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_CLIENTS,
-                    payload: [
-                        ...state.clients.filter(item => item.id !== data.client_id),
-                        {
-                            ...state.clients.find(item => item.id === data.client_id)!,
-                            memberships: [
-                                data,
-                                ...state.clients.find(item => item.id === data.client_id)!.memberships
-                                    .filter(item => item.id !== data.id)
-                            ]
-                        }
-                    ]
+                    payload: {
+                        ...state.clients,
+                        rows: [
+                            ...state.clients.rows.filter(item => item.id !== data.client_id),
+                            {
+                                ...state.clients.rows.find(item => item.id === data.client_id)!,
+                                memberships: [
+                                    data,
+                                    ...state.clients.rows.find(item => item.id === data.client_id)!.memberships
+                                        .filter(item => item.id !== data.id)
+                                ]
+                            }
+                        ]
+                    }
                 });
                 setMessage('Membresía editada correctamente.');
             } else {
@@ -95,16 +100,19 @@ export function useMemberships() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: [
-                    ...state.clients.filter(item => item.id !== data.client_id),
-                    {
-                        ...state.clients.find(item => item.id === data.client_id)!,
-                        memberships: [
-                            ...state.clients.find(item => item.id === data.client_id)!.memberships
-                                .filter(item => item.id !== data.id)
-                        ]
-                    }
-                ]
+                payload: {
+                    ...state.clients,
+                    rows: [
+                        ...state.clients.rows.filter(item => item.id !== data.client_id),
+                        {
+                            ...state.clients.rows.find(item => item.id === data.client_id)!,
+                            memberships: [
+                                ...state.clients.rows.find(item => item.id === data.client_id)!.memberships
+                                    .filter(item => item.id !== data.id)
+                            ]
+                        }
+                    ]
+                }
             });
             setSeverity(SUCCESS);
             setMessage('Membresía eliminada correctamente.');
@@ -140,25 +148,28 @@ export function useMemberships() {
         if (status === STATUS_CODES.CREATED) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: [
-                    ...state.clients.filter(item => item.id !== formData.client_id),
-                    {
-                        ...state.clients.find(item => item.id === formData.client_id)!,
-                        memberships: [
-                            ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                .filter(m => m.id !== formData.membership_id),
-                            {
-                                ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                    .find(m => m.id === formData.membership_id)!,
-                                classes: [
-                                    data,
-                                    ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                        .find(m => m.id === formData.membership_id)!.classes
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                payload: {
+                    ...state.clients,
+                    rows: [
+                        ...state.clients.rows.filter(item => item.id !== formData.client_id),
+                        {
+                            ...state.clients.rows.find(item => item.id === formData.client_id)!,
+                            memberships: [
+                                ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                    .filter(m => m.id !== formData.membership_id),
+                                {
+                                    ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                        .find(m => m.id === formData.membership_id)!,
+                                    classes: [
+                                        data,
+                                        ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                            .find(m => m.id === formData.membership_id)!.classes
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             });
             setMessage('Clase habilitada correctamente.');
             setSeverity(SUCCESS);
@@ -181,25 +192,28 @@ export function useMemberships() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: [
-                    ...state.clients.filter(item => item.id !== formData.client_id),
-                    {
-                        ...state.clients.find(item => item.id === formData.client_id)!,
-                        memberships: [
-                            ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                .filter(m => m.id !== formData.membership_id),
-                            {
-                                ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                    .find(m => m.id === formData.membership_id)!,
-                                classes: [
-                                    ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                        .find(m => m.id === formData.membership_id)!.classes
-                                        .filter(m => m.id !== data.id)
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                payload: {
+                    ...state.clients,
+                    rows: [
+                        ...state.clients.rows.filter(item => item.id !== formData.client_id),
+                        {
+                            ...state.clients.rows.find(item => item.id === formData.client_id)!,
+                            memberships: [
+                                ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                    .filter(m => m.id !== formData.membership_id),
+                                {
+                                    ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                        .find(m => m.id === formData.membership_id)!,
+                                    classes: [
+                                        ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                            .find(m => m.id === formData.membership_id)!.classes
+                                            .filter(m => m.id !== data.id)
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             });
             setMessage('Clase deshabilitada correctamente.');
             setSeverity(SUCCESS);
@@ -228,37 +242,40 @@ export function useMemberships() {
         if (status === STATUS_CODES.CREATED) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: [
-                    ...state.clients.filter(item => item.id !== formData.client_id),
-                    {
-                        ...state.clients.find(item => item.id === formData.client_id)!,
-                        memberships: [
-                            ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                .filter(m => m.id !== formData.membership_id),
-                            {
-                                ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                    .find(m => m.id === formData.membership_id)!,
-                                classes: [
-                                    ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                        .find(m => m.id === formData.membership_id)!.classes
-                                        .filter(c => c.id !== formData.membership_class_id),
-                                    {
-                                        ...state.clients.find(item => item.id === formData.client_id)!.memberships
+                payload: {
+                    ...state.clients,
+                    rows: [
+                        ...state.clients.rows.filter(item => item.id !== formData.client_id),
+                        {
+                            ...state.clients.rows.find(item => item.id === formData.client_id)!,
+                            memberships: [
+                                ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                    .filter(m => m.id !== formData.membership_id),
+                                {
+                                    ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                        .find(m => m.id === formData.membership_id)!,
+                                    classes: [
+                                        ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
                                             .find(m => m.id === formData.membership_id)!.classes
-                                            .find(c => c.id === formData.membership_class_id)!,
-                                        visits: [
-                                            data,
-                                            ...state.clients.find(item => item.id === formData.client_id)!.memberships
+                                            .filter(c => c.id !== formData.membership_class_id),
+                                        {
+                                            ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
                                                 .find(m => m.id === formData.membership_id)!.classes
-                                                .find(c => c.id === formData.membership_class_id)!.visits
-                                                .filter(v => v.id !== data.id)
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                                                .find(c => c.id === formData.membership_class_id)!,
+                                            visits: [
+                                                data,
+                                                ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                                    .find(m => m.id === formData.membership_id)!.classes
+                                                    .find(c => c.id === formData.membership_class_id)!.visits
+                                                    .filter(v => v.id !== data.id)
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             });
             setMessage('Visita creada correctamente.');
             setSeverity(SUCCESS);
@@ -283,36 +300,39 @@ export function useMemberships() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: [
-                    ...state.clients.filter(item => item.id !== formData.client_id),
-                    {
-                        ...state.clients.find(item => item.id === formData.client_id)!,
-                        memberships: [
-                            ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                .filter(m => m.id !== formData.membership_id),
-                            {
-                                ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                    .find(m => m.id === formData.membership_id)!,
-                                classes: [
-                                    ...state.clients.find(item => item.id === formData.client_id)!.memberships
-                                        .find(m => m.id === formData.membership_id)!.classes
-                                        .filter(c => c.id !== formData.membership_class_id),
-                                    {
-                                        ...state.clients.find(item => item.id === formData.client_id)!.memberships
+                payload: {
+                    ...state.clients,
+                    rows: [
+                        ...state.clients.rows.filter(item => item.id !== formData.client_id),
+                        {
+                            ...state.clients.rows.find(item => item.id === formData.client_id)!,
+                            memberships: [
+                                ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                    .filter(m => m.id !== formData.membership_id),
+                                {
+                                    ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                        .find(m => m.id === formData.membership_id)!,
+                                    classes: [
+                                        ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
                                             .find(m => m.id === formData.membership_id)!.classes
-                                            .find(c => c.id === formData.membership_class_id)!,
-                                        visits: [
-                                            ...state.clients.find(item => item.id === formData.client_id)!.memberships
+                                            .filter(c => c.id !== formData.membership_class_id),
+                                        {
+                                            ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
                                                 .find(m => m.id === formData.membership_id)!.classes
-                                                .find(c => c.id === formData.membership_class_id)!.visits
-                                                .filter(v => v.id !== data.id)
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                                                .find(c => c.id === formData.membership_class_id)!,
+                                            visits: [
+                                                ...state.clients.rows.find(item => item.id === formData.client_id)!.memberships
+                                                    .find(m => m.id === formData.membership_id)!.classes
+                                                    .find(c => c.id === formData.membership_class_id)!.visits
+                                                    .filter(v => v.id !== data.id)
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             });
             setMessage('Visita eliminada correctamente.');
             setSeverity(SUCCESS);

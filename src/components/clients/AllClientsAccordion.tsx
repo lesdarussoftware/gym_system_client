@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 
 import { Accordion, AccordionDetails, AccordionSummary } from '../common/MUIAccordion';
-import { ClientsABM } from './ClientsABM';
 
 import { MAIN_COLOR } from '../../config/colors';
 
@@ -21,7 +20,7 @@ export function AllClientsAccordion() {
                 <Typography color="#fff">Lista de clientes</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <ClientsABM />
+                
             </AccordionDetails>
         </Accordion>
     );

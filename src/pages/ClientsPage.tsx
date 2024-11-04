@@ -6,9 +6,7 @@ import { useClasses } from "../hooks/useClasses";
 
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
-import { AllClientsAccordion } from "../components/clients/AllClientsAccordion";
-import { VisitDashboard } from "../components/clients/VisitDashboard";
-
+import { ClientsABM } from "../components/clients/ClientsABM";
 
 export function ClientsPage() {
 
@@ -20,11 +18,8 @@ export function ClientsPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ padding: 2 }}>
-                        <Box sx={{ marginBottom: 2 }}>
-                            <VisitDashboard />
-                        </Box>
-                        <AllClientsAccordion />
+                    <Box sx={{ p: 2 }}>
+                        <ClientsABM />
                     </Box>
                 </> :
                 <Box sx={{ padding: 2 }}>
