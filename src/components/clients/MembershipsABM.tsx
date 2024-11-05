@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Button } from "@mui/material";
 import { format } from "date-fns";
 
-import { Client, DataContext } from "../../providers/DataProvider";
+import { Client, DataContext, Membership } from "../../providers/DataProvider";
 import { useClients } from "../../hooks/useClients";
 import { useForm } from "../../hooks/useForm";
 import { useMemberships } from "../../hooks/useMemberships";
@@ -14,7 +14,7 @@ import { InactiveMembershipDetails } from "./InactiveMembershipDetails";
 import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { VIEW_MEMBERSHIP_DETAILS } from "../../config/openTypes";
-import { membershipIsActive } from "../../helpers/membership";
+import { getExpirationDate, membershipIsActive } from "../../helpers/membership";
 
 type MembershipsAMBPRops = {
     client: Client;
@@ -72,7 +72,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
             numeric: false,
             disablePadding: true,
             label: 'Fecha vencimiento',
-            accessor: 'duration'
+            accessor: (row: Membership) => format(getExpirationDate(row), 'dd-MM-yyyy')
         },
         {
             id: 'limit',

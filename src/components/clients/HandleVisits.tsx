@@ -54,8 +54,8 @@ export function HandleVisits({
     }
 
     return (
-        <>
-            <Box sx={{ width: '23%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1, color: '#000' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: { xs: 2, md: 0 } }}>
+            <Box sx={{ width: { xs: '100%', md: '49%' }, borderRadius: 1, border: '1px solid #BDBDBD', p: 1, color: '#000' }}>
                 <Typography variant="h6">
                     Historial
                 </Typography>
@@ -65,10 +65,10 @@ export function HandleVisits({
                             {visits.map((v: any, idx: number) => {
                                 return (
                                     <TableRow key={idx}>
-                                        <TableCell align="center" sx={{ padding: 0 }}>#{idx + 1}</TableCell>
-                                        <TableCell align="center" sx={{ padding: 0 }}>{v.class}</TableCell>
-                                        <TableCell align="center" sx={{ padding: 0 }}>{v.date}</TableCell>
-                                        <TableCell align="center" sx={{ padding: 0 }}>
+                                        <TableCell align="center" sx={{ p: 0 }}>#{idx + 1}</TableCell>
+                                        <TableCell align="center" sx={{ p: 0 }}>{v.class}</TableCell>
+                                        <TableCell align="center" sx={{ p: 0 }}>{v.date}</TableCell>
+                                        <TableCell align="center" sx={{ p: 0 }}>
                                             <Tooltip title="Eliminar" onClick={() => {
                                                 setOpen(DELETE);
                                                 setFormData({
@@ -89,11 +89,11 @@ export function HandleVisits({
                     </Table>
                 </TableContainer>
             </Box>
-            <Box sx={{ width: '32%', borderRadius: 1, border: '1px solid #BDBDBD', padding: 1 }}>
+            <Box sx={{ width: { xs: '100%', md: '49%' }, borderRadius: 1, border: '1px solid #BDBDBD', p: 1 }}>
                 <Typography variant="h6" sx={{ color: '#000' }}>
                     Registrar nueva visita
                 </Typography>
-                <Box sx={{ margin: 2, padding: 1 }}>
+                <Box sx={{ m: 2, p: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
                         <DatePicker
                             label="Fecha"
@@ -111,27 +111,10 @@ export function HandleVisits({
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'start' }}>
                     {classes.map((c: any) => {
                         return (
-                            <Box
-                                key={c.id}
-                                sx={{
-                                    backgroundColor: '#fff',
-                                    width: 80,
-                                    height: 80,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderRadius: 1,
-                                    boxShadow: '0 0 3px #BDBDBD',
-                                    gap: 1,
-                                    padding: 5,
-                                    wordWrap: 'break-word',
-                                    transition: '100ms all',
-                                    color: MAIN_COLOR,
-                                    transform: formData.membership_class_id === c.id ? 'scale(1.1)' : '',
-                                    ':hover': {
-                                        cursor: 'pointer'
-                                    }
-                                }}
+                            <Button
+                                type="button"
+                                variant={formData.membership_class_id === c.id ? 'contained' : 'outlined'}
+                                sx={{ color: formData.membership_class_id === c.id ? '#FFF' : MAIN_COLOR }}
                                 onClick={() => handleChange({
                                     target: {
                                         name: 'membership_class_id',
@@ -139,43 +122,41 @@ export function HandleVisits({
                                     }
                                 })}
                             >
-                                <Typography variant="body1">
-                                    {c.name}
-                                </Typography>
-                            </Box>
+                                {c.name}
+                            </Button>
                         );
                     })}
                 </Box>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, width: '15%' }}>
-                <Button
-                    variant="contained"
-                    disabled={formData.membership_class_id === ''}
-                    sx={{
-                        color: '#fff',
-                        ":disabled": {
-                            color: '#A6A6A6',
-                            backgroundColor: '#E0E0E0'
-                        }
-                    }}
-                    onClick={handleSubmit}
-                >
-                    Confirmar
-                </Button>
-                <Button
-                    variant="outlined"
-                    disabled={formData.membership_class_id === ''}
-                    sx={{
-                        ":disabled": {
-                            color: "BDBDD0",
-                            backgroundColor: "#fff",
-                            border: "1px solid #E0E0E0"
-                        }
-                    }}
-                    onClick={handleReset}
-                >
-                    Cancelar
-                </Button>
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
+                    <Button
+                        variant="contained"
+                        disabled={formData.membership_class_id === ''}
+                        sx={{
+                            color: '#fff',
+                            ":disabled": {
+                                color: '#A6A6A6',
+                                backgroundColor: '#E0E0E0'
+                            }
+                        }}
+                        onClick={handleSubmit}
+                    >
+                        Confirmar
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        disabled={formData.membership_class_id === ''}
+                        sx={{
+                            ":disabled": {
+                                color: "BDBDD0",
+                                backgroundColor: "#fff",
+                                border: "1px solid #E0E0E0"
+                            }
+                        }}
+                        onClick={handleReset}
+                    >
+                        Cancelar
+                    </Button>
+                </Box>
             </Box>
             <ModalComponent
                 open={open === DELETE}
@@ -221,6 +202,6 @@ export function HandleVisits({
                     </Button>
                 </Box>
             </ModalComponent>
-        </>
+        </Box>
     );
 }

@@ -58,13 +58,14 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
     });
 
     return (
-        <Box sx={{ display: 'flex', gap: 1, margin: '0 auto' }}>
+        <>
             <Box sx={{
-                width: '30%',
+                width: '100%',
                 borderRadius: 1,
                 border: '1px solid #BDBDBD',
                 padding: 1,
-                color: '#000'
+                color: '#000',
+                mb: 3
             }}>
                 <Typography variant="h6">
                     Detalles
@@ -186,6 +187,6 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 classes={classes}
                 membership={membership}
             />
-        </Box >
+        </>
     );
 }
