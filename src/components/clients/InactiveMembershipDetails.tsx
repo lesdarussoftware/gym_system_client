@@ -32,7 +32,7 @@ export function InactiveMembershipDetails({ membership }: InactiveMembershipDeta
     return (
         <>
             <Typography variant="h6" marginBottom={1}>
-                Clases y visitas
+                Clases e ingresos
             </Typography>
             <DataGridFrontend
                 headCells={headCells}

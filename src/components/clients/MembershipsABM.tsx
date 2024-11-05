@@ -78,7 +78,7 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
             id: 'limit',
             numeric: false,
             disablePadding: true,
-            label: 'Límite de visitas',
+            label: 'Límite de ingresos',
             accessor: 'limit'
         }
     ]

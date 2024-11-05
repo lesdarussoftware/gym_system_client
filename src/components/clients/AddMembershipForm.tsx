@@ -99,7 +99,7 @@ export function AddMembershipForm({
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
                         <FormControl>
-                            <InputLabel htmlFor="duration">Límite de visitas</InputLabel>
+                            <InputLabel htmlFor="duration">Límite de ingresos</InputLabel>
                             <Input
                                 id="limit"
                                 type="number"
@@ -108,7 +108,7 @@ export function AddMembershipForm({
                             />
                             {errors.limit?.type === 'required' &&
                                 <Typography variant="caption" color="red" marginTop={1}>
-                                    * El límite de visitas es requerido.
+                                    * El límite de ingresos es requerido.
                                 </Typography>
                             }
                         </FormControl>

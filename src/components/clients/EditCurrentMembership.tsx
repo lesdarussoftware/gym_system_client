@@ -10,7 +10,7 @@ import { useClients } from "../../hooks/useClients";
 import { useMemberships } from "../../hooks/useMemberships";
 
 import { AddMembershipForm } from "./AddMembershipForm";
-import { HandleIncomes } from "./HandleIncomes";
+import { HandleVisits } from "./HandleVisits";
 import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
@@ -85,7 +85,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                         <TableHead>
                             <TableCell align="center">Fecha inicio</TableCell>
                             <TableCell align="center">Fecha vencimiento</TableCell>
-                            <TableCell align="center">N° visitas</TableCell>
+                            <TableCell align="center">N° ingresos</TableCell>
                             <TableCell align="center">Monto</TableCell>
                             <TableCell align="center">Observaciones</TableCell>
                         </TableHead>
@@ -176,7 +176,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 handleDelete={handleDelete}
                 setDisabled={setDisabled}
             />
-            <HandleIncomes
+            <HandleVisits
                 visits={visits}
                 classes={classes}
                 membership={membership}

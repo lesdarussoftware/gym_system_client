@@ -23,7 +23,7 @@ type HandleVisitsProps = {
     membership: Membership;
 }
 
-export function HandleIncomes({ visits, classes, membership }: HandleVisitsProps) {
+export function HandleVisits({ visits, classes, membership }: HandleVisitsProps) {
 
     const { addVisit, removeVisit } = useMemberships();
     const { formData, setFormData, handleChange } = useForm({
