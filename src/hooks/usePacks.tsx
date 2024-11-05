@@ -2,7 +2,7 @@
 import { useContext, useState } from "react"
 
 import { AuthContext } from "../providers/AuthProvider";
-import { DataContext } from "../providers/DataProvider";
+import { DataContext, PackClass } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "./useQuery";
 
@@ -20,7 +20,8 @@ export function usePacks() {
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
     const [missing, setMissing] = useState<boolean>(true);
-    const [idsToDelete, setIdsToDelete] = useState<number[]>([])
+    const [idsToDelete, setIdsToDelete] = useState<number[]>([]);
+    const [packClasses, setPackClasses] = useState<PackClass[]>([]);
 
     const getPacks = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${PACK_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -37,7 +38,13 @@ export function usePacks() {
         reset: (() => void) | undefined
     ) => {
         e.preventDefault();
-        if (validate()) {
+        const submitData = {
+            ...formData,
+            pack_classes: packClasses,
+            idsToDelete: idsToDelete.length === 0 ? undefined : idsToDelete
+        }
+        const spMissing = submitData.pack_classes.length === 0 || submitData.pack_classes.some(pc => !pc.amount || pc.amount <= 0)
+        if (validate() && !spMissing) {
             const urls = { [NEW]: PACK_URL, [EDIT]: `${PACK_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
                 url: open === NEW || open === EDIT ? urls[open] : '',
@@ -56,6 +63,7 @@ export function usePacks() {
                         count: state.packs.count + 1
                     }
                 });
+                setMissing(false);
                 setMessage('Pack registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
@@ -73,11 +81,18 @@ export function usePacks() {
                 handleClose(reset);
             }
             setOpenMessage(true);
+        } else {
+            if (spMissing) {
+                setDisabled(false)
+                setMissing(true)
+            }
         }
     }
 
     const handleClose = (reset: (() => void) | undefined) => {
         setOpen(null);
+        setMissing(false);
+        setPackClasses([])
         reset!();
     }
 
@@ -121,6 +136,8 @@ export function usePacks() {
         missing,
         setMissing,
         idsToDelete,
-        setIdsToDelete
+        setIdsToDelete,
+        packClasses,
+        setPackClasses
     }
 }

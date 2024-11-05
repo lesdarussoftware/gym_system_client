@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Autocomplete, Box, Button, FormControl, Input, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
@@ -28,11 +28,13 @@ export function PacksABM() {
         open,
         setOpen,
         getPacks,
+        missing,
         setMissing,
         idsToDelete,
-        setIdsToDelete
+        setIdsToDelete,
+        packClasses,
+        setPackClasses
     } = usePacks();
-    const [packClasses, setPackClasses] = useState<PackClass[]>([]);
 
     const inputRefs = useRef<{ [key: number]: HTMLInputElement | null; }>({});
 
@@ -172,6 +174,11 @@ export function PacksABM() {
                                 isOptionEqualToValue={(option, value) => option?.id === value?.id}
                             />
                         </FormControl>
+                        {missing &&
+                            <Typography variant="caption" color="red" marginTop={1}>
+                                * Las clases son requeridas y las cantidades deben ser mayores a 0.
+                            </Typography>
+                        }
                         <TableContainer>
                             <Table>
                                 <TableHead>
