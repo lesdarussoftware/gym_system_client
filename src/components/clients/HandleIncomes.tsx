@@ -23,11 +23,7 @@ type HandleVisitsProps = {
     membership: Membership;
 }
 
-export function HandleVisits({
-    visits,
-    classes,
-    membership
-}: HandleVisitsProps) {
+export function HandleIncomes({ visits, classes, membership }: HandleVisitsProps) {
 
     const { addVisit, removeVisit } = useMemberships();
     const { formData, setFormData, handleChange } = useForm({
@@ -91,7 +87,7 @@ export function HandleVisits({
             </Box>
             <Box sx={{ width: { xs: '100%', md: '49%' }, borderRadius: 1, border: '1px solid #BDBDBD', p: 1 }}>
                 <Typography variant="h6" sx={{ color: '#000' }}>
-                    Registrar nueva visita
+                    Registrar nuevo ingreso
                 </Typography>
                 <Box sx={{ m: 2, p: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>

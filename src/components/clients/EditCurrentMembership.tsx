@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box, Chip, Divider, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Chip, Divider, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, Tooltip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,7 +10,7 @@ import { useClients } from "../../hooks/useClients";
 import { useMemberships } from "../../hooks/useMemberships";
 
 import { AddMembershipForm } from "./AddMembershipForm";
-import { HandleVisits } from "./HandleVisits";
+import { HandleIncomes } from "./HandleIncomes";
 import { DeleteMembershipModal } from "./DeleteMembershipModal";
 
 import { getExpirationDate } from "../../helpers/membership";
@@ -80,30 +80,24 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
-                <table style={{ width: '100%' }}>
-                    <tbody>
-                        <tr>
-                            <th>Fecha inicio</th>
-                            <td>{format(new Date(membership.start), 'dd-MM-yy')}</td>
-                        </tr>
-                        <tr>
-                            <th>Fecha vencimiento</th>
-                            <td>{format(getExpirationDate(membership), 'dd-MM-yy')}</td>
-                        </tr>
-                        <tr>
-                            <th>N° visitas</th>
-                            <td>{`${visits.length}/${membership.limit}`}</td>
-                        </tr>
-                        <tr>
-                            <th>Monto</th>
-                            <td>${membership.price}</td>
-                        </tr>
-                        <tr>
-                            <th>Observaciones</th>
-                            <td>{membership.observations}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableCell align="center">Fecha inicio</TableCell>
+                            <TableCell align="center">Fecha vencimiento</TableCell>
+                            <TableCell align="center">N° visitas</TableCell>
+                            <TableCell align="center">Monto</TableCell>
+                            <TableCell align="center">Observaciones</TableCell>
+                        </TableHead>
+                        <TableBody>
+                            <TableCell align="center">{format(new Date(membership.start), 'dd-MM-yy')}</TableCell>
+                            <TableCell align="center">{format(getExpirationDate(membership), 'dd-MM-yy')}</TableCell>
+                            <TableCell align="center">{`${visits.length}/${membership.limit}`}</TableCell>
+                            <TableCell align="center">${membership.price}</TableCell>
+                            <TableCell align="center">{membership.observations}</TableCell>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
                 <Box sx={{ marginTop: 1 }}>
                     <Divider textAlign="center" sx={{ color: '#000' }}>
                         Clases
@@ -182,7 +176,7 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                 handleDelete={handleDelete}
                 setDisabled={setDisabled}
             />
-            <HandleVisits
+            <HandleIncomes
                 visits={visits}
                 classes={classes}
                 membership={membership}
