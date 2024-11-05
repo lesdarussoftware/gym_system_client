@@ -19,6 +19,8 @@ export function usePacks() {
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
+    const [missing, setMissing] = useState<boolean>(true);
+    const [idsToDelete, setIdsToDelete] = useState<number[]>([])
 
     const getPacks = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${PACK_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -48,15 +50,19 @@ export function usePacks() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_PACKS,
-                    payload: { ...state.packs, rows: [data, ...state.packs.rows] }
+                    payload: {
+                        ...state.packs,
+                        rows: [data, ...state.packs.rows],
+                        count: state.packs.count + 1
+                    }
                 });
-                setMessage('Paquete registrado correctamente.');
+                setMessage('Pack registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
                 dispatch({
                     type: SET_PACKS,
                     payload: { ...state.packs, rows: [data, ...state.packs.rows.filter(item => item.id !== data.id)] }
                 });
-                setMessage('Paquete editado correctamente.');
+                setMessage('Pack editado correctamente.');
             } else {
                 setMessage('Hubo un problema al procesar la solicitud.');
                 setSeverity(ERROR);
@@ -87,10 +93,14 @@ export function usePacks() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_PACKS,
-                payload: { ...state.packs, rows: [...state.packs.rows.filter(item => item.id !== data.id)] }
+                payload: {
+                    ...state.packs,
+                    rows: [...state.packs.rows.filter(item => item.id !== data.id)],
+                    count: state.packs.count - 1
+                }
             });
             setSeverity(SUCCESS);
-            setMessage('Paquete eliminado correctamente.');
+            setMessage('Pack eliminado correctamente.');
             handleClose(reset);
         }
         if (status === STATUS_CODES.SERVER_ERROR) {
@@ -101,5 +111,16 @@ export function usePacks() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen, getPacks }
+    return {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        getPacks,
+        missing,
+        setMissing,
+        idsToDelete,
+        setIdsToDelete
+    }
 }

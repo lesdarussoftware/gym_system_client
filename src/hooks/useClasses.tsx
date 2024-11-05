@@ -48,7 +48,11 @@ export function useClasses() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLASSES,
-                    payload: { ...state.classes, rows: [data, ...state.classes.rows] }
+                    payload: {
+                        ...state.classes,
+                        rows: [data, ...state.classes.rows],
+                        count: state.classes.count + 1
+                    }
                 });
                 setMessage('Clase registrada correctamente.');
             } else if (status === STATUS_CODES.OK) {
@@ -163,7 +167,11 @@ export function useClasses() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLASSES,
-                payload: { ...state.classes, rows: [...state.classes.rows.filter(item => item.id !== data.id)] }
+                payload: {
+                    ...state.classes,
+                    rows: [...state.classes.rows.filter(item => item.id !== data.id)],
+                    count: state.classes.count - 1
+                }
             });
             setSeverity(SUCCESS);
             setMessage('Clase eliminada correctamente.');

@@ -50,7 +50,11 @@ export function useUsers() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_USERS,
-                    payload: { ...state.users, rows: [data, ...state.users.rows] }
+                    payload: {
+                        ...state.users,
+                        rows: [data, ...state.users.rows],
+                        count: state.users.count + 1
+                    }
                 });
                 setMessage('Usuario registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
@@ -89,7 +93,11 @@ export function useUsers() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_USERS,
-                payload: { ...state.users, rows: [...state.users.rows.filter(item => item.id !== data.id)] }
+                payload: {
+                    ...state.users,
+                    rows: [...state.users.rows.filter(item => item.id !== data.id)],
+                    count: state.users.count - 1
+                }
             });
             setSeverity(SUCCESS);
             setMessage('Usuario eliminado correctamente.');

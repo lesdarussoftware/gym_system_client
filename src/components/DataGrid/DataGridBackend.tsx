@@ -103,6 +103,10 @@ export function DataGridBackend({
         getter(`?sortOrder=${order}&orderBy=${orderBy}&page=${page}&offset=${offset}`);
     }, [order, orderBy, page, offset])
 
+    useEffect(() => {
+        setSelected([])
+    }, [state[entityKey].count])
+
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>

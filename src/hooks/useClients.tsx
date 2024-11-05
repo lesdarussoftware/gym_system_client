@@ -48,7 +48,11 @@ export function useClients() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_CLIENTS,
-                    payload: { ...state.clients, rows: [data, ...state.clients.rows] }
+                    payload: {
+                        ...state.clients,
+                        rows: [data, ...state.clients.rows],
+                        count: state.clients.count + 1
+                    }
                 });
                 setMessage('Cliente registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
@@ -87,7 +91,11 @@ export function useClients() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_CLIENTS,
-                payload: { ...state.clients, rows: [...state.clients.rows.filter(item => item.id !== data.id)] }
+                payload: {
+                    ...state.clients,
+                    rows: [...state.clients.rows.filter(item => item.id !== data.id)],
+                    count: state.clients.count - 1
+                }
             });
             setSeverity(SUCCESS);
             setMessage('Cliente eliminado correctamente.');

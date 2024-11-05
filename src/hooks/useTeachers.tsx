@@ -49,7 +49,11 @@ export function useTeachers() {
             if (status === STATUS_CODES.CREATED) {
                 dispatch({
                     type: SET_TEACHERS,
-                    payload: { ...state.teachers, rows: [data, ...state.teachers.rows] }
+                    payload: {
+                        ...state.teachers,
+                        rows: [data, ...state.teachers.rows],
+                        count: state.teachers.count + 1
+                    }
                 });
                 setMessage('Profesor registrado correctamente.');
             } else if (status === STATUS_CODES.OK) {
@@ -88,7 +92,11 @@ export function useTeachers() {
         if (status === STATUS_CODES.OK) {
             dispatch({
                 type: SET_TEACHERS,
-                payload: { ...state.teachers, rows: [...state.teachers.rows.filter(item => item.id !== data.id)] }
+                payload: {
+                    ...state.teachers,
+                    rows: [...state.teachers.rows.filter(item => item.id !== data.id)],
+                    count: state.teachers.count - 1
+                }
             });
             setSeverity(SUCCESS);
             setMessage('Profesor eliminado correctamente.');

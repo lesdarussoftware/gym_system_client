@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Autocomplete, Box, Button, FormControl, Input, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
 import { DataContext, Pack, PackClass } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
@@ -20,19 +21,79 @@ export function PacksABM() {
         rules: { name: { required: true, maxLength: 55 }, price: { required: true } }
     });
     const { getClasses } = useClasses();
-    const { handleSubmit, handleClose, handleDelete, open, setOpen, getPacks } = usePacks();
+    const {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        getPacks,
+        setMissing,
+        idsToDelete,
+        setIdsToDelete
+    } = usePacks();
     const [packClasses, setPackClasses] = useState<PackClass[]>([]);
+
+    const inputRefs = useRef<{ [key: number]: HTMLInputElement | null; }>({});
 
     useEffect(() => {
         getClasses();
     }, [])
 
-    const handleAdd = (data: any) => {
-        if (data && data.class_id.toString().length > 0) {
-            setPackClasses([
-                ...packClasses.filter(pc => pc.class_id !== data.class_id),
-                data
-            ]);
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            price: packClasses.reduce((prev, curr) => {
+                const currentClass = state.classes.rows.find(c => c.id === curr.class_id)
+                const price = currentClass?.price ?? 0
+                return prev + (curr.amount * price)
+            }, 0)
+        })
+    }, [packClasses, state.classes.rows])
+
+    const handleAdd = (data: Partial<PackClass>) => {
+        if (data.class_id && data.class_id.toString().length > 0) {
+            setMissing(false);
+            const validPackClass: PackClass | undefined = data as PackClass;
+            if (validPackClass) {
+                setPackClasses(prevClasses => [
+                    ...prevClasses.filter(pc => pc.class_id !== validPackClass.class_id),
+                    validPackClass
+                ]);
+                setTimeout(() => {
+                    const inputRef = inputRefs.current[validPackClass.class_id];
+                    if (inputRef) {
+                        inputRef.focus();
+                    }
+                }, 100);
+            }
+        }
+    };
+
+    const handleChangeAmount = (data: Partial<PackClass>) => {
+        if (data.class_id && data.class_id.toString().length > 0) {
+            const validPackClass: PackClass | undefined = data as PackClass;
+            if (validPackClass) {
+                const amount = data.amount && data.amount.toString().length > 0 ? data.amount : 0
+                setPackClasses([
+                    ...packClasses.filter(pc => pc.class_id !== data.class_id),
+                    {
+                        ...packClasses.find(pc => pc.class_id === data.class_id),
+                        ...validPackClass,
+                        amount
+                    }
+                ].sort((a, b) => a.class_id - b.class_id));
+            }
+        }
+    }
+
+    const handleDeleteClass = (pcId: number, cId: number) => {
+        setMissing(false);
+        setPackClasses([
+            ...packClasses.filter(pc => pc.class_id !== cId),
+        ]);
+        if (open === 'EDIT') {
+            setIdsToDelete([...idsToDelete, pcId]);
         }
     }
 
@@ -74,10 +135,10 @@ export function PacksABM() {
                 reduceWidth={800}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {open === NEW && 'Registrar nuevo paquete'}
-                    {open === EDIT && `Editar paquete #${formData.id}`}
+                    {open === NEW && 'Registrar nuevo pack'}
+                    {open === EDIT && `Editar pack #${formData.id}`}
                 </Typography>
-                <form onChange={handleChange} onSubmit={(e) => handleSubmit(
+                <form onSubmit={(e) => handleSubmit(
                     e,
                     validate,
                     formData,
@@ -87,7 +148,7 @@ export function PacksABM() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                         <FormControl>
                             <InputLabel htmlFor="name">Nombre</InputLabel>
-                            <Input id="name" type="text" name="name" value={formData.name} />
+                            <Input id="name" type="text" name="name" value={formData.name} onChange={handleChange} />
                             {errors.name?.type === 'required' &&
                                 <Typography variant="caption" color="red" marginTop={1}>
                                     * El nombre es requerido.
@@ -100,23 +161,14 @@ export function PacksABM() {
                             }
                         </FormControl>
                         <FormControl>
-                            <InputLabel htmlFor="price">Precio</InputLabel>
-                            <Input
-                                id="price"
-                                type="number"
-                                name="price"
-                                value={formData.price}
-                            />
-                        </FormControl>
-                        <FormControl>
                             <Autocomplete
                                 disablePortal
                                 id="class-autocomplete"
                                 options={state.classes.rows.sort()
                                     .map(c => ({ label: c.name, id: c?.id }))}
-                                renderInput={(params) => <TextField {...params} label="Clase" />}
+                                renderInput={(params) => <TextField {...params} label="Buscar clase..." />}
                                 noOptionsText="No hay clases disponibles."
-                                onChange={(_, value) => handleAdd({ class_id: value?.id, amount: 0 })}
+                                onChange={(_, value) => handleAdd({ class_id: value?.id as number, amount: 0 })}
                                 isOptionEqualToValue={(option, value) => option?.id === value?.id}
                             />
                         </FormControl>
@@ -124,7 +176,7 @@ export function PacksABM() {
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="center">Nombre</TableCell>
+                                        <TableCell align="center">Clase</TableCell>
                                         <TableCell align="center">Cantidad</TableCell>
                                         <TableCell align="center">Precio</TableCell>
                                         <TableCell align="center">Total</TableCell>
@@ -141,12 +193,29 @@ export function PacksABM() {
                                         packClasses.map(pc => {
                                             const c = state.classes.rows.find(c => c.id === pc.class_id)
                                             return (
-                                                <TableRow>
+                                                <TableRow key={pc.class_id}>
                                                     <TableCell align="center">{c?.name}</TableCell>
-                                                    <TableCell align="center">{pc.amount}</TableCell>
+                                                    <TableCell align="center">
+                                                        <Input
+                                                            id={`input_${pc.class_id}`}
+                                                            type="number"
+                                                            value={pc.amount}
+                                                            onChange={e => handleChangeAmount({
+                                                                class_id: c?.id,
+                                                                amount: e.target.value as unknown as number
+                                                            })}
+                                                            inputRef={el => inputRefs.current[pc.class_id] = el}
+                                                        />
+                                                    </TableCell>
                                                     <TableCell align="center">{c?.price}</TableCell>
                                                     <TableCell align="center">{c!.price * pc.amount}</TableCell>
-                                                    <TableCell align="center"></TableCell>
+                                                    <TableCell align="center">
+                                                        <Button type="button" onClick={() => {
+                                                            if (c?.id) handleDeleteClass(pc.id, c.id)
+                                                        }}>
+                                                            <CancelSharpIcon />
+                                                        </Button>
+                                                    </TableCell>
                                                 </TableRow>
                                             );
                                         })
@@ -154,6 +223,16 @@ export function PacksABM() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        <FormControl>
+                            <InputLabel htmlFor="price">Precio</InputLabel>
+                            <Input
+                                id="price"
+                                type="number"
+                                name="price"
+                                onChange={handleChange}
+                                value={formData.price}
+                            />
+                        </FormControl>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                             <Button
                                 type="button"
@@ -189,7 +268,7 @@ export function PacksABM() {
                 onClose={() => handleClose(reset)}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    {`¿Desea borrar el registro del paquete ${formData.name} (#${formData.id})?`}
+                    {`¿Desea borrar el registro del pack ${formData.name} (#${formData.id})?`}
                 </Typography>
                 <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
                 <Box sx={{ display: 'flex', gap: 1 }}>
