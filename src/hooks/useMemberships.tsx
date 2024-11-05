@@ -277,7 +277,7 @@ export function useMemberships() {
                     ]
                 }
             });
-            setMessage('Visita creada correctamente.');
+            setMessage('Ingreso creado correctamente.');
             setSeverity(SUCCESS);
         } else {
             setMessage('Hubo un problema al procesar la solicitud.');
@@ -334,7 +334,7 @@ export function useMemberships() {
                     ]
                 }
             });
-            setMessage('Visita eliminada correctamente.');
+            setMessage('Ingreso eliminado correctamente.');
             setSeverity(SUCCESS);
         } else {
             setMessage('Hubo un problema al procesar la solicitud.');

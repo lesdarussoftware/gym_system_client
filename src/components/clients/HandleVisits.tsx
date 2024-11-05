@@ -159,7 +159,7 @@ export function HandleVisits({ visits, classes, membership }: HandleVisitsProps)
                 onClose={() => handleReset()}
             >
                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    ¿Desea borrar esta visita?
+                    ¿Desea borrar este ingreso?
                 </Typography>
                 <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
                 <Box sx={{ display: 'flex', gap: 1 }}>
