@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext, useEffect } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { es } from 'date-fns/locale/es';
 
+import { DataContext } from "../../providers/DataProvider";
+
+import { usePacks } from "../../hooks/usePacks";
 import { ModalComponent } from "../common/ModalComponent";
 
 import { EDIT, NEW } from "../../config/openTypes";
@@ -34,6 +39,15 @@ export function AddMembershipForm({
     setDisabled,
     errors
 }: AddMembershipFormProps) {
+
+    const { state } = useContext(DataContext)
+
+    const { getPacks } = usePacks()
+
+    useEffect(() => {
+        getPacks()
+    }, [])
+
     return (
         <ModalComponent open={open === NEW || open === EDIT} onClose={() => handleClose(reset)}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: 18, sm: 18, md: 20 } }}>

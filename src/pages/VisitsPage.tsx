@@ -16,7 +16,7 @@ import { LoginForm } from "../components/common/LoginForm";
 
 import { ERROR } from "../config/messageProviderTypes";
 
-export function IncomesPage() {
+export function VisitsPage() {
 
     const { auth } = useContext(AuthContext);
     const { state } = useContext(DataContext);

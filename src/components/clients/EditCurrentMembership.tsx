@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box, Chip, Divider, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, Tooltip, Typography } from "@mui/material";
+import { Box, Chip, Divider, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -80,21 +80,25 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
-                <TableContainer component={Paper}>
+                <TableContainer>
                     <Table>
                         <TableHead>
-                            <TableCell align="center">Fecha inicio</TableCell>
-                            <TableCell align="center">Fecha vencimiento</TableCell>
-                            <TableCell align="center">N° ingresos</TableCell>
-                            <TableCell align="center">Monto</TableCell>
-                            <TableCell align="center">Observaciones</TableCell>
+                            <TableRow>
+                                <TableCell align="center">Fecha inicio</TableCell>
+                                <TableCell align="center">Fecha vencimiento</TableCell>
+                                <TableCell align="center">N° ingresos</TableCell>
+                                <TableCell align="center">Monto</TableCell>
+                                <TableCell align="center">Observaciones</TableCell>
+                            </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableCell align="center">{format(new Date(membership.start), 'dd-MM-yy')}</TableCell>
-                            <TableCell align="center">{format(getExpirationDate(membership), 'dd-MM-yy')}</TableCell>
-                            <TableCell align="center">{`${visits.length}/${membership.limit}`}</TableCell>
-                            <TableCell align="center">${membership.price}</TableCell>
-                            <TableCell align="center">{membership.observations}</TableCell>
+                            <TableRow>
+                                <TableCell align="center">{format(new Date(membership.start), 'dd-MM-yy')}</TableCell>
+                                <TableCell align="center">{format(getExpirationDate(membership), 'dd-MM-yy')}</TableCell>
+                                <TableCell align="center">{`${visits.length}/${membership.limit}`}</TableCell>
+                                <TableCell align="center">${membership.price}</TableCell>
+                                <TableCell align="center">{membership.observations}</TableCell>
+                            </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>

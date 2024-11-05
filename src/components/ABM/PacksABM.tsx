@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
-import { Autocomplete, Box, Button, FormControl, Input, InputLabel, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, FormControl, Input, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 
 import { DataContext, Pack, PackClass } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
@@ -25,6 +26,15 @@ export function PacksABM() {
     useEffect(() => {
         getClasses();
     }, [])
+
+    const handleAdd = (data: any) => {
+        if (data && data.class_id.toString().length > 0) {
+            setPackClasses([
+                ...packClasses.filter(pc => pc.class_id !== data.class_id),
+                data
+            ]);
+        }
+    }
 
     const headCells = [
         {
@@ -102,31 +112,33 @@ export function PacksABM() {
                             <Autocomplete
                                 disablePortal
                                 id="class-autocomplete"
-                                options={state.classes.rows.map(c => c.name).sort()}
+                                options={state.classes.rows.sort()
+                                    .map(c => ({ label: c.name, id: c?.id }))}
                                 renderInput={(params) => <TextField {...params} label="Clase" />}
+                                noOptionsText="No hay clases disponibles."
+                                onChange={(_, value) => handleAdd({ class_id: value?.id, amount: 0 })}
+                                isOptionEqualToValue={(option, value) => option?.id === value?.id}
                             />
                         </FormControl>
-                        <TableContainer component={Paper}>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">Nombre</TableCell>
-                                    <TableCell align="center">Cantidad</TableCell>
-                                    <TableCell align="center">Precio</TableCell>
-                                    <TableCell align="center">Total</TableCell>
-                                    <TableCell align="center"></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {packClasses.length === 0 ?
+                        <TableContainer>
+                            <Table>
+                                <TableHead>
                                     <TableRow>
+                                        <TableCell align="center">Nombre</TableCell>
+                                        <TableCell align="center">Cantidad</TableCell>
+                                        <TableCell align="center">Precio</TableCell>
+                                        <TableCell align="center">Total</TableCell>
                                         <TableCell align="center"></TableCell>
-                                        <TableCell align="center"></TableCell>
-                                        <TableCell align="center">No hay registros que mostrar.</TableCell>
-                                        <TableCell align="center"></TableCell>
-                                        <TableCell align="center"></TableCell>
-                                    </TableRow> :
-                                    <TableRow>
-                                        {packClasses.map(pc => {
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {packClasses.length === 0 ?
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={5}>
+                                                No hay registros que mostrar.
+                                            </TableCell>
+                                        </TableRow> :
+                                        packClasses.map(pc => {
                                             const c = state.classes.rows.find(c => c.id === pc.class_id)
                                             return (
                                                 <TableRow>
@@ -137,10 +149,10 @@ export function PacksABM() {
                                                     <TableCell align="center"></TableCell>
                                                 </TableRow>
                                             );
-                                        })}
-                                    </TableRow>
-                                }
-                            </TableBody>
+                                        })
+                                    }
+                                </TableBody>
+                            </Table>
                         </TableContainer>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                             <Button
