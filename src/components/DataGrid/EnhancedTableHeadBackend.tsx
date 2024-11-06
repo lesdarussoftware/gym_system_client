@@ -1,57 +1,42 @@
-import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
-import { visuallyHidden } from '@mui/utils';
+import { Box, TableCell, TableRow } from '@mui/material'
+import TableHead from '@mui/material/TableHead'
+import TableSortLabel from '@mui/material/TableSortLabel'
+import { visuallyHidden } from '@mui/utils'
+import React from 'react'
 
-export interface HeadCell {
-    id: string;
-    label: string;
-    disablePadding?: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    accessor: (row: any, index: number) => React.ReactNode;
+interface HeadCell {
+    id: string
+    label: string
+    disablePadding?: boolean
+    disableSorting?: boolean
 }
 
+type Order = 'asc' | 'desc'
+
 interface EnhancedTableHeadProps {
-    headCells: HeadCell[];
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    order: 'asc' | 'desc';
-    orderBy: string;
-    numSelected: number;
-    rowCount: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-    stopPointerEvents?: boolean;
+    headCells: HeadCell[]
+    order: Order
+    orderBy: string
+    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void
+    addCell?: boolean
 }
 
 export function EnhancedTableHeadBackend({
     headCells,
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
-    stopPointerEvents
+    addCell = false,
 }: EnhancedTableHeadProps) {
 
     const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-    };
+        onRequestSort(event, property)
+    }
 
     return (
         <TableHead>
-            <TableRow sx={{ backgroundColor: '#fff' }}>
-                {!stopPointerEvents &&
-                    <TableCell padding="checkbox">
-                        <Checkbox
-                            color="primary"
-                            indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={rowCount > 0 && numSelected === rowCount}
-                            onChange={onSelectAllClick}
-                            inputProps={{
-                                'aria-label': 'select all desserts',
-                            }}
-                            sx={{ color: '#011627' }}
-                        />
-                    </TableCell>
-                }
+            <TableRow>
+                {addCell && <TableCell sx={{ width: 120 }} />}
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
@@ -59,21 +44,23 @@ export function EnhancedTableHeadBackend({
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
-                        </TableSortLabel>
+                        {headCell.disableSorting ? headCell.label :
+                            <TableSortLabel
+                                active={orderBy === headCell.id}
+                                direction={orderBy === headCell.id ? order : 'asc'}
+                                onClick={createSortHandler(headCell.id)}
+                            >
+                                {headCell.label}
+                                {orderBy === headCell.id ? (
+                                    <Box component="span" sx={visuallyHidden}>
+                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                    </Box>
+                                ) : null}
+                            </TableSortLabel>
+                        }
                     </TableCell>
                 ))}
             </TableRow>
         </TableHead>
-    );
+    )
 }

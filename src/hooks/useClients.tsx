@@ -19,6 +19,10 @@ export function useClients() {
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
+    const [filter, setFilter] = useState({
+        page: 0,
+        offset: 25
+    });
 
     const getClients = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -109,5 +113,14 @@ export function useClients() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen, getClients }
+    return {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        getClients,
+        filter,
+        setFilter
+    }
 }

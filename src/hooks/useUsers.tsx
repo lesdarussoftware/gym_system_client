@@ -21,6 +21,10 @@ export function useUsers() {
     const { handleQuery } = useQuery();
     const { handleLogout } = useAuth();
     const [open, setOpen] = useState<string | null>(null);
+    const [filter, setFilter] = useState({
+        page: 0,
+        offset: 25
+    });
 
     const getUsers = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${USER_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -139,5 +143,15 @@ export function useUsers() {
         }
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen, handleChangePwd, getUsers }
+    return {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        handleChangePwd,
+        getUsers,
+        filter,
+        setFilter
+    }
 }

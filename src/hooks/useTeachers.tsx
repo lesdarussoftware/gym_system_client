@@ -18,7 +18,11 @@ export function useTeachers() {
     const { state, dispatch } = useContext(DataContext);
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
-    const [open, setOpen] = useState(null);
+    const [open, setOpen] = useState<string | null>(null);
+    const [filter, setFilter] = useState({
+        page: 0,
+        offset: 25
+    });
 
     const getTeachers = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${TEACHER_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -110,5 +114,14 @@ export function useTeachers() {
         setOpenMessage(true);
     }
 
-    return { handleSubmit, handleClose, handleDelete, open, setOpen, getTeachers }
+    return {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        getTeachers,
+        filter,
+        setFilter
+    }
 }

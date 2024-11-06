@@ -28,8 +28,6 @@ export function ProfilePage() {
         }
     });
 
-    const user = state.users.rows.find(u => u.username === auth?.me.username && u.gym_hash === auth.me.gym.hash);
-
     return (
         <>
             {auth ?
@@ -47,7 +45,7 @@ export function ProfilePage() {
                                             Nombre
                                         </TableCell>
                                         <TableCell align="center">
-                                            {user?.first_name}
+                                            {auth?.me?.first_name}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -55,7 +53,7 @@ export function ProfilePage() {
                                             Apellido
                                         </TableCell>
                                         <TableCell align="center">
-                                            {user?.last_name}
+                                            {auth?.me?.last_name}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -63,7 +61,7 @@ export function ProfilePage() {
                                             Usuario
                                         </TableCell>
                                         <TableCell align="center">
-                                            {user?.username}
+                                            {auth?.me?.username}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -71,7 +69,7 @@ export function ProfilePage() {
                                             Email
                                         </TableCell>
                                         <TableCell align="center">
-                                            {user?.email}
+                                            {auth?.me?.email}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>

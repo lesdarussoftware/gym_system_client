@@ -22,6 +22,10 @@ export function usePacks() {
     const [missing, setMissing] = useState<boolean>(false);
     const [idsToDelete, setIdsToDelete] = useState<number[]>([]);
     const [packClasses, setPackClasses] = useState<PackClass[]>([]);
+    const [filter, setFilter] = useState({
+        page: 0,
+        offset: 25
+    });
 
     const getPacks = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${PACK_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -136,6 +140,8 @@ export function usePacks() {
         idsToDelete,
         setIdsToDelete,
         packClasses,
-        setPackClasses
+        setPackClasses,
+        filter,
+        setFilter
     }
 }

@@ -1,6 +1,7 @@
+import { useContext, useEffect } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { Class } from "../../providers/DataProvider";
+import { Class, DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClasses } from "../../hooks/useClasses";
 
@@ -13,11 +14,18 @@ import { NEW, EDIT, DELETE, VIEW_SCHEDULES } from '../../config/openTypes';
 
 export function ClassesABM() {
 
+    const { state } = useContext(DataContext);
+
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', name: '', duration: '', gym_hash: '', price: '' },
         rules: { name: { required: true, maxLength: 55 } }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClasses } = useClasses();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClasses, filter, setFilter } = useClasses();
+
+    useEffect(() => {
+        const { page, offset } = filter
+        getClasses(`?page=${page}&offset=${offset}`)
+    }, [filter])
 
     const headCells = [
         {
@@ -53,10 +61,14 @@ export function ClassesABM() {
     return (
         <DataGridBackend
             headCells={headCells}
-            getter={getClasses}
-            entityKey="classes"
+            rows={state.classes.rows}
             setOpen={setOpen}
             setFormData={setFormData}
+            filter={filter}
+            setFilter={setFilter}
+            count={state.classes.count}
+            showEditAction
+            showDeleteAction
             showClassesDetails
         >
             <ModalComponent

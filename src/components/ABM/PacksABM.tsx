@@ -33,7 +33,9 @@ export function PacksABM() {
         idsToDelete,
         setIdsToDelete,
         packClasses,
-        setPackClasses
+        setPackClasses,
+        filter,
+        setFilter
     } = usePacks();
 
     const inputRefs = useRef<{ [key: number]: HTMLInputElement | null; }>({});
@@ -52,6 +54,11 @@ export function PacksABM() {
             }, 0)
         })
     }, [packClasses, state.classes.rows])
+
+    useEffect(() => {
+        const { page, offset } = filter
+        getPacks(`?page=${page}&offset=${offset}`)
+    }, [filter])
 
     const handleAdd = (data: Partial<PackClass>) => {
         if (data.class_id && data.class_id.toString().length > 0) {
@@ -126,10 +133,14 @@ export function PacksABM() {
     return (
         <DataGridBackend
             headCells={headCells}
-            getter={getPacks}
-            entityKey="packs"
+            rows={state.packs.rows}
             setOpen={setOpen}
             setFormData={setFormData}
+            filter={filter}
+            setFilter={setFilter}
+            count={state.packs.count}
+            showEditAction
+            showDeleteAction
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}

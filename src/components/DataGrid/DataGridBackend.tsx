@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,205 +8,223 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
+import SearchSharpIcon from '@mui/icons-material/SearchSharp'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
+import RestoreFromTrashSharpIcon from '@mui/icons-material/RestoreFromTrashSharp';
+import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
+import { IconButton, Tooltip } from '@mui/material';
 
-import { DataContext } from '../../providers/DataProvider';
+import { EnhancedTableHeadBackend } from './EnhancedTableHeadBackend';
+import { getComparator, stableSort } from '../../helpers/utils';
+import { VIEW_SCHEDULES } from '../../config/openTypes';
 
-import { EnhancedTableHeadBackend, HeadCell } from './EnhancedTableHeadBackend';
-import { EnhancedTableToolbar } from './EnhancedTableToolbar';
+interface HeadCell {
+    id: string
+    label: string
+    disablePadding?: boolean
+    disableSorting?: boolean
+    accessor: any;
+    sorter?: any;
+}
 
-interface DataGridProps {
+type Order = 'asc' | 'desc'
+interface DataGridBackendProps {
     children?: React.ReactNode;
     headCells: HeadCell[];
-    entityKey: 'clients' | 'users' | 'teachers' | 'classes' | 'packs';
-    getter: (params?: string | undefined) => void;
-    setOpen?: any;
-    setFormData?: any;
-    defaultOrder?: 'asc' | 'desc';
+    rows: any[];
+    contentHeader?: React.ReactNode;
+    defaultOrder?: Order;
     defaultOrderBy?: string;
-    stopPointerEvents?: boolean;
+    setFormData?: (data: any) => void;
+    setOpen?: (mode: string) => void;
+    showViewAction?: boolean;
+    showEditAction?: boolean;
+    showDeleteAction?: boolean;
+    showRestoreAction?: boolean;
     showClassesDetails?: boolean;
-    showMembershipDetails?: boolean;
-    hideAddMembership?: boolean;
-    hideEditAction?: boolean;
+    filter: {
+        offset: number;
+        page: number;
+    };
+    setFilter: (filter: { offset: number; page: number }) => void;
+    count: number;
+    minWidth?: number;
 }
 
 export function DataGridBackend({
     children,
     headCells,
-    setOpen,
-    setFormData,
-    entityKey,
-    getter,
+    rows,
+    contentHeader,
     defaultOrder = 'desc',
     defaultOrderBy = 'id',
-    stopPointerEvents,
+    setFormData,
+    setOpen,
+    showViewAction,
+    showEditAction,
+    showDeleteAction,
+    showRestoreAction,
     showClassesDetails,
-    showMembershipDetails,
-    hideAddMembership,
-    hideEditAction = false
-}: DataGridProps) {
+    filter,
+    setFilter,
+    count,
+    minWidth = 750,
+}: DataGridBackendProps) {
 
-    const { state } = useContext(DataContext);
-
-    const [order, setOrder] = useState<'asc' | 'desc'>(defaultOrder);
+    const [order, setOrder] = useState<Order>(defaultOrder);
     const [orderBy, setOrderBy] = useState<string>(defaultOrderBy);
-    const [selected, setSelected] = useState<any[]>([]);
-    const [page, setPage] = useState<number>(0);
-    const [offset, setOffset] = useState<number>(5);
 
-    const handleRequestSort = (_event: React.MouseEvent<unknown>, property: string) => {
+    const handleRequestSort = (_: React.MouseEvent<unknown>, property: string) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelected = state[entityKey].rows.map((n) => n.id);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
-
-    const handleClick = (_event: React.MouseEvent<unknown>, id: any) => {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected: any[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-        setSelected(newSelected);
-    };
-
-    const handleChangePage = (_event: unknown, newPage: number) => {
-        setPage(newPage);
+    const handleChangePage = (_: unknown, newPage: number) => {
+        setFilter({ ...filter, page: newPage });
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setOffset(+event.target.value);
+        setFilter({
+            ...filter,
+            offset: parseInt(event.target.value, 10),
+            page: 0
+        });
     };
 
-    const isSelected = (id: any) => selected.indexOf(id) !== -1;
-
-    useEffect(() => {
-        getter(`?sortOrder=${order}&orderBy=${orderBy}&page=${page}&offset=${offset}`);
-    }, [order, orderBy, page, offset])
-
-    useEffect(() => {
-        setSelected([])
-    }, [state[entityKey].count])
+    const visibleRows = useMemo(
+        () =>
+            stableSort(
+                rows,
+                getComparator(order, orderBy, headCells.find(hc => hc.id === orderBy)?.sorter)
+            ),
+        [order, orderBy, rows, filter.page]
+    );
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
-                {setOpen && setFormData &&
-                    <EnhancedTableToolbar
-                        numSelected={selected.length}
-                        setOpen={setOpen}
-                        setFormData={setFormData}
-                        selected={selected}
-                        rows={state[entityKey].rows}
-                        showClassesDetails={showClassesDetails}
-                        showMembershipDetails={showMembershipDetails}
-                        hideAddMembership={hideAddMembership}
-                        hideEditAction={hideEditAction}
-                    />
-                }
+            {contentHeader}
+            <Paper sx={{ mb: 2 }}>
                 <TableContainer>
-                    <Table
-                        aria-labelledby="tableTitle"
-                        size="small"
-                    >
+                    <Table sx={{ minWidth, fontWeight: "bold" }} aria-labelledby="tableTitle" size="small">
                         <EnhancedTableHeadBackend
                             headCells={headCells}
-                            numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={state[entityKey].count}
-                            stopPointerEvents={stopPointerEvents}
+                            addCell={showEditAction || showDeleteAction || showViewAction}
                         />
                         <TableBody>
-                            {state[entityKey].rows.length === 0 ?
-                                <TableRow>
-                                    <TableCell colSpan={headCells.length + 1} align='center'>
-                                        No hay registros para mostrar.
-                                    </TableCell>
-                                </TableRow> :
-                                state[entityKey].rows.map((row, index) => {
-                                    const isItemSelected = isSelected(row.id);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => {
-                                                if (!stopPointerEvents) {
-                                                    handleClick(event, row.id)
-                                                }
-                                            }}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.id ?? index}
-                                            selected={isItemSelected}
-                                        >
-                                            {!stopPointerEvents &&
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        color="primary"
-                                                        checked={isItemSelected}
-                                                        inputProps={{
-                                                            'aria-labelledby': labelId,
-                                                        }}
-                                                        sx={{ color: '#011627' }}
-                                                    />
-                                                </TableCell>
-                                            }
-                                            {headCells
-                                                .map(cell => cell.accessor)
-                                                .map((accessor, idx) => (
-                                                    <TableCell
-                                                        key={idx}
-                                                        align="center"
-                                                        sx={{
-                                                            cursor: 'pointer',
-                                                            color: '#011627'
+                            {visibleRows && visibleRows.length > 0 ? (
+                                visibleRows.map((row, index) => (
+                                    <TableRow role="checkbox" tabIndex={-1} key={row.id}>
+                                        {(showEditAction || showDeleteAction || showViewAction) && (
+                                            <TableCell>
+                                                {showViewAction && (
+                                                    <Tooltip
+                                                        title="Detalles"
+                                                        onClick={() => {
+                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                            if (setOpen) setOpen("VIEW");
                                                         }}
                                                     >
-                                                        {typeof accessor === 'function' ? accessor(row, index) : row[accessor]}
-                                                    </TableCell>
-                                                ))}
-                                        </TableRow>
-                                    );
-                                })}
+                                                        <IconButton>
+                                                            <SearchSharpIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                                {showEditAction && (
+                                                    <Tooltip
+                                                        title="Editar"
+                                                        onClick={() => {
+                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                            if (setOpen) setOpen("EDIT");
+                                                        }}
+                                                    >
+                                                        <IconButton>
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                                {showRestoreAction && (
+                                                    <Tooltip
+                                                        title="Restaurar"
+                                                        onClick={() => {
+                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                            if (setOpen) setOpen("RESTORE");
+                                                        }}
+                                                    >
+                                                        <IconButton>
+                                                            <RestoreFromTrashSharpIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                                {showDeleteAction && (
+                                                    <Tooltip
+                                                        title="Borrar"
+                                                        onClick={() => {
+                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                            if (setOpen) setOpen("DELETE");
+                                                        }}
+                                                    >
+                                                        <IconButton>
+                                                            <DeleteSharpIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                                {showClassesDetails && (
+                                                    <Tooltip title={"Ver días y horarios"} onClick={() => {
+                                                        if (setOpen) setOpen(VIEW_SCHEDULES);
+                                                        if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                    }}>
+                                                        <IconButton>
+                                                            <CalendarMonthSharpIcon sx={{ color: '#CECECE !important' }} />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                            </TableCell>
+                                        )}
+                                        {headCells.map((cell) => cell.accessor).map((accessor) => (
+                                            <TableCell key={accessor} align="center">
+                                                {typeof accessor === "function" ? accessor(row, index) : row[accessor]}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={headCells.length + 1}
+                                        align="inherit"
+                                        sx={{
+                                            fontSize: "1rem",
+                                            textAlign: 'center'
+                                        }}
+                                    >
+                                        No se encontraron registros. Pruebe actualizar la página.
+                                    </TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[10, 25, 50, 60, 100]}
                     component="div"
-                    count={state[entityKey].count}
-                    rowsPerPage={offset}
+                    count={count}
+                    rowsPerPage={filter.offset}
                     labelRowsPerPage="Registros por página"
-                    labelDisplayedRows={({ from, to }) => `${from}–${to} de ${state[entityKey].count}`}
-                    page={page}
+                    labelDisplayedRows={({ from, to }) => `${from}–${to} de ${count}`}
+                    page={filter.page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                    sx={{
-                        backgroundColor: '#fff',
-                        color: '#000'
+                    slotProps={{
+                        actions: {
+                            nextButton: {
+                                disabled: ((filter.page + 1) * filter.offset) >= count
+                            }
+                        }
                     }}
                 />
             </Paper>

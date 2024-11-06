@@ -19,6 +19,10 @@ export function useClasses() {
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
+    const [filter, setFilter] = useState({
+        page: 0,
+        offset: 25
+    });
 
     const getClasses = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${CLASS_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
@@ -222,6 +226,8 @@ export function useClasses() {
         setOpen,
         handleSubmitSchedule,
         handleDeleteSchedule,
-        getClasses
+        getClasses,
+        filter,
+        setFilter
     }
 }

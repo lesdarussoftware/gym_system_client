@@ -1,6 +1,7 @@
+import { useContext, useEffect } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { Teacher } from "../../providers/DataProvider";
+import { DataContext, Teacher } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useTeachers } from "../../hooks/useTeachers";
 
@@ -11,6 +12,8 @@ import { NEW, EDIT, DELETE } from '../../config/openTypes';
 
 export function TeachersABM() {
 
+    const { state } = useContext(DataContext);
+
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', first_name: '', last_name: '', email: '', phone: '', gym_hash: '' },
         rules: {
@@ -20,7 +23,12 @@ export function TeachersABM() {
             phone: { maxLength: 55 }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen, getTeachers } = useTeachers();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getTeachers, filter, setFilter } = useTeachers();
+
+    useEffect(() => {
+        const { page, offset } = filter
+        getTeachers(`?page=${page}&offset=${offset}`)
+    }, [filter])
 
     const headCells = [
         {
@@ -63,10 +71,14 @@ export function TeachersABM() {
     return (
         <DataGridBackend
             headCells={headCells}
-            getter={getTeachers}
-            entityKey="teachers"
+            rows={state.teachers.rows}
             setOpen={setOpen}
             setFormData={setFormData}
+            filter={filter}
+            setFilter={setFilter}
+            count={state.teachers.count}
+            showEditAction
+            showDeleteAction
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}

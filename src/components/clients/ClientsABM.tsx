@@ -1,6 +1,7 @@
+import { useContext, useEffect } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 
-import { Client } from "../../providers/DataProvider";
+import { Client, DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useClients } from "../../hooks/useClients";
 
@@ -10,6 +11,8 @@ import { DataGridBackend } from "../DataGrid/DataGridBackend";
 import { NEW, EDIT, DELETE } from '../../config/openTypes'
 
 export function ClientsABM() {
+
+    const { state } = useContext(DataContext);
 
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', first_name: '', last_name: '', dni: '', email: '', phone: '', gym_hash: '' },
@@ -21,7 +24,12 @@ export function ClientsABM() {
             phone: { required: true, maxLength: 55 }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClients } = useClients();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClients, filter, setFilter } = useClients();
+
+    useEffect(() => {
+        const { page, offset } = filter
+        getClients(`?page=${page}&offset=${offset}`)
+    }, [filter])
 
     const headCells = [
         {
@@ -71,10 +79,14 @@ export function ClientsABM() {
     return (
         <DataGridBackend
             headCells={headCells}
-            getter={getClients}
-            entityKey="clients"
+            rows={state.clients.rows}
             setOpen={setOpen}
             setFormData={setFormData}
+            filter={filter}
+            setFilter={setFilter}
+            count={state.clients.count}
+            showEditAction
+            showDeleteAction
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}

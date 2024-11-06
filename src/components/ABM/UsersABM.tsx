@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 
 import { AuthContext } from "../../providers/AuthProvider";
-import { User } from "../../providers/DataProvider";
+import { DataContext, User } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { useUsers } from "../../hooks/useUsers";
 
@@ -15,6 +15,7 @@ import { NEW, EDIT, DELETE } from '../../config/openTypes';
 export function UsersABM() {
 
     const { auth } = useContext(AuthContext);
+    const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: {
             id: '',
@@ -52,7 +53,12 @@ export function UsersABM() {
             }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen, getUsers } = useUsers();
+    const { handleSubmit, handleClose, handleDelete, open, setOpen, getUsers, filter, setFilter } = useUsers();
+
+    useEffect(() => {
+        const { page, offset } = filter
+        getUsers(`?page=${page}&offset=${offset}`)
+    }, [filter])
 
     const headCells = [
         {
@@ -102,10 +108,13 @@ export function UsersABM() {
     return (
         <DataGridBackend
             headCells={headCells}
-            getter={getUsers}
-            entityKey="users"
+            rows={state.users.rows}
             setOpen={setOpen}
             setFormData={setFormData}
+            filter={filter}
+            setFilter={setFilter}
+            count={state.users.count}
+            showDeleteAction
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}
