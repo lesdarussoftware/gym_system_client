@@ -6,7 +6,6 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { DataContext, Membership } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
-import { useClients } from "../../hooks/useClients";
 import { useMemberships } from "../../hooks/useMemberships";
 
 import { AddMembershipForm } from "./AddMembershipForm";
@@ -24,8 +23,15 @@ type EditCurrentMembershipProps = {
 export function EditCurrentMembership({ membership }: EditCurrentMembershipProps) {
 
     const { state } = useContext(DataContext);
-    const { open, setOpen, handleClose } = useClients();
-    const { handleSubmit, handleDelete, addMembershipClass, removeMembershipClass } = useMemberships()
+    const {
+        handleSubmit,
+        handleDelete,
+        addMembershipClass,
+        removeMembershipClass,
+        handleClose,
+        open,
+        setOpen
+    } = useMemberships()
     const { formData, reset, handleChange, validate, setDisabled, errors, disabled } = useForm({
         defaultData: {
             id: membership.id,
@@ -94,7 +100,12 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                         <TableBody>
                             <TableRow>
                                 <TableCell align="center">{format(new Date(membership.start), 'dd-MM-yy')}</TableCell>
-                                <TableCell align="center">{format(getExpirationDate(membership), 'dd-MM-yy')}</TableCell>
+                                <TableCell align="center">
+                                    {membership.limit > 0 ?
+                                        format(getExpirationDate(membership), 'dd-MM-yy') :
+                                        'Sin vencimiento'
+                                    }
+                                </TableCell>
                                 <TableCell align="center">{`${visits.length}/${membership.limit}`}</TableCell>
                                 <TableCell align="center">${membership.price}</TableCell>
                                 <TableCell align="center">{membership.observations}</TableCell>

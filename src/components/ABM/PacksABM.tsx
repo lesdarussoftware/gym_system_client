@@ -18,7 +18,7 @@ export function PacksABM() {
     const { state } = useContext(DataContext);
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', name: '', price: '', gym_hash: '' },
-        rules: { name: { required: true, maxLength: 55 }, price: { required: true } }
+        rules: { name: { required: true, maxLength: 55 } }
     });
     const { getClasses } = useClasses();
     const {
@@ -76,7 +76,7 @@ export function PacksABM() {
         if (data.class_id && data.class_id.toString().length > 0) {
             const validPackClass: PackClass | undefined = data as PackClass;
             if (validPackClass) {
-                const amount = data.amount && data.amount.toString().length > 0 ? data.amount: 0
+                const amount = data.amount && data.amount.toString().length > 0 ? data.amount : 0
                 setPackClasses([
                     ...packClasses.filter(pc => pc.class_id !== data.class_id),
                     {

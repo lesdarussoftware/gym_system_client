@@ -38,9 +38,6 @@ export function MemebershipsABM({ client }: MembershipsAMBPRops) {
         },
         rules: {
             start: { required: true },
-            duration: { required: true },
-            limit: { required: true },
-            price: { required: true },
             observations: { maxLength: 255 }
         }
     });

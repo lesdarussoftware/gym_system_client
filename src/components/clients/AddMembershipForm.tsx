@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { es } from 'date-fns/locale/es';
 
-import { DataContext } from "../../providers/DataProvider";
-
-import { usePacks } from "../../hooks/usePacks";
 import { ModalComponent } from "../common/ModalComponent";
 
 import { EDIT, NEW } from "../../config/openTypes";
@@ -39,15 +35,6 @@ export function AddMembershipForm({
     setDisabled,
     errors
 }: AddMembershipFormProps) {
-
-    const { state } = useContext(DataContext)
-
-    const { getPacks } = usePacks()
-
-    useEffect(() => {
-        getPacks()
-    }, [])
-
     return (
         <ModalComponent open={open === NEW || open === EDIT} onClose={() => handleClose(reset)}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: 18, sm: 18, md: 20 } }}>
@@ -90,11 +77,6 @@ export function AddMembershipForm({
                                 name="price"
                                 value={getNumberInputAbsValue(+formData.price, 0, 99999999999)}
                             />
-                            {errors.price?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El precio es requerido.
-                                </Typography>
-                            }
                         </FormControl>
                         <FormControl>
                             <InputLabel htmlFor="duration">Duración (días)</InputLabel>
@@ -102,29 +84,19 @@ export function AddMembershipForm({
                                 id="duration"
                                 type="number"
                                 name="duration"
-                                value={getNumberInputAbsValue(+formData.duration, 1, 99999999999)}
+                                value={getNumberInputAbsValue(+formData.duration, 0, 99999999999)}
                             />
-                            {errors.duration?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * La duración es requerida.
-                                </Typography>
-                            }
                         </FormControl>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
                         <FormControl>
-                            <InputLabel htmlFor="duration">Límite de ingresos</InputLabel>
+                            <InputLabel htmlFor="duration">Límite de ingresos (0 = sín limite)</InputLabel>
                             <Input
                                 id="limit"
                                 type="number"
                                 name="limit"
-                                value={getNumberInputAbsValue(+formData.limit, 1, 99999999999)}
+                                value={getNumberInputAbsValue(+formData.limit, 0, 99999999999)}
                             />
-                            {errors.limit?.type === 'required' &&
-                                <Typography variant="caption" color="red" marginTop={1}>
-                                    * El límite de ingresos es requerido.
-                                </Typography>
-                            }
                         </FormControl>
                         <FormControl>
                             <InputLabel htmlFor="observations">Observaciones</InputLabel>

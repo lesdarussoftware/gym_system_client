@@ -1,6 +1,7 @@
 import { Membership } from "../providers/DataProvider";
 
 export function membershipIsActive(membership: Membership): boolean {
+    if (membership.limit === 0) return true;
     const currentDate = new Date();
     const expirationDate = getExpirationDate(membership);
 

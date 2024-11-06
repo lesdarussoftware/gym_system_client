@@ -29,6 +29,7 @@ export function useMemberships() {
     ) => {
         e.preventDefault();
         if (validate()) {
+            console.log({open})
             const urls = { [NEW]: MEMBERSHIP_URL, [EDIT]: `${MEMBERSHIP_URL}/${auth?.me.gym.hash}/${formData.id}` };
             const { status, data } = await handleQuery({
                 url: open === NEW || open === EDIT ? urls[open] : '',

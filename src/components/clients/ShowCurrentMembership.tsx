@@ -24,9 +24,9 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
             id: '',
             client_id: client.id,
             start: new Date(Date.now()),
-            duration: 30,
+            duration: 0,
             price: 0,
-            limit: 12,
+            limit: 0,
             gym_hash: ''
         },
         rules: {
