@@ -19,7 +19,7 @@ export function usePacks() {
     const { setOpenMessage, setSeverity, setMessage } = useContext(MessageContext);
     const { handleQuery } = useQuery();
     const [open, setOpen] = useState<string | null>(null);
-    const [missing, setMissing] = useState<boolean>(true);
+    const [missing, setMissing] = useState<boolean>(false);
     const [idsToDelete, setIdsToDelete] = useState<number[]>([]);
     const [packClasses, setPackClasses] = useState<PackClass[]>([]);
 
@@ -41,7 +41,8 @@ export function usePacks() {
         const submitData = {
             ...formData,
             pack_classes: packClasses,
-            idsToDelete: idsToDelete.length === 0 ? undefined : idsToDelete
+            idsToDelete: idsToDelete.length === 0 ? undefined : idsToDelete,
+            gym_hash: auth?.me.gym.hash
         }
         const spMissing = submitData.pack_classes.length === 0 || submitData.pack_classes.some(pc => !pc.amount || pc.amount <= 0)
         if (validate() && !spMissing) {
@@ -49,10 +50,7 @@ export function usePacks() {
             const { status, data } = await handleQuery({
                 url: open === NEW || open === EDIT ? urls[open] : '',
                 method: open === NEW ? 'POST' : open === EDIT ? 'PUT' : 'GET',
-                body: JSON.stringify({
-                    ...formData,
-                    gym_hash: auth?.me.gym.hash
-                })
+                body: JSON.stringify(submitData)
             });
             if (status === STATUS_CODES.CREATED) {
                 dispatch({

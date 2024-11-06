@@ -12,7 +12,7 @@ export function LoginPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (auth) navigate('/clientes');
+        if (auth) navigate('/ingresos');
     }, [auth])
 
     return (
@@ -28,7 +28,7 @@ export function LoginPage() {
                 <Typography variant="h2" sx={{ color: '#000' }}>
                     Lesda Gym
                 </Typography>
-                <LoginForm submitAction={() => navigate('/clientes')} />
+                <LoginForm submitAction={() => navigate('/ingresos')} />
                 <Button
                     type="button"
                     variant="outlined"
