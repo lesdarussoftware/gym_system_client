@@ -11,9 +11,9 @@ import Paper from '@mui/material/Paper';
 import SearchSharpIcon from '@mui/icons-material/SearchSharp'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
-import RestoreFromTrashSharpIcon from '@mui/icons-material/RestoreFromTrashSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import { IconButton, Tooltip } from '@mui/material';
+import PhoneAndroidSharpIcon from '@mui/icons-material/PhoneAndroidSharp';
 
 import { EnhancedTableHeadBackend } from './EnhancedTableHeadBackend';
 import { getComparator, stableSort } from '../../helpers/utils';
@@ -41,8 +41,8 @@ interface DataGridBackendProps {
     showViewAction?: boolean;
     showEditAction?: boolean;
     showDeleteAction?: boolean;
-    showRestoreAction?: boolean;
     showClassesDetails?: boolean;
+    showCreateAppUser?: boolean;
     filter: {
         offset: number;
         page: number;
@@ -64,8 +64,8 @@ export function DataGridBackend({
     showViewAction,
     showEditAction,
     showDeleteAction,
-    showRestoreAction,
     showClassesDetails,
+    showCreateAppUser,
     filter,
     setFilter,
     count,
@@ -119,72 +119,77 @@ export function DataGridBackend({
                             {visibleRows && visibleRows.length > 0 ? (
                                 visibleRows.map((row, index) => (
                                     <TableRow role="checkbox" tabIndex={-1} key={row.id}>
-                                        {(showEditAction || showDeleteAction || showViewAction) && (
-                                            <TableCell>
-                                                {showViewAction && (
-                                                    <Tooltip
-                                                        title="Detalles"
-                                                        onClick={() => {
+                                        {(showEditAction ||
+                                            showDeleteAction ||
+                                            showViewAction ||
+                                            showClassesDetails ||
+                                            showCreateAppUser) && (
+                                                <TableCell sx={{ minWidth: 160 }}>
+                                                    {showCreateAppUser && (
+                                                        <Tooltip
+                                                            title="Generar usuario para app"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                                if (setOpen) setOpen("GENERATE_APP_USER");
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <PhoneAndroidSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                    {showViewAction && (
+                                                        <Tooltip
+                                                            title="Detalles"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                                if (setOpen) setOpen("VIEW");
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <SearchSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+
+                                                    {showClassesDetails && (
+                                                        <Tooltip title={"Ver días y horarios"} onClick={() => {
+                                                            if (setOpen) setOpen(VIEW_SCHEDULES);
                                                             if (setFormData) setFormData(rows.find((r) => r.id === row.id));
-                                                            if (setOpen) setOpen("VIEW");
-                                                        }}
-                                                    >
-                                                        <IconButton>
-                                                            <SearchSharpIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                )}
-                                                {showEditAction && (
-                                                    <Tooltip
-                                                        title="Editar"
-                                                        onClick={() => {
-                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
-                                                            if (setOpen) setOpen("EDIT");
-                                                        }}
-                                                    >
-                                                        <IconButton>
-                                                            <EditIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                )}
-                                                {showRestoreAction && (
-                                                    <Tooltip
-                                                        title="Restaurar"
-                                                        onClick={() => {
-                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
-                                                            if (setOpen) setOpen("RESTORE");
-                                                        }}
-                                                    >
-                                                        <IconButton>
-                                                            <RestoreFromTrashSharpIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                )}
-                                                {showDeleteAction && (
-                                                    <Tooltip
-                                                        title="Borrar"
-                                                        onClick={() => {
-                                                            if (setFormData) setFormData(rows.find((r) => r.id === row.id));
-                                                            if (setOpen) setOpen("DELETE");
-                                                        }}
-                                                    >
-                                                        <IconButton>
-                                                            <DeleteSharpIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                )}
-                                                {showClassesDetails && (
-                                                    <Tooltip title={"Ver días y horarios"} onClick={() => {
-                                                        if (setOpen) setOpen(VIEW_SCHEDULES);
-                                                        if (setFormData) setFormData(rows.find((r) => r.id === row.id));
-                                                    }}>
-                                                        <IconButton>
-                                                            <CalendarMonthSharpIcon sx={{ color: '#CECECE !important' }} />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                )}
-                                            </TableCell>
-                                        )}
+                                                        }}>
+                                                            <IconButton>
+                                                                <CalendarMonthSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                    {showEditAction && (
+                                                        <Tooltip
+                                                            title="Editar"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                                if (setOpen) setOpen("EDIT");
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <EditIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                    {showDeleteAction && (
+                                                        <Tooltip
+                                                            title="Borrar"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                                if (setOpen) setOpen("DELETE");
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <DeleteSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                </TableCell>
+                                            )}
                                         {headCells.map((cell) => cell.accessor).map((accessor) => (
                                             <TableCell key={accessor} align="center">
                                                 {typeof accessor === "function" ? accessor(row, index) : row[accessor]}

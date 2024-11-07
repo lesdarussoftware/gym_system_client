@@ -6,7 +6,7 @@ import { DataContext } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "./useQuery";
 
-import { CLIENT_URL } from "../config/urls";
+import { CLIENT_URL, USER_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
 import { SET_CLIENTS } from "../config/dataReducerActionTypes";
 import { ERROR, SUCCESS } from "../config/messageProviderTypes";
@@ -113,6 +113,38 @@ export function useClients() {
         setOpenMessage(true);
     }
 
+    const generateAppUser = async (
+        e: { preventDefault: () => void; },
+        validate: () => any,
+        formData: any,
+        setDisabled: any,
+        reset: (() => void) | undefined
+    ) => {
+        e.preventDefault();
+        if (validate()) {
+            const { status, data } = await handleQuery({
+                url: USER_URL,
+                method: 'POST',
+                body: JSON.stringify({
+                    ...formData,
+                    gym_hash: auth?.me.gym.hash
+                })
+            });
+            if (status === STATUS_CODES.CREATED) {
+                setMessage('Usuario registrado correctamente.');
+            } else {
+                setMessage(data.message);
+                setSeverity(ERROR);
+                setDisabled(false);
+            }
+            if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
+                setSeverity(SUCCESS);
+                handleClose(reset);
+            }
+            setOpenMessage(true);
+        }
+    }
+
     return {
         handleSubmit,
         handleClose,
@@ -121,6 +153,7 @@ export function useClients() {
         setOpen,
         getClients,
         filter,
-        setFilter
+        setFilter,
+        generateAppUser
     }
 }

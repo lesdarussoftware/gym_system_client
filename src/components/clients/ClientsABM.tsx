@@ -9,6 +9,7 @@ import { ModalComponent } from '../common/ModalComponent'
 import { DataGridBackend } from "../DataGrid/DataGridBackend";
 
 import { NEW, EDIT, DELETE } from '../../config/openTypes'
+import { CLIENT } from "../../config/roles";
 
 export function ClientsABM() {
 
@@ -24,7 +25,32 @@ export function ClientsABM() {
             phone: { required: true, maxLength: 55 }
         }
     })
-    const { handleSubmit, handleClose, handleDelete, open, setOpen, getClients, filter, setFilter } = useClients();
+    const {
+        formData: formDataUser,
+        handleChange: handleChangeUser,
+        validate: validateUser,
+        errors: errorsUser,
+        disabled: disabledUser,
+        setDisabled: setDisabledUser,
+        reset: resetUser
+    } = useForm({
+        defaultData: { username: '', password: '', role: CLIENT },
+        rules: {
+            username: { required: true, maxLength: 55 },
+            password: { required: true, minLength: 8, maxLength: 255 }
+        }
+    })
+    const {
+        handleSubmit,
+        handleClose,
+        handleDelete,
+        open,
+        setOpen,
+        getClients,
+        filter,
+        setFilter,
+        generateAppUser
+    } = useClients();
 
     useEffect(() => {
         const { page, offset } = filter
@@ -85,6 +111,7 @@ export function ClientsABM() {
             filter={filter}
             setFilter={setFilter}
             count={state.clients.count}
+            showCreateAppUser
             showEditAction
             showDeleteAction
         >
@@ -197,6 +224,98 @@ export function ClientsABM() {
                                 color: '#fff'
                             }}
                             disabled={disabled}
+                        >
+                            Guardar
+                        </Button>
+                    </Box>
+                </form>
+            </ModalComponent>
+            <ModalComponent open={open === 'GENERATE_APP_USER'} onClose={() => handleClose(resetUser)}>
+                <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                    Nuevo usuario para aplicación Android
+                </Typography>
+                <form onChange={handleChangeUser} onSubmit={(e) => generateAppUser(e, validateUser,
+                    {
+                        ...formDataUser,
+                        first_name: formData.first_name,
+                        last_name: formData.last_name,
+                        email: formData.email
+                    },
+                    setDisabledUser, resetUser)}>
+                    <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, justifyContent: 'space-between' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
+                            <FormControl>
+                                <InputLabel >Nombre</InputLabel>
+                                <Input value={formData.first_name} disabled />
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel>Apellido</InputLabel>
+                                <Input value={formData.last_name} disabled />
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
+                                <Input id="username" type="text" name="username" value={formDataUser.username} />
+                                {errorsUser.username?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El nombre de usuario es requerido.
+                                    </Typography>
+                                }
+                                {errorsUser.username?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * El nombre de usuario es demasiado largo.
+                                    </Typography>
+                                }
+                            </FormControl>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
+                            <FormControl>
+                                <InputLabel>Email</InputLabel>
+                                <Input value={formData.email} disabled />
+                            </FormControl>
+                            <FormControl>
+                                <InputLabel htmlFor="password">Contraseña</InputLabel>
+                                <Input id="password" type="password" name="password" value={formDataUser.password} />
+                                {errorsUser.password?.type === 'required' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * La contraseña es requerida.
+                                    </Typography>
+                                }
+                                {errorsUser.password?.type === 'minLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * La contraseña es demasiado corta.
+                                    </Typography>
+                                }
+                                {errorsUser.password?.type === 'maxLength' &&
+                                    <Typography variant="caption" color="red" marginTop={1}>
+                                        * La contraseña es demasiado larga.
+                                    </Typography>
+                                }
+                            </FormControl>
+                        </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                            type="button"
+                            variant="outlined"
+                            sx={{
+                                width: '50%',
+                                margin: '0 auto',
+                                marginTop: 1
+                            }}
+                            onClick={() => handleClose(resetUser)}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                width: '50%',
+                                margin: '0 auto',
+                                marginTop: 1,
+                                color: '#fff'
+                            }}
+                            disabled={disabledUser}
                         >
                             Guardar
                         </Button>
