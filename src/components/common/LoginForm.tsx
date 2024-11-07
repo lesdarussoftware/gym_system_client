@@ -9,7 +9,6 @@ import { useAuth } from "../../hooks/useAuth";
 import { STATUS_CODES } from "../../config/statusCodes";
 import { ERROR } from "../../config/messageProviderTypes";
 
-
 type LoginFormProps = {
     submitAction?: () => void;
 }
