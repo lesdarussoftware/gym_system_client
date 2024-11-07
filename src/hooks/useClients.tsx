@@ -131,15 +131,13 @@ export function useClients() {
                 })
             });
             if (status === STATUS_CODES.CREATED) {
+                setSeverity(SUCCESS);
                 setMessage('Usuario registrado correctamente.');
+                handleClose(reset);
             } else {
                 setMessage(data.message);
                 setSeverity(ERROR);
                 setDisabled(false);
-            }
-            if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
-                setSeverity(SUCCESS);
-                handleClose(reset);
             }
             setOpenMessage(true);
         }

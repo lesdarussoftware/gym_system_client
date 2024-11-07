@@ -242,58 +242,54 @@ export function ClientsABM() {
                         email: formData.email
                     },
                     setDisabledUser, resetUser)}>
-                    <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
-                            <FormControl>
-                                <InputLabel >Nombre</InputLabel>
-                                <Input value={formData.first_name} disabled />
-                            </FormControl>
-                            <FormControl>
-                                <InputLabel>Apellido</InputLabel>
-                                <Input value={formData.last_name} disabled />
-                            </FormControl>
-                            <FormControl>
-                                <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
-                                <Input id="username" type="text" name="username" value={formDataUser.username} />
-                                {errorsUser.username?.type === 'required' &&
-                                    <Typography variant="caption" color="red" marginTop={1}>
-                                        * El nombre de usuario es requerido.
-                                    </Typography>
-                                }
-                                {errorsUser.username?.type === 'maxLength' &&
-                                    <Typography variant="caption" color="red" marginTop={1}>
-                                        * El nombre de usuario es demasiado largo.
-                                    </Typography>
-                                }
-                            </FormControl>
-                        </Box>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '50%' }}>
-                            <FormControl>
-                                <InputLabel>Email</InputLabel>
-                                <Input value={formData.email} disabled />
-                            </FormControl>
-                            <FormControl>
-                                <InputLabel htmlFor="password">Contraseña</InputLabel>
-                                <Input id="password" type="password" name="password" value={formDataUser.password} />
-                                {errorsUser.password?.type === 'required' &&
-                                    <Typography variant="caption" color="red" marginTop={1}>
-                                        * La contraseña es requerida.
-                                    </Typography>
-                                }
-                                {errorsUser.password?.type === 'minLength' &&
-                                    <Typography variant="caption" color="red" marginTop={1}>
-                                        * La contraseña es demasiado corta.
-                                    </Typography>
-                                }
-                                {errorsUser.password?.type === 'maxLength' &&
-                                    <Typography variant="caption" color="red" marginTop={1}>
-                                        * La contraseña es demasiado larga.
-                                    </Typography>
-                                }
-                            </FormControl>
-                        </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        <FormControl>
+                            <InputLabel >Nombre</InputLabel>
+                            <Input value={formData.first_name} disabled />
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel>Apellido</InputLabel>
+                            <Input value={formData.last_name} disabled />
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel>Email</InputLabel>
+                            <Input value={formData.email} disabled />
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
+                            <Input id="username" type="text" name="username" value={formDataUser.username} />
+                            {errorsUser.username?.type === 'required' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * El nombre de usuario es requerido.
+                                </Typography>
+                            }
+                            {errorsUser.username?.type === 'maxLength' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * El nombre de usuario es demasiado largo.
+                                </Typography>
+                            }
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="password">Contraseña</InputLabel>
+                            <Input id="password" type="password" name="password" value={formDataUser.password} />
+                            {errorsUser.password?.type === 'required' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * La contraseña es requerida.
+                                </Typography>
+                            }
+                            {errorsUser.password?.type === 'minLength' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * La contraseña es demasiado corta.
+                                </Typography>
+                            }
+                            {errorsUser.password?.type === 'maxLength' &&
+                                <Typography variant="caption" color="red" marginTop={1}>
+                                    * La contraseña es demasiado larga.
+                                </Typography>
+                            }
+                        </FormControl>
                     </Box>
-                    <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 1, mt: 3 }}>
                         <Button
                             type="button"
                             variant="outlined"
