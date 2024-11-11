@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, tooltipClasses, TooltipProps, Tooltip, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 
@@ -26,7 +26,7 @@ export function SchedulesPage() {
 
     const { auth } = useContext(AuthContext);
     const { state } = useContext(DataContext);
-    useClasses();
+    const { getClasses } = useClasses();
 
     const headers = [
         DAYS.MONDAY,
@@ -37,6 +37,12 @@ export function SchedulesPage() {
         DAYS.SATURDAY,
         DAYS.SUNDAY
     ];
+
+    useEffect(() => {
+        if (auth) {
+            getClasses()
+        }
+    }, [])
 
     return (
         <>
