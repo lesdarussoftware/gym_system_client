@@ -115,7 +115,7 @@ export function NotificationsPage() {
                                 reduceWidth={800}
                             >
                                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                                    {open === NEW && 'Registrar nueva notificación'}
+                                    {open === NEW && 'Nuevo aviso'}
                                 </Typography>
                                 <form onSubmit={(e) => handleSubmit(e, validate, formData, setDisabled, reset)}>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -202,7 +202,7 @@ export function NotificationsPage() {
                                 onClose={() => handleClose(reset)}
                             >
                                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                                    {`¿Desea borrar el registro del mensaje #${formData.id}?`}
+                                    {`¿Desea borrar el registro del aviso #${formData.id}?`}
                                 </Typography>
                                 <p style={{ textAlign: 'center' }}>Los datos no podrán ser recuperados.</p>
                                 <Box sx={{ display: 'flex', gap: 1 }}>

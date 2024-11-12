@@ -82,12 +82,12 @@ function Options({ type }: { type: string; }) {
             <Typography
                 sx={{
                     ...menuItemStyles,
-                    color: pathname === '/notificaciones' ? '#fff' : '#000',
-                    backgroundColor: pathname === '/notificaciones' ? MAIN_COLOR : ''
+                    color: pathname === '/avisos' ? '#fff' : '#000',
+                    backgroundColor: pathname === '/avisos' ? MAIN_COLOR : ''
                 }}
-                onClick={() => navigate('/notificaciones')}
+                onClick={() => navigate('/avisos')}
             >
-                Notificaciones
+                Avisos
             </Typography>
             <Typography
                 sx={{

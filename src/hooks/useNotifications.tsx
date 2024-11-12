@@ -54,7 +54,7 @@ export function useNotifications() {
             });
             if (status === STATUS_CODES.CREATED) {
                 setSeverity(SUCCESS);
-                setMessage('Notificación registrada correctamente.');
+                setMessage('Aviso registrado correctamente.');
                 setNotifications([data, ...notifications]);
                 setCount(count + 1);
                 handleClose(reset);
@@ -85,7 +85,7 @@ export function useNotifications() {
             setNotifications([...notifications.filter(n => n.id !== data.id)]);
             setCount(count - 1);
             setSeverity(SUCCESS);
-            setMessage('Notificación eliminada correctamente.');
+            setMessage('Aviso eliminado correctamente.');
             handleClose(reset);
         }
         if (status === STATUS_CODES.SERVER_ERROR) {

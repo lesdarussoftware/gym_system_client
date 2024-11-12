@@ -44,7 +44,7 @@ function App() {
                   <Route path="/ingresos" element={<VisitsPage />} />
                   <Route path="/clientes" element={<ClientsPage />} />
                   <Route path="/horarios" element={<SchedulesPage />} />
-                  <Route path="/notificaciones" element={<NotificationsPage />} />
+                  <Route path="/avisos" element={<NotificationsPage />} />
                   <Route path="/abm" element={<ABMPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/license" element={<LicensePage />} />
