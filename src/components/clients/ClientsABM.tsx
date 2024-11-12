@@ -34,7 +34,7 @@ export function ClientsABM() {
         setDisabled: setDisabledUser,
         reset: resetUser
     } = useForm({
-        defaultData: { username: '', password: '', role: CLIENT },
+        defaultData: { username: '', password: '', role: CLIENT, client_id: '' },
         rules: {
             username: { required: true, maxLength: 55 },
             password: { required: true, minLength: 8, maxLength: 255 }
@@ -239,7 +239,8 @@ export function ClientsABM() {
                         ...formDataUser,
                         first_name: formData.first_name,
                         last_name: formData.last_name,
-                        email: formData.email
+                        email: formData.email,
+                        client_id: formData.id
                     },
                     setDisabledUser, resetUser)}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
