@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 
 import { AuthContext } from "../providers/AuthProvider";
-import { DataContext } from "../providers/DataProvider";
 import { useUsers } from "../hooks/useUsers";
 import { useForm } from "../hooks/useForm";
 
@@ -15,7 +14,6 @@ import { CHANGE_PWD } from "../config/openTypes";
 export function ProfilePage() {
 
     const { auth } = useContext(AuthContext);
-    const { state } = useContext(DataContext);
     const { open, setOpen, handleClose, handleChangePwd } = useUsers();
     const { formData, reset, handleChange, errors, validate, disabled, setDisabled } = useForm({
         defaultData: { new_password: '', repeat_new_password: '' },

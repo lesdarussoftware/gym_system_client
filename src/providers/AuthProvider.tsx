@@ -13,6 +13,7 @@ interface AuthData {
         role: string;
         first_name: string;
         last_name: string;
+        email: string;
         gym: {
             hash: string;
             name: string;

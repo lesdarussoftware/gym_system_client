@@ -14,10 +14,11 @@ import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import { IconButton, Tooltip } from '@mui/material';
 import PhoneAndroidSharpIcon from '@mui/icons-material/PhoneAndroidSharp';
+import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
 
 import { EnhancedTableHeadBackend } from './EnhancedTableHeadBackend';
 import { getComparator, stableSort } from '../../helpers/utils';
-import { VIEW_SCHEDULES } from '../../config/openTypes';
+import { NEW, VIEW_SCHEDULES } from '../../config/openTypes';
 
 interface HeadCell {
     id: string
@@ -104,6 +105,15 @@ export function DataGridBackend({
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                <Tooltip title="Agregar" onClick={() => {
+                    if (setOpen) setOpen(NEW)
+                }}>
+                    <IconButton>
+                        <AddCircleSharpIcon sx={{ color: '#CECECE !important' }} />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             {contentHeader}
             <Paper sx={{ mb: 2 }}>
                 <TableContainer>

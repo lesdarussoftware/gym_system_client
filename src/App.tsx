@@ -12,6 +12,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { VisitsPage } from "./pages/VisitsPage";
 import { ClientsPage } from "./pages/ClientsPage";
 import { SchedulesPage } from "./pages/SchedulesPage";
+import { NotificationsPage } from "./pages/NotificationsPage";
 import { ABMPage } from "./pages/ABMPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { LicensePage } from "./pages/LicensePage";
@@ -43,6 +44,7 @@ function App() {
                   <Route path="/ingresos" element={<VisitsPage />} />
                   <Route path="/clientes" element={<ClientsPage />} />
                   <Route path="/horarios" element={<SchedulesPage />} />
+                  <Route path="/notificaciones" element={<NotificationsPage />} />
                   <Route path="/abm" element={<ABMPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/license" element={<LicensePage />} />
