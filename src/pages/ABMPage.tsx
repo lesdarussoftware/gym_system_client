@@ -10,6 +10,8 @@ import { ClassesABM } from "../components/ABM/ClassesABM";
 import { TeachersABM } from '../components/ABM/TeachersABM';
 import { UsersABM } from '../components/ABM/UsersABM';
 import { LoginForm } from '../components/common/LoginForm';
+import { CategoriesABM } from '../components/ABM/CategoriesABM';
+import { SuppliersABM } from '../components/ABM/SuppliersABM';
 // import { PacksABM } from '../components/ABM/PacksABM';
 
 function CustomTabPanel(props: { [x: string]: any; children: any; value: any; index: any; }) {
@@ -59,6 +61,8 @@ export function ABMPage() {
                             {/* <Tab label="Packs" {...a11yProps(1)} /> */}
                             <Tab label="Profesores" {...a11yProps(1)} />
                             <Tab label="Usuarios" {...a11yProps(2)} />
+                            <Tab label="Categorías" {...a11yProps(3)} />
+                            <Tab label="Proveedores" {...a11yProps(4)} />
                         </Tabs>
                         <CustomTabPanel value={value} index={0}>
                             <ClassesABM />
@@ -71,6 +75,12 @@ export function ABMPage() {
                         </CustomTabPanel>
                         <CustomTabPanel value={value} index={2}>
                             <UsersABM />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={3}>
+                            <CategoriesABM />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={4}>
+                            <SuppliersABM />
                         </CustomTabPanel>
                     </Box>
                 </> :

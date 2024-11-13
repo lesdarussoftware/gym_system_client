@@ -134,6 +134,9 @@ export interface Category {
 
 export interface Supplier {
     id: number;
+    name: string;
+    contact_info: string;
+    address: string;
     created_at: Date;
     updated_at: Date;
 }
