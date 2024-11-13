@@ -13,6 +13,7 @@ import { VisitsPage } from "./pages/VisitsPage";
 import { ClientsPage } from "./pages/ClientsPage";
 import { SchedulesPage } from "./pages/SchedulesPage";
 import { NotificationsPage } from "./pages/NotificationsPage";
+import { InventoryPage } from "./pages/InventoryPage";
 import { ABMPage } from "./pages/ABMPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { LicensePage } from "./pages/LicensePage";
@@ -45,6 +46,7 @@ function App() {
                   <Route path="/clientes" element={<ClientsPage />} />
                   <Route path="/horarios" element={<SchedulesPage />} />
                   <Route path="/avisos" element={<NotificationsPage />} />
+                  <Route path="/inventario" element={<InventoryPage />} />
                   <Route path="/abm" element={<ABMPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/license" element={<LicensePage />} />

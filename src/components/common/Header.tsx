@@ -92,6 +92,16 @@ function Options({ type }: { type: string; }) {
             <Typography
                 sx={{
                     ...menuItemStyles,
+                    color: pathname === '/inventario' ? '#fff' : '#000',
+                    backgroundColor: pathname === '/inventario' ? MAIN_COLOR : ''
+                }}
+                onClick={() => navigate('/inventario')}
+            >
+                Inventario
+            </Typography>
+            <Typography
+                sx={{
+                    ...menuItemStyles,
                     color: pathname === '/abm' ? '#fff' : '#000',
                     backgroundColor: pathname === '/abm' ? MAIN_COLOR : ''
                 }}

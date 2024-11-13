@@ -1,6 +1,15 @@
 import { createContext, ReactNode, Dispatch, useReducer } from "react";
 
-import { SET_CLIENTS, SET_USERS, SET_TEACHERS, SET_CLASSES, SET_PACKS } from '../config/dataReducerActionTypes'
+import {
+    SET_CLIENTS,
+    SET_USERS,
+    SET_TEACHERS,
+    SET_CLASSES,
+    SET_PACKS,
+    SET_CATEGORIES,
+    SET_SUPPLIERS,
+    SET_PRODUCTS
+} from '../config/dataReducerActionTypes'
 
 interface Visit {
     id: number;
@@ -117,12 +126,51 @@ export interface PackClass {
     updated_at: Date;
 }
 
+export interface Category {
+    id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Supplier {
+    id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Product {
+    id: number;
+    category_id: number;
+    supplier_id: number;
+    categories: Category[];
+    suppliers: Supplier[];
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Income {
+    id: number;
+    product_id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Expense {
+    id: number;
+    product_id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
 interface State {
     clients: { rows: Client[], count: number };
     users: { rows: User[], count: number };
     teachers: { rows: Teacher[], count: number };
     classes: { rows: Class[], count: number };
     packs: { rows: Pack[], count: number };
+    categories: { rows: Category[], count: number };
+    suppliers: { rows: Supplier[], count: number };
+    products: { rows: Product[], count: number };
 }
 
 type Action =
@@ -130,7 +178,10 @@ type Action =
     | { type: "SET_USERS"; payload: { rows: User[], count: number } }
     | { type: "SET_TEACHERS"; payload: { rows: Teacher[], count: number } }
     | { type: "SET_CLASSES"; payload: { rows: Class[], count: number } }
-    | { type: "SET_PACKS"; payload: { rows: Pack[], count: number } };
+    | { type: "SET_PACKS"; payload: { rows: Pack[], count: number } }
+    | { type: "SET_CATEGORIES"; payload: { rows: Category[], count: number } }
+    | { type: "SET_SUPPLIERS"; payload: { rows: Supplier[], count: number } }
+    | { type: "SET_PRODUCTS"; payload: { rows: Product[], count: number } };
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -144,6 +195,12 @@ const reducer = (state: State, action: Action): State => {
             return { ...state, classes: action.payload };
         case SET_PACKS:
             return { ...state, packs: action.payload };
+        case SET_CATEGORIES:
+            return { ...state, categories: action.payload };
+        case SET_SUPPLIERS:
+            return { ...state, suppliers: action.payload };
+        case SET_PRODUCTS:
+            return { ...state, products: action.payload };
         default:
             return state;
     }
@@ -154,7 +211,10 @@ const initialState: State = {
     users: { rows: [], count: 0 },
     teachers: { rows: [], count: 0 },
     classes: { rows: [], count: 0 },
-    packs: { rows: [], count: 0 }
+    packs: { rows: [], count: 0 },
+    categories: { rows: [], count: 0 },
+    suppliers: { rows: [], count: 0 },
+    products: { rows: [], count: 0 }
 };
 
 export const DataContext = createContext<{
