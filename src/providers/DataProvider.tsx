@@ -128,6 +128,7 @@ export interface PackClass {
 
 export interface Category {
     id: number;
+    name: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -143,10 +144,10 @@ export interface Supplier {
 
 export interface Product {
     id: number;
-    category_id: number;
-    supplier_id: number;
-    categories: Category[];
-    suppliers: Supplier[];
+    price: number;
+    expiration_date: Date;
+    category: Category;
+    supplier: Supplier;
     created_at: Date;
     updated_at: Date;
 }
