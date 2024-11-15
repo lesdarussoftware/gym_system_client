@@ -13,8 +13,9 @@ import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
 import { DataGridBackend } from "../components/DataGrid/DataGridBackend";
 import { ModalComponent } from "../components/common/ModalComponent";
-import { MovementForm } from "../components/products/MovementForm";
-import { ProductForm } from "../components/products/ProductForm";
+import { MovementForm } from "../components/inventory/MovementForm";
+import { ProductForm } from "../components/inventory/ProductForm";
+import { ProductDetails } from "../components/inventory/ProductDetails";
 
 import { DELETE, EDIT, NEW } from "../config/openTypes";
 import { movementTypes } from "../config/movementTypes";
@@ -36,7 +37,8 @@ export function InventoryPage() {
         handleClose,
         handleSubmit,
         handleDelete,
-        handleSubmitMovement
+        handleSubmitMovement,
+        handleDeleteMovement
     } = useProducts();
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: {
@@ -250,6 +252,17 @@ export function InventoryPage() {
                                     open={open}
                                     handleSubmit={handleSubmitMovement}
                                     handleClose={handleClose}
+                                />
+                            </ModalComponent>
+                            <ModalComponent open={open === 'VIEW'} onClose={() => handleClose(reset)}>
+                                <Typography variant="h5" sx={{ marginBottom: 1 }}>
+                                    {`${formData.name} (#${formData.id})`}
+                                </Typography>
+                                <ProductDetails
+                                    product={formData}
+                                    movementData={movementData}
+                                    handleClose={handleClose}
+                                    handleDelete={handleDeleteMovement}
                                 />
                             </ModalComponent>
                         </DataGridBackend>

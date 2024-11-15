@@ -71,7 +71,7 @@ export function MovementForm({ movementData, open, handleSubmit, handleClose }: 
                             inputProps: {
                                 step: 1,
                                 min: 0,
-                                max: open === 'NEW_EXPENSE' ? getProductStock(state.products.rows.find((p: Product) => p.id === formData.product_id)) : undefined
+                                max: open === 'NEW_EXPENSE' ? getProductStock(state.products.rows.find((p: Product) => p.id === formData.product_id)!) : undefined
                             }
                         }}
                         InputLabelProps={{

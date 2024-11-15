@@ -130,8 +130,8 @@ export function useProducts() {
             if (status === STATUS_CODES.CREATED) {
                 const product = state.products.rows.find(row => row.id === data.product_id)!
                 const newElement = open === 'NEW_INCOME' ?
-                    { ...product, incomes: [data, ...product!.incomes,] } :
-                    { ...product, expenses: [data, ...product!.expenses,] }
+                    { ...product, incomes: [data, ...product!.incomes] } :
+                    { ...product, expenses: [data, ...product!.expenses] }
                 const rows = [newElement, ...state.products.rows.filter(row => row.id !== data.product_id)]
                 dispatch({ type: SET_PRODUCTS, payload: { ...state.products, rows } });
                 setMessage(`${open === 'NEW_INCOME' ? 'Ingreso' : 'Egreso'} registrado correctamente.`);
@@ -146,6 +146,35 @@ export function useProducts() {
         }
     }
 
+    const handleDeleteMovement = async (
+        formData: { id: any; },
+        reset: () => void,
+        setDisabled: (arg0: boolean) => void
+    ) => {
+        const urls = { 'NEW_INCOME': INCOME_URL, 'NEW_EXPENSE': EXPENSE_URL };
+        const { status, data } = await handleQuery({
+            url: open === 'NEW_INCOME' || open === 'NEW_EXPENSE' ? `${urls[open]}/${formData.id}` : '',
+            method: 'DELETE'
+        });
+        if (status === STATUS_CODES.OK) {
+            const product = state.products.rows.find(row => row.id === data.product_id)!
+            const newElement = open === 'NEW_INCOME' ?
+                { ...product, incomes: [...product!.incomes.filter(inc => inc.id !== data.id)] } :
+                { ...product, expenses: [...product!.expenses.filter(ex => ex.id !== data.id)] }
+            const rows = [newElement, ...state.products.rows.filter(row => row.id !== data.product_id)]
+            dispatch({ type: SET_PRODUCTS, payload: { ...state.products, rows } });
+            setSeverity(SUCCESS);
+            setMessage(`${open === 'NEW_INCOME' ? 'Ingreso' : 'Egreso'} eliminado correctamente.`);
+            handleClose(reset);
+        }
+        if (status === STATUS_CODES.SERVER_ERROR) {
+            setMessage(data.message);
+            setSeverity(ERROR);
+            setDisabled(false);
+        }
+        setOpenMessage(true);
+    }
+
     return {
         handleSubmit,
         handleClose,
@@ -155,6 +184,7 @@ export function useProducts() {
         getProducts,
         filter,
         setFilter,
-        handleSubmitMovement
+        handleSubmitMovement,
+        handleDeleteMovement
     }
 }
