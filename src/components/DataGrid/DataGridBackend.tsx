@@ -15,6 +15,8 @@ import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import { IconButton, Tooltip } from '@mui/material';
 import PhoneAndroidSharpIcon from '@mui/icons-material/PhoneAndroidSharp';
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
+import InputSharpIcon from '@mui/icons-material/InputSharp';
+import OutputSharpIcon from '@mui/icons-material/OutputSharp';
 
 import { EnhancedTableHeadBackend } from './EnhancedTableHeadBackend';
 import { getComparator, stableSort } from '../../helpers/utils';
@@ -44,6 +46,8 @@ interface DataGridBackendProps {
     showDeleteAction?: boolean;
     showClassesDetails?: boolean;
     showCreateAppUser?: boolean;
+    showInput?: boolean;
+    showOutput?: boolean;
     filter: {
         offset: number;
         page: number;
@@ -67,6 +71,8 @@ export function DataGridBackend({
     showDeleteAction,
     showClassesDetails,
     showCreateAppUser,
+    showInput,
+    showOutput,
     filter,
     setFilter,
     count,
@@ -123,7 +129,7 @@ export function DataGridBackend({
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            addCell={showEditAction || showDeleteAction || showViewAction}
+                            addCell={showEditAction || showDeleteAction || showViewAction || showClassesDetails || showCreateAppUser || showInput || showOutput}
                         />
                         <TableBody>
                             {visibleRows && visibleRows.length > 0 ? (
@@ -133,8 +139,36 @@ export function DataGridBackend({
                                             showDeleteAction ||
                                             showViewAction ||
                                             showClassesDetails ||
-                                            showCreateAppUser) && (
-                                                <TableCell sx={{ minWidth: 160 }}>
+                                            showCreateAppUser ||
+                                            showInput ||
+                                            showOutput) && (
+                                                <TableCell sx={{ minWidth: 240 }}>
+                                                    {showInput && (
+                                                        <Tooltip
+                                                            title="Ingresar"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id))
+                                                                if (setOpen) setOpen("NEW_INCOME")
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <InputSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                    {showOutput && (
+                                                        <Tooltip
+                                                            title="Egresar"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id))
+                                                                if (setOpen) setOpen("NEW_EXPENSE")
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <OutputSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
                                                     {showCreateAppUser && (
                                                         <Tooltip
                                                             title="Generar usuario para app"

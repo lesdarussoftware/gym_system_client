@@ -1,9 +1,6 @@
 import { useContext, useEffect, useMemo } from "react";
-import { Autocomplete, Box, Button, Checkbox, FormControl, FormControlLabel, Input, InputLabel, TextField, Typography } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { Box, Button, Typography } from "@mui/material";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
 
 import { AuthContext } from "../providers/AuthProvider";
 import { DataContext, Product } from "../providers/DataProvider";
@@ -16,8 +13,11 @@ import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
 import { DataGridBackend } from "../components/DataGrid/DataGridBackend";
 import { ModalComponent } from "../components/common/ModalComponent";
+import { MovementForm } from "../components/products/MovementForm";
+import { ProductForm } from "../components/products/ProductForm";
 
 import { DELETE, EDIT, NEW } from "../config/openTypes";
+import { movementTypes } from "../config/movementTypes";
 
 export function InventoryPage() {
 
@@ -26,15 +26,25 @@ export function InventoryPage() {
 
     const { getCategories } = useCategories();
     const { getSuppliers } = useSuppliers();
-    const { getProducts, open, setOpen, filter, setFilter, handleClose, handleSubmit, handleDelete } = useProducts();
+    const {
+        getProducts,
+        open,
+        setOpen,
+        filter,
+        setFilter,
+        handleClose,
+        handleSubmit,
+        handleDelete,
+        handleSubmitMovement
+    } = useProducts();
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: {
             id: '',
             gym_hash: '',
             name: '',
             sku: '',
-            price: '',
-            min_stock: '',
+            price: 0,
+            min_stock: 0,
             is_active: true,
             expiration_date: '',
             category_id: '',
@@ -42,8 +52,24 @@ export function InventoryPage() {
         },
         rules: {
             name: { required: true, maxLength: 55 },
-            sku: { required: true, maxLength: 55 }
+            sku: { required: true, maxLength: 55 },
+            category_id: { required: true },
+            supplier_id: { required: true }
         }
+    })
+    const movementData = useForm({
+        defaultData: {
+            id: '',
+            gym_hash: '',
+            product_id: '',
+            product_price: 0,
+            quantity: 0,
+            type: movementTypes.AJUSTE,
+            description: '',
+            discount: 0,
+            final_price: 0
+        },
+        rules: { description: { maxLength: 100 } }
     })
 
     useEffect(() => {
@@ -53,6 +79,16 @@ export function InventoryPage() {
             getSuppliers();
         }
     }, [])
+
+    useEffect(() => {
+        if (open !== null) {
+            movementData.setFormData({
+                ...movementData.formData,
+                product_id: formData.id,
+                product_price: formData.price
+            });
+        }
+    }, [formData, open])
 
     const headCells = useMemo(() => [
         {
@@ -109,7 +145,7 @@ export function InventoryPage() {
             numeric: false,
             disablePadding: true,
             label: 'Fecha expiración',
-            accessor: (row: Product) => format(new Date(row.expiration_date), 'dd-MM-yyyy')
+            accessor: (row: Product) => row.expiration_date ? format(new Date(row.expiration_date), 'dd-MM-yyyy') : ''
         }
     ], [])
 
@@ -130,6 +166,9 @@ export function InventoryPage() {
                             setFilter={setFilter}
                             showEditAction
                             showDeleteAction
+                            showInput
+                            showOutput
+                            showViewAction
                         >
                             <ModalComponent
                                 open={open === NEW || open === EDIT}
@@ -137,174 +176,21 @@ export function InventoryPage() {
                                 reduceWidth={800}
                             >
                                 <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                                    {open === NEW && 'Registrar nuevo producto'}
+                                    {open === NEW && 'Nuevo producto'}
                                     {open === EDIT && `Editar producto #${formData.id}`}
                                 </Typography>
-                                <form onChange={handleChange} onSubmit={(e) => handleSubmit(
-                                    e,
-                                    validate,
-                                    formData,
-                                    setDisabled,
-                                    reset
-                                )}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                                        <FormControl>
-                                            <InputLabel htmlFor="name">Nombre</InputLabel>
-                                            <Input id="name" type="text" name="name" value={formData.name} />
-                                            {errors.name?.type === 'required' &&
-                                                <Typography variant="caption" color="red" marginTop={1}>
-                                                    * El nombre es requerido.
-                                                </Typography>
-                                            }
-                                            {errors.name?.type === 'maxLength' &&
-                                                <Typography variant="caption" color="red" marginTop={1}>
-                                                    * El nombre es demasiado largo.
-                                                </Typography>
-                                            }
-                                        </FormControl>
-                                        <FormControl>
-                                            <InputLabel htmlFor="sku">SKU</InputLabel>
-                                            <Input id="sku" type="text" name="sku" value={formData.sku} />
-                                            {errors.sku?.type === 'required' &&
-                                                <Typography variant="caption" color="red" marginTop={1}>
-                                                    * El sku es requerido.
-                                                </Typography>
-                                            }
-                                            {errors.sku?.type === 'maxLength' &&
-                                                <Typography variant="caption" color="red" marginTop={1}>
-                                                    * El sku es demasiado largo.
-                                                </Typography>
-                                            }
-                                        </FormControl>
-                                        <FormControl>
-                                            <TextField
-                                                label="Precio"
-                                                type="number"
-                                                name="price"
-                                                value={formData.price}
-                                                onChange={e => handleChange({
-                                                    target: {
-                                                        name: 'price',
-                                                        value: parseFloat(e.target.value) <= 0 ? 0 : Math.abs(parseFloat(e.target.value))
-                                                    }
-                                                })}
-                                                InputProps={{
-                                                    inputProps: {
-                                                        step: 0.01
-                                                    }
-                                                }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormControl>
-                                            <Autocomplete
-                                                disablePortal
-                                                id="category-autocomplete"
-                                                options={state.categories.rows.map(c => ({ label: c.name, id: c?.id }))}
-                                                renderInput={(params) => <TextField {...params} label="Buscar categoría..." />}
-                                                noOptionsText="No hay categorías disponibles."
-                                                onChange={(_, value) => handleChange({
-                                                    target: {
-                                                        name: 'category_id',
-                                                        value: value?.id as number
-                                                    }
-                                                })}
-                                                isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                                            />
-                                        </FormControl>
-                                        <FormControl>
-                                            <Autocomplete
-                                                disablePortal
-                                                id="supplier-autocomplete"
-                                                options={state.suppliers.rows.map(s => ({ label: s.name, id: s?.id }))}
-                                                renderInput={(params) => <TextField {...params} label="Buscar proveedor..." />}
-                                                noOptionsText="No hay proveedores disponibles."
-                                                onChange={(_, value) => handleChange({
-                                                    target: {
-                                                        name: 'supplier_id',
-                                                        value: value?.id as number
-                                                    }
-                                                })}
-                                                isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                                            />
-                                        </FormControl>
-                                        <FormControl>
-                                            <TextField
-                                                label="Stock mínimo"
-                                                type="number"
-                                                name="min_stock"
-                                                value={formData.min_stock}
-                                                onChange={e => handleChange({
-                                                    target: {
-                                                        name: 'min_stock',
-                                                        value: parseFloat(e.target.value) <= 0 ? 0 : Math.abs(parseFloat(e.target.value))
-                                                    }
-                                                })}
-                                                InputProps={{
-                                                    inputProps: {
-                                                        step: 1
-                                                    }
-                                                }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormControl>
-                                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
-                                                <DatePicker
-                                                    label="Fecha expiración"
-                                                    value={new Date(formData.expiration_date)}
-                                                    onChange={value => handleChange({
-                                                        target: {
-                                                            name: 'expiration_date',
-                                                            value: new Date(value!.toISOString())
-                                                        }
-                                                    })}
-                                                />
-                                            </LocalizationProvider>
-                                        </FormControl>
-                                        {open === EDIT &&
-                                            <FormControlLabel
-                                                control={<Checkbox />}
-                                                label="Activar / desactivar"
-                                                checked={formData.is_active}
-                                                onChange={(_, value) => handleChange({
-                                                    target: { name: 'is_active', value }
-                                                })}
-                                            />
-                                        }
-                                        <Box sx={{ display: 'flex', gap: 1 }}>
-                                            <Button
-                                                type="button"
-                                                variant="outlined"
-                                                sx={{
-                                                    width: '50%',
-                                                    margin: '0 auto',
-                                                    marginTop: 1
-                                                }}
-                                                onClick={() => handleClose(reset)}
-                                            >
-                                                Cancelar
-                                            </Button>
-                                            <Button
-                                                type="submit"
-                                                variant="contained"
-                                                sx={{
-                                                    width: '50%',
-                                                    margin: '0 auto',
-                                                    marginTop: 1,
-                                                    color: '#fff'
-                                                }}
-                                                disabled={disabled}
-                                            >
-                                                Guardar
-                                            </Button>
-                                        </Box>
-                                    </Box>
-                                </form>
+                                <ProductForm
+                                    handleChange={handleChange}
+                                    handleSubmit={handleSubmit}
+                                    validate={validate}
+                                    formData={formData}
+                                    setDisabled={setDisabled}
+                                    reset={reset}
+                                    errors={errors}
+                                    handleClose={handleClose}
+                                    disabled={disabled}
+                                // open={open}
+                                />
                             </ModalComponent>
                             <ModalComponent
                                 open={open === DELETE}
@@ -342,6 +228,21 @@ export function InventoryPage() {
                                         Confirmar
                                     </Button>
                                 </Box>
+                            </ModalComponent>
+                            <ModalComponent
+                                open={open === 'NEW_INCOME' || open === 'NEW_EXPENSE'}
+                                onClose={() => handleClose(reset)}
+                                reduceWidth={800}
+                            >
+                                <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                                    {`Nuevo ${open === 'NEW_INCOME' ? 'Ingreso' : 'Egreso'}`}
+                                </Typography>
+                                <MovementForm
+                                    movementData={movementData}
+                                    open={open}
+                                    handleSubmit={handleSubmitMovement}
+                                    handleClose={handleClose}
+                                />
                             </ModalComponent>
                         </DataGridBackend>
                     </Box>

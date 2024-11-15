@@ -6,7 +6,7 @@ import { DataContext } from "../providers/DataProvider";
 import { MessageContext } from "../providers/MessageProvider";
 import { useQuery } from "./useQuery";
 
-import { PRODUCT_URL } from "../config/urls";
+import { EXPENSE_URL, INCOME_URL, PRODUCT_URL } from "../config/urls";
 import { STATUS_CODES } from "../config/statusCodes";
 import { SET_PRODUCTS } from "../config/dataReducerActionTypes";
 import { ERROR, SUCCESS } from "../config/messageProviderTypes";
@@ -65,7 +65,7 @@ export function useProducts() {
                 });
                 setMessage('Producto editado correctamente.');
             } else {
-                setMessage('Hubo un problema al procesar la solicitud.');
+                setMessage(data.message);
                 setSeverity(ERROR);
                 setDisabled(false);
             }
@@ -112,6 +112,45 @@ export function useProducts() {
         setOpenMessage(true);
     }
 
+    const handleSubmitMovement = async (
+        e: { preventDefault: () => void; },
+        validate: () => any,
+        formData: { id: any; },
+        setDisabled: (arg0: boolean) => void,
+        reset: (() => void) | undefined
+    ) => {
+        e.preventDefault();
+        if (validate()) {
+            const urls = {
+                'NEW_INCOME': `${INCOME_URL}/${auth?.me.gym.hash}`,
+                'NEW_EXPENSE': `${EXPENSE_URL}/${auth?.me.gym.hash}`
+            };
+            const { status, data } = await handleQuery({
+                url: open === 'NEW_INCOME' || open === 'NEW_EXPENSE' ? urls[open] : '',
+                method: 'POST',
+                body: JSON.stringify({ ...formData, gym_hash: auth?.me.gym.hash })
+            });
+            if (status === STATUS_CODES.CREATED) {
+                dispatch({
+                    type: SET_PRODUCTS,
+                    payload: {
+                        ...state.products,
+                        rows: [data, ...state.products.rows],
+                        count: state.products.count + 1
+                    }
+                });
+                setMessage(`${open === 'NEW_INCOME' ? 'Ingreso' : 'Egreso'} registrado correctamente.`);
+                setSeverity(SUCCESS);
+                handleClose(reset);
+            } else {
+                setMessage(data.message);
+                setSeverity(ERROR);
+                setDisabled(false);
+            }
+            setOpenMessage(true);
+        }
+    }
+
     return {
         handleSubmit,
         handleClose,
@@ -120,6 +159,7 @@ export function useProducts() {
         setOpen,
         getProducts,
         filter,
-        setFilter
+        setFilter,
+        handleSubmitMovement
     }
 }
