@@ -18,6 +18,7 @@ import { ProductForm } from "../components/products/ProductForm";
 
 import { DELETE, EDIT, NEW } from "../config/openTypes";
 import { movementTypes } from "../config/movementTypes";
+import { getProductStock } from "../helpers/utils";
 
 export function InventoryPage() {
 
@@ -139,6 +140,13 @@ export function InventoryPage() {
             disablePadding: true,
             label: 'Stock mínimo',
             accessor: 'min_stock'
+        },
+        {
+            id: 'current_stock',
+            numeric: false,
+            disablePadding: true,
+            label: 'Stock actual',
+            accessor: (row: Product) => getProductStock(row)
         },
         {
             id: 'expiration_date',

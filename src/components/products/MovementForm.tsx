@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 
+import { DataContext, Product } from "../../providers/DataProvider";
+
 import { movementTypes } from "../../config/movementTypes";
+import { getProductStock } from "../../helpers/utils";
 
 type MovementFormProps = {
     movementData: any;
@@ -11,6 +15,8 @@ type MovementFormProps = {
 }
 
 export function MovementForm({ movementData, open, handleSubmit, handleClose }: MovementFormProps) {
+
+    const { state } = useContext(DataContext);
 
     const { formData, handleChange, validate, errors, disabled, setDisabled, reset } = movementData;
 
@@ -63,7 +69,9 @@ export function MovementForm({ movementData, open, handleSubmit, handleClose }: 
                         })}
                         InputProps={{
                             inputProps: {
-                                step: 1
+                                step: 1,
+                                min: 0,
+                                max: open === 'NEW_EXPENSE' ? getProductStock(state.products.rows.find((p: Product) => p.id === formData.product_id)) : undefined
                             }
                         }}
                         InputLabelProps={{
@@ -94,7 +102,8 @@ export function MovementForm({ movementData, open, handleSubmit, handleClose }: 
                         })}
                         InputProps={{
                             inputProps: {
-                                step: 0.01
+                                step: 0.01,
+                                min: 0
                             }
                         }}
                         InputLabelProps={{
@@ -116,7 +125,8 @@ export function MovementForm({ movementData, open, handleSubmit, handleClose }: 
                         })}
                         InputProps={{
                             inputProps: {
-                                step: 0.01
+                                step: 0.01,
+                                min: 0
                             }
                         }}
                         InputLabelProps={{
@@ -146,7 +156,7 @@ export function MovementForm({ movementData, open, handleSubmit, handleClose }: 
                             marginTop: 1,
                             color: '#fff'
                         }}
-                        disabled={disabled}
+                        disabled={disabled || formData.quantity <= 0}
                     >
                         Guardar
                     </Button>

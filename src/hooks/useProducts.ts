@@ -121,24 +121,19 @@ export function useProducts() {
     ) => {
         e.preventDefault();
         if (validate()) {
-            const urls = {
-                'NEW_INCOME': `${INCOME_URL}/${auth?.me.gym.hash}`,
-                'NEW_EXPENSE': `${EXPENSE_URL}/${auth?.me.gym.hash}`
-            };
+            const urls = { 'NEW_INCOME': INCOME_URL, 'NEW_EXPENSE': EXPENSE_URL };
             const { status, data } = await handleQuery({
                 url: open === 'NEW_INCOME' || open === 'NEW_EXPENSE' ? urls[open] : '',
                 method: 'POST',
                 body: JSON.stringify({ ...formData, gym_hash: auth?.me.gym.hash })
             });
             if (status === STATUS_CODES.CREATED) {
-                dispatch({
-                    type: SET_PRODUCTS,
-                    payload: {
-                        ...state.products,
-                        rows: [data, ...state.products.rows],
-                        count: state.products.count + 1
-                    }
-                });
+                const product = state.products.rows.find(row => row.id === data.product_id)!
+                const newElement = open === 'NEW_INCOME' ?
+                    { ...product, incomes: [data, ...product!.incomes,] } :
+                    { ...product, expenses: [data, ...product!.expenses,] }
+                const rows = [newElement, ...state.products.rows.filter(row => row.id !== data.product_id)]
+                dispatch({ type: SET_PRODUCTS, payload: { ...state.products, rows } });
                 setMessage(`${open === 'NEW_INCOME' ? 'Ingreso' : 'Egreso'} registrado correctamente.`);
                 setSeverity(SUCCESS);
                 handleClose(reset);

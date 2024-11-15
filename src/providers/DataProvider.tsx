@@ -148,6 +148,8 @@ export interface Product {
     expiration_date: Date;
     category: Category;
     supplier: Supplier;
+    incomes: Income[];
+    expenses: Expense[];
     created_at: Date;
     updated_at: Date;
 }
@@ -155,6 +157,7 @@ export interface Product {
 export interface Income {
     id: number;
     product_id: number;
+    quantity: number;
     created_at: Date;
     updated_at: Date;
 }
@@ -162,6 +165,7 @@ export interface Income {
 export interface Expense {
     id: number;
     product_id: number;
+    quantity: number;
     created_at: Date;
     updated_at: Date;
 }

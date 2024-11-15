@@ -89,7 +89,8 @@ export function ProductForm({
                             })}
                             InputProps={{
                                 inputProps: {
-                                    step: 0.01
+                                    step: 0.01,
+                                    min: 0
                                 }
                             }}
                             InputLabelProps={{
@@ -155,7 +156,8 @@ export function ProductForm({
                             })}
                             InputProps={{
                                 inputProps: {
-                                    step: 1
+                                    step: 1,
+                                    min: 0
                                 }
                             }}
                             InputLabelProps={{
