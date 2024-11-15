@@ -12,34 +12,10 @@ import { UsersABM } from '../components/ABM/UsersABM';
 import { LoginForm } from '../components/common/LoginForm';
 import { CategoriesABM } from '../components/ABM/CategoriesABM';
 import { SuppliersABM } from '../components/ABM/SuppliersABM';
+import { CustomTabPanel } from '../components/common/CustomTabPanel';
 // import { PacksABM } from '../components/ABM/PacksABM';
 
-function CustomTabPanel(props: { [x: string]: any; children: any; value: any; index: any; }) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ paddingY: 1 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
+import { a11yProps } from '../helpers/utils';
 
 export function ABMPage() {
 

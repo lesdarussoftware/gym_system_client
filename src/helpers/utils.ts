@@ -34,3 +34,10 @@ export function getProductStock(product: Product): number {
     const expensesAmount = product.expenses.reduce((prev, curr) => prev + curr.quantity, 0);
     return incomesAmount - expensesAmount;
 }
+
+export function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}

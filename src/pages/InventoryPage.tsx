@@ -254,7 +254,10 @@ export function InventoryPage() {
                                     handleClose={handleClose}
                                 />
                             </ModalComponent>
-                            <ModalComponent open={open === 'VIEW'} onClose={() => handleClose(reset)}>
+                            <ModalComponent open={open === 'VIEW'} onClose={() => {
+                                handleClose(reset);
+                                movementData.reset();
+                            }}>
                                 <Typography variant="h5" sx={{ marginBottom: 1 }}>
                                     {`${formData.name} (#${formData.id})`}
                                 </Typography>
