@@ -6,7 +6,7 @@ import { useClasses } from "../hooks/useClasses";
 
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
-import { ClientsABM } from "../components/clients/ClientsABM";
+import { ClientsABM } from "../components/ABM/ClientsABM";
 
 export function ClientsPage() {
 

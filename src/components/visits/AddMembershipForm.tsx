@@ -56,7 +56,7 @@ export function AddMembershipForm({
                                     value={new Date(formData.start)}
                                     onChange={value => handleChange({
                                         target: {
-                                            name: 'date',
+                                            name: 'start',
                                             value: new Date(value!.toISOString())
                                         }
                                     })}

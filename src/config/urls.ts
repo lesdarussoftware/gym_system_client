@@ -18,3 +18,4 @@ export const SUPPLIER_URL = BASE_URL + '/suppliers';
 export const PRODUCT_URL = BASE_URL + '/products';
 export const INCOME_URL = BASE_URL + '/incomes';
 export const EXPENSE_URL = BASE_URL + '/expenses';
+export const PAYMENT_URL = BASE_URL + '/payments';

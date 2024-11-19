@@ -195,7 +195,6 @@ export function DataGridBackend({
                                                             </IconButton>
                                                         </Tooltip>
                                                     )}
-
                                                     {showClassesDetails && (
                                                         <Tooltip title={"Ver días y horarios"} onClick={() => {
                                                             if (setOpen) setOpen(VIEW_SCHEDULES);

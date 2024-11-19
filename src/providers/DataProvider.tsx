@@ -33,6 +33,20 @@ export interface Membership {
     payments_amount: number;
     discount: number;
     classes: MembershipClass[];
+    payments: Payment[];
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Payment {
+    id: number;
+    membership_id: number;
+    membership: Membership;
+    date: Date;
+    amount: number;
+    status: string;
+    currency: string;
+    observations?: string;
     created_at: Date;
     updated_at: Date;
 }

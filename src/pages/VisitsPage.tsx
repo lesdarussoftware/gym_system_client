@@ -9,8 +9,8 @@ import { useForm } from "../hooks/useForm";
 import { useClasses } from "../hooks/useClasses";
 import { useClients } from "../hooks/useClients";
 
-import { MemebershipsABM } from "../components/clients/MembershipsABM";
-import { ShowCurrentMembership } from "../components/clients/ShowCurrentMembership";
+import { MemebershipsABM } from "../components/visits/MembershipsABM";
+import { ShowCurrentMembership } from "../components/visits/ShowCurrentMembership";
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
 

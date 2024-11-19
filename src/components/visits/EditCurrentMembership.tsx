@@ -11,6 +11,7 @@ import { useMemberships } from "../../hooks/useMemberships";
 import { AddMembershipForm } from "./AddMembershipForm";
 import { HandleVisits } from "./HandleVisits";
 import { DeleteMembershipModal } from "./DeleteMembershipModal";
+import { PaymentsABM } from "../ABM/PaymentsABM";
 
 import { getExpirationDate } from "../../helpers/membership";
 import { DELETE, EDIT } from "../../config/openTypes";
@@ -170,6 +171,12 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
                                 );
                             })}
                     </Stack>
+                </Box>
+                <Box sx={{ marginTop: 1 }}>
+                    <Divider textAlign="center" sx={{ color: '#000' }}>
+                        Pagos
+                    </Divider>
+                    <PaymentsABM membership={membership} />
                 </Box>
             </Box>
             <AddMembershipForm

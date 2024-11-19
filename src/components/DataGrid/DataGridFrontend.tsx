@@ -9,6 +9,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
+import { IconButton, Tooltip } from '@mui/material';
 
 import { EnhancedTableHeadFrontend, HeadCell } from './EnhancedTableHeadFrontend';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
@@ -26,6 +29,8 @@ interface DataGridProps {
     showMembershipDetails?: boolean;
     hideAddMembership?: boolean;
     hideEditAction?: boolean;
+    showEditAction?: boolean;
+    showDeleteAction?: boolean;
 }
 
 function descendingComparator(a: any, b: any, orderBy: string) {
@@ -68,7 +73,9 @@ export function DataGridFrontend({
     showClassesDetails,
     showMembershipDetails,
     hideAddMembership,
-    hideEditAction = false
+    hideEditAction = false,
+    showEditAction,
+    showDeleteAction
 }: DataGridProps) {
 
     const [order, setOrder] = useState<'asc' | 'desc'>(defaultOrder);
@@ -197,6 +204,36 @@ export function DataGridFrontend({
                                                     />
                                                 </TableCell>
                                             }
+                                            {(showEditAction || showDeleteAction) && (
+                                                <TableCell sx={{ minWidth: 240 }}>
+                                                    {showEditAction && (
+                                                        <Tooltip
+                                                            title="Editar"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                                if (setOpen) setOpen("EDIT");
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <EditIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                    {showDeleteAction && (
+                                                        <Tooltip
+                                                            title="Borrar"
+                                                            onClick={() => {
+                                                                if (setFormData) setFormData(rows.find((r) => r.id === row.id));
+                                                                if (setOpen) setOpen("DELETE");
+                                                            }}
+                                                        >
+                                                            <IconButton>
+                                                                <DeleteSharpIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    )}
+                                                </TableCell>
+                                            )}
                                             {headCells.map(cell => cell.accessor).map((accessor, idx) => (
                                                 <TableCell
                                                     key={idx}
