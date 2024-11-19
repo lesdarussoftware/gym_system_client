@@ -18,6 +18,7 @@ interface EnhancedTableHeadProps {
     rowCount: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
     stopPointerEvents?: boolean;
+    addCell?: boolean;
 }
 
 export function EnhancedTableHeadFrontend({
@@ -28,7 +29,8 @@ export function EnhancedTableHeadFrontend({
     numSelected,
     rowCount,
     onRequestSort,
-    stopPointerEvents
+    stopPointerEvents,
+    addCell = false
 }: EnhancedTableHeadProps) {
 
     const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
@@ -38,6 +40,7 @@ export function EnhancedTableHeadFrontend({
     return (
         <TableHead>
             <TableRow sx={{ backgroundColor: '#fff' }}>
+                {addCell && <TableCell sx={{ width: 120 }} />}
                 {!stopPointerEvents &&
                     <TableCell padding="checkbox">
                         <Checkbox

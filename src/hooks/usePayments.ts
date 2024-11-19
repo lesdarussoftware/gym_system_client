@@ -22,12 +22,12 @@ export function usePayments() {
 
     const [open, setOpen] = useState<string | null>(null);
 
-    const handleSubmit = async (
+    async function handleSubmit(
         e: { preventDefault: () => void; },
         formData: { id: any; },
         setDisabled: (arg0: boolean) => void,
         reset: (() => void) | undefined
-    ) => {
+    ) {
         e.preventDefault();
         const urls = { [NEW]: PAYMENT_URL, [EDIT]: `${PAYMENT_URL}/${auth?.me.gym.hash}/${formData.id}` };
         const { status, data } = await handleQuery({
@@ -38,55 +38,104 @@ export function usePayments() {
                 gym_hash: auth?.me.gym.hash
             })
         });
-        if (status === STATUS_CODES.CREATED) {
-            dispatch({
-                type: SET_CLIENTS,
-                payload: {
-                    ...state.clients,
-                    rows: [data, ...state.clients.rows],
-                    count: state.clients.count + 1
-                }
-            });
-            setMessage('Pago registrado correctamente.');
-        } else if (status === STATUS_CODES.OK) {
-            dispatch({
-                type: SET_CLIENTS,
-                payload: { ...state.clients, rows: [data, ...state.clients.rows.filter(item => item.id !== data.id)] }
-            });
-            setMessage('Pago editado correctamente.');
+        if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
+            const membership = state.clients.rows.flatMap(c => c.memberships).find(m => m.id === data.membership_id)!;
+            const client = state.clients.rows.find(c => c.id === membership.client_id)!;
+            const otherMemberships = client.memberships.filter(m => m.id !== membership.id);
+            const otherClients = state.clients.rows.filter(c => c.id !== client!.id);
+            const otherPayments = membership!.payments.filter(p => p.id !== data.id);
+            if (status === STATUS_CODES.CREATED) {
+                dispatch({
+                    type: SET_CLIENTS,
+                    payload: {
+                        ...state.clients,
+                        rows: [
+                            ...otherClients,
+                            {
+                                ...client,
+                                memberships: [
+                                    ...otherMemberships,
+                                    {
+                                        ...membership,
+                                        payments: [
+                                            ...membership.payments,
+                                            data
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                });
+                setMessage('Pago registrado correctamente.');
+            } else {
+                dispatch({
+                    type: SET_CLIENTS,
+                    payload: {
+                        ...state.clients,
+                        rows: [
+                            ...otherClients,
+                            {
+                                ...client,
+                                memberships: [
+                                    ...otherMemberships,
+                                    {
+                                        ...membership,
+                                        payments: [
+                                            ...otherPayments,
+                                            data
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                });
+                setMessage('Pago editado correctamente.');
+            }
+            setSeverity(SUCCESS);
+            handleClose(reset);
         } else {
             setMessage('Hubo un problema al procesar la solicitud.');
             setSeverity(ERROR);
             setDisabled(false);
         }
-        if (status === STATUS_CODES.CREATED || status === STATUS_CODES.OK) {
-            setSeverity(SUCCESS);
-            handleClose(reset);
-        }
         setOpenMessage(true);
     }
 
-    const handleClose = (reset: (() => void) | undefined) => {
+    function handleClose(reset: (() => void) | undefined) {
         setOpen(null);
         reset!();
     }
 
-    const handleDelete = async (
-        formData: { id: any; },
-        reset: () => void,
-        setDisabled: (arg0: boolean) => void
-    ) => {
+    async function handleDelete(formData: { id: any; }, reset: () => void, setDisabled: (arg0: boolean) => void) {
         const { status, data } = await handleQuery({
             url: `${PAYMENT_URL}/${auth?.me.gym.hash}/${formData.id}`,
             method: 'DELETE'
         });
         if (status === STATUS_CODES.OK) {
+            const membership = state.clients.rows.flatMap(c => c.memberships).find(m => m.id === data.membership_id)!;
+            const client = state.clients.rows.find(c => c.id === membership.client_id)!;
+            const otherMemberships = client.memberships.filter(m => m.id !== membership.id);
+            const otherClients = state.clients.rows.filter(c => c.id !== client!.id);
+            const otherPayments = membership!.payments.filter(p => p.id !== data.id);
             dispatch({
                 type: SET_CLIENTS,
                 payload: {
                     ...state.clients,
-                    rows: [...state.clients.rows.filter(item => item.id !== data.id)],
-                    count: state.clients.count - 1
+                    rows: [
+                        ...otherClients,
+                        {
+                            ...client,
+                            memberships: [
+                                ...otherMemberships,
+                                {
+                                    ...membership,
+                                    payments: [...otherPayments]
+                                }
+                            ]
+                        }
+                    ]
                 }
             });
             setSeverity(SUCCESS);

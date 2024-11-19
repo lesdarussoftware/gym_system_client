@@ -167,6 +167,7 @@ export function DataGridFrontend({
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                             stopPointerEvents={stopPointerEvents}
+                            addCell={showEditAction || showDeleteAction}
                         />
                         <TableBody>
                             {visibleRows.length === 0 ?

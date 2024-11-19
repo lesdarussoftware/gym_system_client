@@ -4,7 +4,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { es } from "date-fns/locale";
 
-import { Membership } from "../../providers/DataProvider";
+import { Membership, Payment } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
 import { usePayments } from "../../hooks/usePayments";
 
@@ -13,6 +13,7 @@ import { ModalComponent } from "../common/ModalComponent";
 
 import { DELETE, EDIT, NEW } from "../../config/openTypes";
 import { CURRENCIES, PAYMENT_STATUS, PAYMENT_TYPES } from "../../config/payments";
+import { format } from "date-fns";
 
 type PaymentsTableProps = {
     membership: Membership;
@@ -43,6 +44,34 @@ export function PaymentsABM({ membership }: PaymentsTableProps) {
             label: '#',
             accessor: 'id'
         },
+        {
+            id: 'date',
+            numeric: true,
+            disablePadding: false,
+            label: 'Fecha',
+            accessor: (row: Payment) => format(new Date(row.date), 'dd/MM/yy')
+        },
+        {
+            id: 'amount',
+            numeric: true,
+            disablePadding: false,
+            label: 'Monto',
+            accessor: (row: Payment) => `${row.amount} ${row.currency}`
+        },
+        {
+            id: 'type',
+            numeric: true,
+            disablePadding: false,
+            label: 'Tipo',
+            accessor: 'type'
+        },
+        {
+            id: 'status',
+            numeric: true,
+            disablePadding: false,
+            label: 'Estado',
+            accessor: 'status'
+        }
     ], []);
 
     return (
@@ -172,7 +201,7 @@ export function PaymentsABM({ membership }: PaymentsTableProps) {
                                         marginTop: 1,
                                         color: '#fff'
                                     }}
-                                    disabled={disabled}
+                                    disabled={disabled || +formData.amount <= 0}
                                 >
                                     Guardar
                                 </Button>
