@@ -30,6 +30,8 @@ export interface Membership {
     price: number;
     limit: number;
     observations?: string;
+    payments_amount: number;
+    discount: number;
     classes: MembershipClass[];
     created_at: Date;
     updated_at: Date;

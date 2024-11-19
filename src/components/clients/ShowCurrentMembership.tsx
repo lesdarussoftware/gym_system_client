@@ -27,7 +27,9 @@ export function ShowCurrentMembership({ client }: ShowCurrentMembershipProps) {
             duration: 0,
             price: 0,
             limit: 0,
-            gym_hash: ''
+            gym_hash: '',
+            discount: 0,
+            payments_amount: 1
         },
         rules: {
             start: { required: true },

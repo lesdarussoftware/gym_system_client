@@ -39,7 +39,9 @@ export function EditCurrentMembership({ membership }: EditCurrentMembershipProps
             duration: membership.duration,
             price: membership.price,
             limit: membership.limit,
-            observations: membership.observations
+            observations: membership.observations,
+            payments_amount: membership.payments_amount,
+            discount: membership.discount
         },
         rules: {
             start: { required: true },
