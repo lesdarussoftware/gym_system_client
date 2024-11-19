@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext } from "react";
 import { Box, Button, FormControl, Input, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { es } from "date-fns/locale";
 
 import { DataContext, Product } from "../../providers/DataProvider";
 
@@ -28,7 +31,21 @@ export function MovementForm({ movementData, open, handleSubmit, handleClose }: 
             setDisabled,
             reset
         )}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                        <DatePicker
+                            label="Fecha"
+                            value={new Date(formData.date)}
+                            onChange={value => handleChange({
+                                target: {
+                                    name: 'date',
+                                    value: new Date(value!.toISOString())
+                                }
+                            })}
+                        />
+                    </LocalizationProvider>
+                </FormControl>
                 <FormControl>
                     <InputLabel id="day-select">Tipo</InputLabel>
                     <Select

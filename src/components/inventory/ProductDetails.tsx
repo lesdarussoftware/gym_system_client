@@ -2,8 +2,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Box, Button, IconButton, Tab, Tabs, Tooltip } from "@mui/material";
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
+import { format } from "date-fns";
 
-import { Product } from "../../providers/DataProvider";
+import { Expense, Income, Product } from "../../providers/DataProvider";
 
 import { DataGridFrontend } from "../DataGrid/DataGridFrontend";
 import { CustomTabPanel } from "../common/CustomTabPanel";
@@ -39,6 +40,13 @@ export function ProductDetails({ product, movementData, handleClose, handleDelet
             disablePadding: false,
             label: 'N° registro',
             accessor: 'id'
+        },
+        {
+            id: 'date',
+            numeric: true,
+            disablePadding: false,
+            label: 'Fecha',
+            accessor: (row: Income | Expense) => format(new Date(row.date), 'dd/MM/yy')
         },
         {
             id: 'quantity',

@@ -172,6 +172,7 @@ export interface Product {
 
 export interface Income {
     id: number;
+    date: Date;
     product_id: number;
     quantity: number;
     created_at: Date;
@@ -180,6 +181,7 @@ export interface Income {
 
 export interface Expense {
     id: number;
+    date: Date;
     product_id: number;
     quantity: number;
     created_at: Date;

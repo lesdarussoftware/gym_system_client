@@ -70,7 +70,8 @@ export function InventoryPage() {
             type: movementTypes.AJUSTE,
             description: '',
             discount: 0,
-            final_price: 0
+            final_price: 0,
+            date: new Date(Date.now())
         },
         rules: { description: { maxLength: 100 } }
     })
