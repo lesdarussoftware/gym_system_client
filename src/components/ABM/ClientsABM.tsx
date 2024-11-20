@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
+import { Box, Button, FormControl, Input, InputLabel, TextField, Typography } from "@mui/material";
 
 import { Client, DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
@@ -53,8 +53,8 @@ export function ClientsABM() {
     } = useClients();
 
     useEffect(() => {
-        const { page, offset } = filter
-        getClients(`?page=${page}&offset=${offset}`)
+        const { page, offset, first_name, last_name, dni, email } = filter
+        getClients(`?page=${page}&offset=${offset}&first_name=${first_name}&last_name=${last_name}&dni=${dni}&email=${email}`)
     }, [filter])
 
     const headCells = [
@@ -114,6 +114,50 @@ export function ClientsABM() {
             showCreateAppUser
             showEditAction
             showDeleteAction
+            filterComponent={
+                <Box sx={{
+                    width: { xs: '100%', md: '70%' },
+                    display: 'flex',
+                    gap: 1,
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between'
+                }}>
+                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                        <TextField
+                            label="Nombre"
+                            name="first_name"
+                            value={filter.first_name}
+                            onChange={e => setFilter({ ...filter, first_name: e.target.value })}
+                        />
+                    </FormControl>
+                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                        <TextField
+                            label="Apellido"
+                            name="last_name"
+                            value={filter.last_name}
+                            onChange={e => setFilter({ ...filter, last_name: e.target.value })}
+                        />
+                    </FormControl>
+                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                        <TextField
+                            label="DNI"
+                            type="number"
+                            name="dni"
+                            value={filter.dni}
+                            onChange={e => setFilter({ ...filter, dni: e.target.value })}
+                            InputProps={{ inputProps: { min: 0 } }}
+                        />
+                    </FormControl>
+                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                        <TextField
+                            label="Email"
+                            name="email"
+                            value={filter.email}
+                            onChange={e => setFilter({ ...filter, email: e.target.value })}
+                        />
+                    </FormControl>
+                </Box>
+            }
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}

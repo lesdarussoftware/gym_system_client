@@ -21,11 +21,15 @@ export function useClients() {
     const [open, setOpen] = useState<string | null>(null);
     const [filter, setFilter] = useState({
         page: 0,
-        offset: 25
+        offset: 25,
+        first_name: '',
+        last_name: '',
+        dni: '',
+        email: ''
     });
 
     const getClients = async (params?: string | undefined) => {
-        const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })
+        const { status, data } = await handleQuery({ url: `${CLIENT_URL}/${auth?.me.gym.hash}${params ? params : ''}` })
         if (status === STATUS_CODES.OK) {
             dispatch({ type: SET_CLIENTS, payload: { rows: data[0], count: data[1] } })
         }
