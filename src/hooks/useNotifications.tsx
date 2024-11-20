@@ -3,6 +3,7 @@ import { useContext, useState } from "react"
 
 import { AuthContext } from "../providers/AuthProvider";
 import { MessageContext } from "../providers/MessageProvider";
+import { Client } from "../providers/DataProvider";
 import { useQuery } from "./useQuery";
 
 import { NOTIFICATION_URL } from "../config/urls";
@@ -26,6 +27,7 @@ export function useNotifications() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [count, setCount] = useState(0);
     const [filter, setFilter] = useState({ page: 0, offset: 25 });
+    const [newMsg, setNewMsg] = useState<Client[]>([]);
 
     const getNotifications = async (clientId: number, params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${NOTIFICATION_URL}/${auth?.me.gym.hash}/${clientId}${params ? params : ''}` })
@@ -49,14 +51,14 @@ export function useNotifications() {
                 method: 'POST',
                 body: JSON.stringify({
                     ...formData,
-                    gym_hash: auth?.me.gym.hash
+                    clients: newMsg.map(i => i.id),
+                    gym_hash: auth?.me.gym.hash,
+                    client_id: undefined
                 })
             });
             if (status === STATUS_CODES.CREATED) {
                 setSeverity(SUCCESS);
                 setMessage('Aviso registrado correctamente.');
-                setNotifications([data, ...notifications]);
-                setCount(count + 1);
                 handleClose(reset);
             } else if (status === STATUS_CODES.SERVER_ERROR) {
                 setMessage(data.message);
@@ -106,6 +108,8 @@ export function useNotifications() {
         setFilter,
         getNotifications,
         count,
-        notifications
+        notifications,
+        newMsg,
+        setNewMsg
     }
 }

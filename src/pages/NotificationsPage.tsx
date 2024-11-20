@@ -1,18 +1,19 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { Autocomplete, Box, Button, FormControl, InputLabel, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Chip, FormControl, InputLabel, TextField, Typography } from "@mui/material";
+import { format } from "date-fns";
 
 import { AuthContext } from "../providers/AuthProvider";
-import { DataContext } from "../providers/DataProvider";
+import { Client, DataContext } from "../providers/DataProvider";
 import { useClients } from "../hooks/useClients";
 import { useNotifications, Notification } from "../hooks/useNotifications";
+import { useForm } from "../hooks/useForm";
 
 import { Header } from "../components/common/Header";
 import { LoginForm } from "../components/common/LoginForm";
-import { format } from "date-fns";
 import { DataGridBackend } from "../components/DataGrid/DataGridBackend";
 import { ModalComponent } from "../components/common/ModalComponent";
+
 import { DELETE, NEW } from "../config/openTypes";
-import { useForm } from "../hooks/useForm";
 
 export function NotificationsPage() {
 
@@ -30,11 +31,13 @@ export function NotificationsPage() {
         handleClose,
         count,
         handleSubmit,
-        handleDelete
+        handleDelete,
+        newMsg,
+        setNewMsg
     } = useNotifications();
     const { formData, setFormData, handleChange, validate, errors, disabled, setDisabled, reset } = useForm({
         defaultData: { id: '', message: '', client_id: '' },
-        rules: { message: { required: true, maxLength: 520 }, client_id: { required: true } }
+        rules: { message: { required: true, maxLength: 520 } }
     });
 
     const [clientId, setClientId] = useState(0);
@@ -126,23 +129,38 @@ export function NotificationsPage() {
                                                 disablePortal
                                                 id="client-autocomplete"
                                                 options={state.clients.rows.sort()
+                                                    .filter(c => !newMsg.map(i => i.id).includes(c.id))
                                                     .map(c => ({ label: `${c.first_name} ${c.last_name}`, id: c?.id }))}
                                                 renderInput={(params) => <TextField {...params} label="Seleccione cliente..." />}
                                                 noOptionsText="No hay clientes disponibles."
-                                                onChange={(_, value) => handleChange({
-                                                    target: {
-                                                        name: 'client_id',
-                                                        value: value && value.id.toString().length > 0 ? value.id : ''
+                                                onChange={(_, value) => {
+                                                    const newValue = value && value.id.toString().length > 0 ? value.id.toString() : ''
+                                                    if (newValue.length > 0) {
+                                                        setNewMsg([
+                                                            ...newMsg,
+                                                            state.clients.rows.find(c => c.id === +newValue)!
+                                                        ]);
                                                     }
-                                                })}
+                                                }}
                                                 isOptionEqualToValue={(option, value) => option?.id === value?.id}
                                             />
-                                            {errors.client_id?.type === 'required' &&
-                                                <Typography variant="caption" color="red" marginTop={1}>
-                                                    * El cliente es requerido.
-                                                </Typography>
-                                            }
                                         </FormControl>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            gap: 1,
+                                            flexWrap: 'wrap',
+                                            border: '1px solid gray',
+                                            minHeight: 50,
+                                            borderRadius: 1,
+                                            p: 1
+                                        }}>
+                                            {newMsg.map((i: Client) => (
+                                                <Chip
+                                                    label={`${i.first_name} ${i.last_name}`}
+                                                    onDelete={() => setNewMsg(prev => [...prev.filter(item => item.id !== i.id)])}
+                                                />
+                                            ))}
+                                        </Box>
                                         <FormControl>
                                             <InputLabel htmlFor="name">Mensaje</InputLabel>
                                             <textarea
@@ -191,7 +209,7 @@ export function NotificationsPage() {
                                                     marginTop: 1,
                                                     color: '#fff'
                                                 }}
-                                                disabled={disabled}
+                                                disabled={disabled || newMsg.length === 0}
                                             >
                                                 Guardar
                                             </Button>
