@@ -128,7 +128,7 @@ export function Header() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
 
-    const drawerWidth = 120;
+    const drawerWidth = 150;
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget)
@@ -277,7 +277,7 @@ export function Header() {
             </Toolbar>
             <Box
                 component="nav"
-                sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+                sx={{ width: { md: { xs: drawerWidth, md: 50 } }, flexShrink: { md: 0 } }}
                 aria-label="mailbox folders"
             >
                 <Drawer

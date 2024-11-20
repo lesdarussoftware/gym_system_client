@@ -28,7 +28,7 @@ export function useNotifications() {
     const [filter, setFilter] = useState({ page: 0, offset: 25 });
 
     const getNotifications = async (clientId: number, params?: string | undefined) => {
-        const { status, data } = await handleQuery({ url: `${NOTIFICATION_URL}/${auth?.me.gym.hash}/${clientId}${params ? `/${params}` : ''}` })
+        const { status, data } = await handleQuery({ url: `${NOTIFICATION_URL}/${auth?.me.gym.hash}/${clientId}${params ? params : ''}` })
         if (status === STATUS_CODES.OK) {
             setNotifications(data[0]);
             setCount(data[1]);

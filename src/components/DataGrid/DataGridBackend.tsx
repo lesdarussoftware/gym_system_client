@@ -113,10 +113,21 @@ export function DataGridBackend({
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
-            <Box sx={{ display: 'flex', justifyContent: filterComponent ? 'space-between' : 'start', mb: 1 }}>
-                <Tooltip title="Agregar" onClick={() => {
-                    if (setOpen) setOpen(NEW)
-                }}>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: { md: filterComponent ? 'space-between' : 'start' },
+                mb: 1,
+                flexWrap: 'wrap',
+                flexDirection: { xs: 'column', md: 'row' },
+                gap: { xs: 3, md: 'none' },
+                pt: { xs: 3, md: 'none' }
+            }}>
+                <Tooltip
+                    title="Agregar"
+                    onClick={() => {
+                        if (setOpen) setOpen(NEW)
+                    }}
+                >
                     <IconButton>
                         <AddCircleSharpIcon sx={{ color: '#CECECE !important' }} />
                     </IconButton>

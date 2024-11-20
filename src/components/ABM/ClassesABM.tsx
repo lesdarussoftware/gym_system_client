@@ -71,7 +71,7 @@ export function ClassesABM() {
             showDeleteAction
             showClassesDetails
             filterComponent={
-                <Box sx={{ width: '30%' }}>
+                <Box sx={{ width: { xs: '100%', md: '30%' } }}>
                     <FormControl sx={{ width: '100%' }}>
                         <TextField
                             label="Buscar por nombre"

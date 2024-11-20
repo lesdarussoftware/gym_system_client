@@ -21,7 +21,14 @@ export function useProducts() {
     const { handleQuery } = useQuery();
 
     const [open, setOpen] = useState<string | null>(null);
-    const [filter, setFilter] = useState({ page: 0, offset: 25 });
+    const [filter, setFilter] = useState({
+        page: 0,
+        offset: 25,
+        name: '',
+        sku: '',
+        category: '',
+        supplier: ''
+    });
 
     const getProducts = async (params?: string | undefined) => {
         const { status, data } = await handleQuery({ url: `${PRODUCT_URL}/${auth?.me.gym.hash}${params ? `/${params}` : ''}` })

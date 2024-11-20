@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, FormControl, TextField, Typography } from "@mui/material";
 import { format } from "date-fns";
 
 import { AuthContext } from "../providers/AuthProvider";
@@ -78,11 +78,17 @@ export function InventoryPage() {
 
     useEffect(() => {
         if (auth) {
-            getProducts();
             getCategories();
             getSuppliers();
         }
     }, [])
+
+    useEffect(() => {
+        if (auth) {
+            const { page, offset, name, sku, category, supplier } = filter
+            getProducts(`?page=${page}&offset=${offset}&name=${name}&sku=${sku}&category=${category}&supplier=${supplier}`)
+        }
+    }, [filter])
 
     useEffect(() => {
         if (open !== null) {
@@ -180,6 +186,60 @@ export function InventoryPage() {
                             showInput
                             showOutput
                             showViewAction
+                            filterComponent={
+                                <Box sx={{
+                                    width: { xs: '100%', md: '70%'},
+                                    display: 'flex',
+                                    gap: 1,
+                                    flexWrap: 'wrap',
+                                    justifyContent: 'space-between'
+                                }}>
+                                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                                        <TextField
+                                            label="Nombre"
+                                            name="name"
+                                            value={filter.name}
+                                            onChange={e => setFilter({ ...filter, name: e.target.value })}
+                                        />
+                                    </FormControl>
+                                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                                        <TextField
+                                            label="SKU"
+                                            name="sku"
+                                            value={filter.sku}
+                                            onChange={e => setFilter({ ...filter, sku: e.target.value })}
+                                        />
+                                    </FormControl>
+                                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                                        <Autocomplete
+                                            disablePortal
+                                            id="category-autocomplete"
+                                            options={state.categories.rows.sort().map(c => ({ label: c.name, id: c?.id }))}
+                                            renderInput={(params) => <TextField {...params} label="Categoría" />}
+                                            noOptionsText="No hay categorías disponibles."
+                                            onChange={(_, value) => setFilter({
+                                                ...filter,
+                                                category: value && value.id.toString().length > 0 ? value.id.toString() : ''
+                                            })}
+                                            isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                                        />
+                                    </FormControl>
+                                    <FormControl sx={{ width: { xs: '100%', md: '24%' } }}>
+                                        <Autocomplete
+                                            disablePortal
+                                            id="supplier-autocomplete"
+                                            options={state.suppliers.rows.sort().map(s => ({ label: s.name, id: s?.id }))}
+                                            renderInput={(params) => <TextField {...params} label="Proveedor" />}
+                                            noOptionsText="No hay proveedores disponibles."
+                                            onChange={(_, value) => setFilter({
+                                                ...filter,
+                                                supplier: value && value.id.toString().length > 0 ? value.id.toString() : ''
+                                            })}
+                                            isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                                        />
+                                    </FormControl>
+                                </Box>
+                            }
                         >
                             <ModalComponent
                                 open={open === NEW || open === EDIT}

@@ -87,18 +87,6 @@ export function NotificationsPage() {
                 <>
                     <Header />
                     <Box sx={{ padding: 2 }}>
-                        <FormControl sx={{ width: '30%' }}>
-                            <Autocomplete
-                                disablePortal
-                                id="client-autocomplete"
-                                options={state.clients.rows.sort()
-                                    .map(c => ({ label: `${c.first_name} ${c.last_name}`, id: c?.id }))}
-                                renderInput={(params) => <TextField {...params} label="Seleccione cliente..." />}
-                                noOptionsText="No hay clientes disponibles."
-                                onChange={(_, value) => setClientId(value && value.id.toString().length > 0 ? value.id : 0)}
-                                isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                            />
-                        </FormControl>
                         <DataGridBackend
                             headCells={headCells}
                             rows={notifications}
@@ -108,6 +96,20 @@ export function NotificationsPage() {
                             setFilter={setFilter}
                             count={count}
                             showDeleteAction
+                            filterComponent={
+                                <FormControl sx={{ width: '30%' }}>
+                                    <Autocomplete
+                                        disablePortal
+                                        id="client-autocomplete"
+                                        options={state.clients.rows.sort()
+                                            .map(c => ({ label: `${c.first_name} ${c.last_name}`, id: c?.id }))}
+                                        renderInput={(params) => <TextField {...params} label="Seleccione cliente..." />}
+                                        noOptionsText="No hay clientes disponibles."
+                                        onChange={(_, value) => setClientId(value && value.id.toString().length > 0 ? value.id : 0)}
+                                        isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                                    />
+                                </FormControl>
+                            }
                         >
                             <ModalComponent
                                 open={open === NEW}
