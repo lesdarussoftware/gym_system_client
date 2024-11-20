@@ -77,7 +77,7 @@ export function VisitsPage() {
                         </Box> :
                         <>
                             <Box textAlign="center">
-                                <Typography variant="h5" marginBottom={2} sx={{ color: '#000' }}>
+                                <Typography variant="h5" marginBottom={2} mt={5} sx={{ color: '#000' }}>
                                     Ingrese el DNI de un cliente
                                 </Typography>
                                 <form
