@@ -31,7 +31,7 @@ export function ProfilePage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ padding: 2 }}>
+                    <Box sx={{ padding: 2, pt: 0 }}>
                         <Typography variant="h4" marginBottom={1}>
                             Perfil
                         </Typography>

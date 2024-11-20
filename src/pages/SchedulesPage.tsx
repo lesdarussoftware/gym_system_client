@@ -49,7 +49,7 @@ export function SchedulesPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ padding: 2 }}>
+                    <Box sx={{ padding: 2, pt: 0 }}>
                         <TableContainer component={Paper} sx={{ width: '100%' }}>
                             <Table>
                                 <TableHead>

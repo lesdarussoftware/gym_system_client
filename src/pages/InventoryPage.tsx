@@ -171,7 +171,7 @@ export function InventoryPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ p: 2 }}>
+                    <Box sx={{ p: 2, pt: 0 }}>
                         <Typography variant="h4">Productos</Typography>
                         <DataGridBackend
                             headCells={headCells}
@@ -188,7 +188,7 @@ export function InventoryPage() {
                             showViewAction
                             filterComponent={
                                 <Box sx={{
-                                    width: { xs: '100%', md: '70%'},
+                                    width: { xs: '100%', md: '70%' },
                                     display: 'flex',
                                     gap: 1,
                                     flexWrap: 'wrap',

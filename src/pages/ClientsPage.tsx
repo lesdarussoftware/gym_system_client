@@ -18,7 +18,7 @@ export function ClientsPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ p: 2 }}>
+                    <Box sx={{ p: 2, pt: 0 }}>
                         <ClientsABM />
                     </Box>
                 </> :

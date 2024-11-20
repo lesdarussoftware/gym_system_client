@@ -119,8 +119,8 @@ export function DataGridBackend({
                 mb: 1,
                 flexWrap: 'wrap',
                 flexDirection: { xs: 'column', md: 'row' },
-                gap: { xs: 3, md: 'none' },
-                pt: { xs: 3, md: 'none' }
+                gap: { xs: 3, md: 0 },
+                pt: { xs: 3, md: 0 }
             }}>
                 <Tooltip
                     title="Agregar"

@@ -31,7 +31,7 @@ export function ABMPage() {
             {auth ?
                 <>
                     <Header />
-                    <Box sx={{ padding: 2 }}>
+                    <Box sx={{ padding: 2, pt: 0 }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Clases" {...a11yProps(0)} />
                             {/* <Tab label="Packs" {...a11yProps(1)} /> */}
