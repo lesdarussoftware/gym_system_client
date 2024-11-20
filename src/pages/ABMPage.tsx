@@ -37,7 +37,7 @@ export function ABMPage() {
                             {/* <Tab label="Packs" {...a11yProps(1)} /> */}
                             <Tab label="Profesores" {...a11yProps(1)} />
                             <Tab label="Usuarios" {...a11yProps(2)} />
-                            <Tab label="Categorías" {...a11yProps(3)} />
+                            <Tab label="Categorías prod." {...a11yProps(3)} />
                             <Tab label="Proveedores" {...a11yProps(4)} />
                         </Tabs>
                         <CustomTabPanel value={value} index={0}>

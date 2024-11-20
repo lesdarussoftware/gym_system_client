@@ -21,7 +21,8 @@ export function useClasses() {
     const [open, setOpen] = useState<string | null>(null);
     const [filter, setFilter] = useState({
         page: 0,
-        offset: 25
+        offset: 25,
+        name: ''
     });
 
     const getClasses = async (params?: string | undefined) => {

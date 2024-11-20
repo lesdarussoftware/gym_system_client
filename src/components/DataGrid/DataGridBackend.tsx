@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useMemo } from 'react';
+import { useState, useMemo, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -52,9 +52,10 @@ interface DataGridBackendProps {
         offset: number;
         page: number;
     };
-    setFilter: (filter: { offset: number; page: number }) => void;
+    setFilter: any;
     count: number;
     minWidth?: number;
+    filterComponent?: ReactNode
 }
 
 export function DataGridBackend({
@@ -77,6 +78,7 @@ export function DataGridBackend({
     setFilter,
     count,
     minWidth = 750,
+    filterComponent
 }: DataGridBackendProps) {
 
     const [order, setOrder] = useState<Order>(defaultOrder);
@@ -111,7 +113,7 @@ export function DataGridBackend({
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+            <Box sx={{ display: 'flex', justifyContent: filterComponent ? 'space-between' : 'start', mb: 1 }}>
                 <Tooltip title="Agregar" onClick={() => {
                     if (setOpen) setOpen(NEW)
                 }}>
@@ -119,6 +121,7 @@ export function DataGridBackend({
                         <AddCircleSharpIcon sx={{ color: '#CECECE !important' }} />
                     </IconButton>
                 </Tooltip>
+                {filterComponent}
             </Box>
             {contentHeader}
             <Paper sx={{ mb: 2 }}>

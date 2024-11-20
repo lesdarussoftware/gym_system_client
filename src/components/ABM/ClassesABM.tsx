@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
+import { Box, Button, FormControl, Input, InputLabel, TextField, Typography } from "@mui/material";
 
 import { Class, DataContext } from "../../providers/DataProvider";
 import { useForm } from "../../hooks/useForm";
@@ -23,8 +23,8 @@ export function ClassesABM() {
     const { handleSubmit, handleClose, handleDelete, open, setOpen, getClasses, filter, setFilter } = useClasses();
 
     useEffect(() => {
-        const { page, offset } = filter
-        getClasses(`?page=${page}&offset=${offset}`)
+        const { page, offset, name } = filter
+        getClasses(`?page=${page}&offset=${offset}&name=${name}`)
     }, [filter])
 
     const headCells = [
@@ -70,6 +70,18 @@ export function ClassesABM() {
             showEditAction
             showDeleteAction
             showClassesDetails
+            filterComponent={
+                <Box sx={{ width: '30%' }}>
+                    <FormControl sx={{ width: '100%' }}>
+                        <TextField
+                            label="Buscar por nombre"
+                            name="name"
+                            value={filter.name}
+                            onChange={e => setFilter({ ...filter, name: e.target.value })}
+                        />
+                    </FormControl>
+                </Box>
+            }
         >
             <ModalComponent
                 open={open === NEW || open === EDIT}
