@@ -95,7 +95,7 @@ export function ProductDetails({ product, movementData, handleClose, handleDelet
                     stopPointerEvents
                 />
             </CustomTabPanel>
-            <Box sx={{ display: 'flex', gap: 1, width: { xs: '100%', md: '40%' }, m: { xs: 0, md: 'auto' } }}>
+            <Box sx={{ display: 'flex', gap: 1, width: { xs: '100%', md: '70%' }, m: { xs: 0, md: 'auto' } }}>
                 <Button
                     type="button"
                     variant="outlined"

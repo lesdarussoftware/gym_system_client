@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SecuritySharpIcon from '@mui/icons-material/SecuritySharp';
 import MonetizationOnSharpIcon from '@mui/icons-material/MonetizationOnSharp';
-import MarkEmailReadSharpIcon from '@mui/icons-material/MarkEmailReadSharp';
+// import MarkEmailReadSharpIcon from '@mui/icons-material/MarkEmailReadSharp';
 import SupportAgentSharpIcon from '@mui/icons-material/SupportAgentSharp';
 
 import { MAIN_COLOR } from "../config/colors";
@@ -73,12 +73,12 @@ export function HomePage() {
                         Uso por licencia o propiedad
                     </Typography>
                 </Box>
-                <Box sx={featureContainerStyles}>
+                {/* <Box sx={featureContainerStyles}>
                     <MarkEmailReadSharpIcon sx={iconStyles} />
                     <Typography variant="h6" sx={featureContainerTextStyles}>
                         Notificaciones por email
                     </Typography>
-                </Box>
+                </Box> */}
                 <Box sx={featureContainerStyles}>
                     <SupportAgentSharpIcon sx={iconStyles} />
                     <Typography variant="h6" sx={featureContainerTextStyles}>
